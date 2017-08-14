@@ -2,7 +2,8 @@
 //#include "../include/readConfig.h"
 //#include "../include/checkPort.h"
 #include <stdlib.h>
-#include "../include/mysql_include/mysql.h"
+//#include "../include/mysql_include/mysql.h"
+#include "../include/mysqlOper.h"
 
 int main(){
 	/*
@@ -19,12 +20,13 @@ int main(){
 	}
 	int checkport = checkPort(123);
 	printf("%d\n",checkport );
-	*/
+	
 	MYSQL mysql;
     MYSQL_RES *res;
     MYSQL_ROW row;
     char sql[100];
-
+    */
+    /*
     mysql_library_init(0, NULL, NULL);
     mysql_init(&mysql);
 
@@ -51,6 +53,20 @@ int main(){
             }
         }
 
-    }
+    }*/
+
+    int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
+    printf("ret =%d \n",ret);
+    //ret = createDatabase("test1");
+    //printf("ret =%d \n",ret);
+    //ret = createTable("table111","(id int, name varchar(32))");
+    //printf("ret =%d\n",ret);
+    ret = changeDatabase("test1");
+    printf("ret =%d\n",ret);
+    ret = dropTable("table111");
+    printf("ret =%d\n",ret);
+    //ret = deleteDatabase("test1");
+    //printf("ret =%d\n",ret);
+    closeConnect();
 	return 0;
 }

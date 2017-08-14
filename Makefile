@@ -7,6 +7,8 @@ SRC = $(wildcard ${DIR_SRC}/*.c)
 OBJ = $(patsubst %.c,${DIR_OBJ}/%.o,$(notdir ${SRC}))
 
 TRGS = testMain
+LINKLIB = mysqlclient
+
 
 BIN_TARGET_S = ${DIR_BIN}/${TRGS}
 
@@ -29,14 +31,14 @@ endif
 #CC=arm-xilinx-linux-gnueabi-gcc
 #CFLAGS=-g -Wall -I${DIR_INC}
 #LIBFLAGS =  -shared
-LINKFLAGS = -l${LINKLIB} -L./lib 
+LINKFLAGS = -l${LINKLIB} -L./lib/msyql_lib/
 
 
 
 
 ALLTARGET:$(BIN_TARGET_S) 
 $(BIN_TARGET_S):$(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $@ 
+	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LINKFLAGS)
 
 $(OBJ):$(DIR_OBJ)/%.o : $(DIR_SRC)/%.c
 	$(CC) $(CFLAGS) -fPIC -c $^ -o $@ 
