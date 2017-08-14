@@ -11,7 +11,7 @@ int checkPort(int port){
     	close(socket_descriptor);
     	return PORTERR;
     } else{
-    	close(socket_descriptor);   
+    	close(socket_descriptor); 
     	return 0;
     }
 		
