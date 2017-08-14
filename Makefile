@@ -41,7 +41,7 @@ $(BIN_TARGET_S):$(OBJ)
 $(OBJ):$(DIR_OBJ)/%.o : $(DIR_SRC)/%.c
 	$(CC) $(CFLAGS) -fPIC -c $^ -o $@ 
 clean:
-	rm -rf $(DIR_BIN)/* 
+	rm -rf $(DIR_BIN)/$(TRGS)
 	rm -rf $(DIR_OBJ)/*
-	rm -rf $(DIR_LIB)/*
+	#rm -rf $(DIR_LIB)/
 	
