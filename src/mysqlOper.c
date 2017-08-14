@@ -24,7 +24,7 @@ void closeConnect(){
 
 /*新建数据库*/
 int createDatabase(const char* databaseName) {
-	char sqlStr[64] = { 0 };
+	char sqlStr[COMMENlEN] = { 0 };
 	sprintf(sqlStr, "%s%s", "create database ", databaseName);
 	int ret = mysql_query(&mysql, sqlStr);
 	if(ret == 0){
@@ -38,13 +38,13 @@ int createDatabase(const char* databaseName) {
 
 /*删除数据库*/
 int deleteDatabase(const char* databasename) {
-	char sqlStr[64] = { 0 };
+	char sqlStr[COMMENlEN] = { 0 };
 	sprintf(sqlStr, "%s%s", "drop database ", databasename);
 	return mysql_query(&mysql, sqlStr);
 }
 /*切换数据库*/
 int changeDatabase(const char* databaseName){
-	char sqlStrChange[64] = { 0 };
+	char sqlStrChange[COMMENlEN] = { 0 };
 	sprintf(sqlStrChange, "%s%s", "use ", databaseName);
 	return mysql_query(&mysql, sqlStrChange);
 
@@ -52,7 +52,7 @@ int changeDatabase(const char* databaseName){
 
 /*创建表，nameAndType参数如："(id int, name varchar(32))"*/
 int createTable(const char* tableName,const char* nameAndType) {
-	char sqlStrCreate[128] = { 0 };
+	char sqlStrCreate[MIDDLELEN] = { 0 };
 	sprintf(sqlStrCreate, "%s%s%s", "create table ",tableName,nameAndType);
 	return mysql_query(&mysql, sqlStrCreate);
 		//printf("%s", mysql_error(&mysql));
@@ -60,14 +60,28 @@ int createTable(const char* tableName,const char* nameAndType) {
 
 /*删除表*/
 int dropTable(const char*tableName) {
-	char sqlStrDrop[128] = { 0 };
+	char sqlStrDrop[MIDDLELEN] = { 0 };
 	sprintf(sqlStrDrop, "%s%s", "drop table ", tableName);
 	return mysql_query(&mysql, sqlStrDrop);
 }
 
 /*向表中插入数据*/
 int addData(const char* tableName,const char*  rowAndValues){
-
+	if(strlen(rowAndValues) < 10){
+		unsigned char sqlStrInsert[LONGLEN] = { 0 };
+		sprintf(sqlStrInsert,"%s%s%s","insert into ",tableName,rowAndValues);
+		return mysql_query(&mysql,sqlStrInsert);
+	}else{
+		unsigned char* sqlStrInsert = NULL; 
+		sqlStrInsert = (unsigned char*)calloc(strlen(rowAndValues) + strlen(tableName) + 16,sizeof(char));
+		if(sqlStrInsert == NULL){
+			return MALLOCERR;
+		}	
+		sprintf(sqlStrInsert,"%s%s%s","insert into ",tableName,rowAndValues);	
+		int ret = mysql_query(&mysql,sqlStrInsert);
+		free(sqlStrInsert);
+		return ret;
+	}
 }
 
 

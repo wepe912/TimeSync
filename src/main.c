@@ -54,19 +54,23 @@ int main(){
         }
 
     }*/
-
+    
     int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
     printf("ret =%d \n",ret);
-    //ret = createDatabase("test1");
-    //printf("ret =%d \n",ret);
-    //ret = createTable("table111","(id int, name varchar(32))");
+    ret = createDatabase("test1");
+    printf("ret =%d \n",ret);
+    ret = createTable("table111","(id int, name varchar(32))");
+    printf("ret =%d\n",ret);
+    //ret = changeDatabase("test1");
     //printf("ret =%d\n",ret);
-    ret = changeDatabase("test1");
-    printf("ret =%d\n",ret);
-    ret = dropTable("table111");
-    printf("ret =%d\n",ret);
+    //ret = dropTable("table111");
+    //printf("ret =%d\n",ret);
     //ret = deleteDatabase("test1");
     //printf("ret =%d\n",ret);
+    ret = addData("table111","(id,name)values(1,'www'),(2,'qq'),(3,'test')");
+    printf("ret =%d\n",ret);
     closeConnect();
+    
+
 	return 0;
 }

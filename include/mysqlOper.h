@@ -5,7 +5,12 @@
 #include "../include/mysql_include/mysql.h"
 
 #define CONNECTERR  -0x0001
+#define MALLOCERR   -0x0002
 
+
+#define COMMENlEN	0x0040
+#define MIDDLELEN	0x0080
+#define LONGLEN		0x0400
 
 
 MYSQL mysql;
