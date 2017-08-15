@@ -32,4 +32,6 @@ int createTable(const char* tableName,const char* nameAndType);
 int dropTable(const char*tableName);
 
 int addData(const char* tableName,const char*  rowAndValues);
+
+int deleteData(const char* tableName,const char*  condition);
 #endif

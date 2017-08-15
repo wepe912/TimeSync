@@ -60,7 +60,7 @@ int main(){
     ret = createDatabase("test1");
     printf("ret =%d \n",ret);
     ret = createTable("table111","(id int, name varchar(32))");
-    printf("ret =%d\n",ret);
+    printf("ret* =%d\n",ret);
     //ret = changeDatabase("test1");
     //printf("ret =%d\n",ret);
     //ret = dropTable("table111");
@@ -68,6 +68,8 @@ int main(){
     //ret = deleteDatabase("test1");
     //printf("ret =%d\n",ret);
     ret = addData("table111","(id,name)values(1,'www'),(2,'qq'),(3,'test')");
+    printf("ret =%d\n",ret);
+    ret = deleteData("table111"," where id = 2");
     printf("ret =%d\n",ret);
     closeConnect();
     

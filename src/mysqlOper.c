@@ -67,7 +67,7 @@ int dropTable(const char*tableName) {
 
 /*向表中插入数据*/
 int addData(const char* tableName,const char*  rowAndValues){
-	if(strlen(rowAndValues) < 10){
+	if(strlen(rowAndValues) < LONGLEN - strlen(tableName) - 16){
 		unsigned char sqlStrInsert[LONGLEN] = { 0 };
 		sprintf(sqlStrInsert,"%s%s%s","insert into ",tableName,rowAndValues);
 		return mysql_query(&mysql,sqlStrInsert);
@@ -85,3 +85,20 @@ int addData(const char* tableName,const char*  rowAndValues){
 }
 
 
+int deleteData(const char* tableName,const char*  condition){
+	if(strlen(condition) < LONGLEN - strlen(tableName) - 16){
+		unsigned char sqlStrDelete[LONGLEN] = { 0 };
+		sprintf(sqlStrDelete,"%s%s%s%s","delete from ",tableName," ",condition);
+		return mysql_query(&mysql,sqlStrDelete);
+	}else{
+		unsigned char* sqlStrDelete = NULL; 
+		sqlStrDelete = (unsigned char*)calloc(strlen(condition) + strlen(tableName) + 16,sizeof(char));
+		if(sqlStrDelete == NULL){
+			return MALLOCERR;
+		}	
+		sprintf(sqlStrDelete,"%s%s%s%s","delete from ",tableName," ",condition);	
+		int ret = mysql_query(&mysql,sqlStrDelete);
+		free(sqlStrDelete);
+		return ret;
+	}
+}
