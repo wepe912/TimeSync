@@ -34,4 +34,8 @@ int dropTable(const char*tableName);
 int addData(const char* tableName,const char*  rowAndValues);
 
 int deleteData(const char* tableName,const char*  condition);
+
+int changeData(const char* tableName,const char* rowAndValuesAndCon);
+
+int getData(const char* tableName,const char* selectArges,const char* condition,int *rowNum,int*fieldNum, int* interval , unsigned char* data,int dataLen);
 #endif

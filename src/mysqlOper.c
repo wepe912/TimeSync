@@ -102,3 +102,98 @@ int deleteData(const char* tableName,const char*  condition){
 		return ret;
 	}
 }
+
+int changeData(const char* tableName,const char* rowAndValuesAndCon){
+	if(strlen(rowAndValuesAndCon) < LONGLEN - strlen(tableName) - 16){
+		unsigned char sqlStrUpdate[LONGLEN] = { 0 };
+		sprintf(sqlStrUpdate,"%s%s%s%s","update ",tableName," set ",rowAndValuesAndCon);
+		return mysql_query(&mysql,sqlStrUpdate);
+	}else{
+		unsigned char* sqlStrUpdate = NULL; 
+		sqlStrUpdate = (unsigned char*)calloc(strlen(rowAndValuesAndCon) + strlen(tableName) + 16,sizeof(char));
+		if(sqlStrUpdate == NULL){
+			return MALLOCERR;
+		}	
+		sprintf(sqlStrUpdate,"%s%s%s%s","update ",tableName," set ",rowAndValuesAndCon);	
+		int ret = mysql_query(&mysql,sqlStrUpdate);
+		free(sqlStrUpdate);
+		return ret;
+	}
+}
+/*查询数据 ，selectArges是select参数，condition为select条件，rowNum为查询返回行数，fieldNum为字段数，interval为各字段间的存储间隔，data为select出的数据*/
+int getData(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen){
+		unsigned char* sqlStrSelect = NULL; 
+		MYSQL_RES *resPtr;
+		MYSQL_ROW sqlRow;
+		int sqlLen = 0 ;
+		if(condition == NULL){
+			sqlLen =  strlen(tableName) + strlen(selectArges)+ 16;
+			sqlStrSelect = (unsigned char*)calloc(sqlLen,sizeof(char));
+			if(sqlStrSelect == NULL){
+				return MALLOCERR;
+			}	
+			sprintf(sqlStrSelect,"%s%s%s%s","select ",selectArges," from ", tableName);
+		}else{
+			sqlLen = strlen(condition) + strlen(tableName) + strlen(selectArges)+ 16;
+			sqlStrSelect = (unsigned char*)calloc(sqlLen,sizeof(char));
+			if(sqlStrSelect == NULL){
+				return MALLOCERR;
+			}
+			sprintf(sqlStrSelect,"%s%s%s%s%s","select ",selectArges," from ", tableName,condition);
+		}
+		int ret = mysql_query(&mysql,sqlStrSelect);
+		if(ret != 0){
+			free(sqlStrSelect);
+			return ret;
+		}
+		resPtr = mysql_store_result(&mysql); 
+		if(resPtr != NULL){
+			*rowNum = mysql_num_rows(resPtr);
+			*fieldNum = mysql_num_fields(resPtr);
+			int simple = 0;
+			if(*rowNum < 30){
+				simple = (*rowNum);
+			}else{
+				simple = (*rowNum) / 3;
+			}
+			//int simple = (*rowNum) / 3;
+			int i = 0,j = 0;
+			int randNum = 0;
+			srand((unsigned)time(NULL));
+			for(i = 0 ; i < simple;i ++){
+				randNum = rand() % (*rowNum);
+				mysql_data_seek(resPtr, randNum);
+				sqlRow = mysql_fetch_row(resPtr);
+				for(j = 0; j < (*fieldNum); j++){
+					if(strlen(sqlRow[j]) > interval[j]){
+						interval[j] = strlen(sqlRow[j]);
+					}
+				}
+			}
+			j = 0;
+			for(i = 0; i < (*fieldNum); i++){
+				j += interval[i];
+			}
+			if(j*(*rowNum) > dataLen){
+				return -8;
+			}
+
+			mysql_data_seek(resPtr, 0);
+			unsigned char* tmpData = data;
+			for(i = 0; i < (*rowNum); i ++){
+				sqlRow = mysql_fetch_row(resPtr);
+				for (j = 0; j < (*fieldNum); j++){
+					memcpy(tmpData,sqlRow[j],strlen(sqlRow[j]));
+					tmpData += interval[j];
+				}
+			}
+			free(sqlStrSelect);
+			return 0;
+		}else{
+			free(sqlStrSelect);
+			return -9;
+		}
+		
+		
+	
+}
