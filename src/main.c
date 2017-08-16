@@ -74,7 +74,7 @@ int main(){
     char* nameValueP = nameValue + strlen(nameValue);
     
     for(i = 0; i < 100; i ++){
-        srand((unsigned)time(NULL));
+        srand((unsigned)time(NULL) + i);
         randNum = rand() % 100;
         randChar = rand() % 32;
         if(randChar == 0){
