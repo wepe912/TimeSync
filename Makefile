@@ -7,8 +7,8 @@ SRC = $(wildcard ${DIR_SRC}/*.c)
 OBJ = $(patsubst %.c,${DIR_OBJ}/%.o,$(notdir ${SRC}))
 
 TRGS = testMain
-LINKLIB = mysqlclient
-
+LINKLIBMYSQL = mysqlclient
+LINKLIBSQLITE3 = sqlite3
 
 BIN_TARGET_S = ${DIR_BIN}/${TRGS}
 
@@ -31,14 +31,14 @@ endif
 #CC=arm-xilinx-linux-gnueabi-gcc
 #CFLAGS=-g -Wall -I${DIR_INC}
 #LIBFLAGS =  -shared
-LINKFLAGS = -l${LINKLIB} -L./lib/msyql_lib/
-
+LINKFLAGSMYSQL = -l${LINKLIBMYSQL}  -L./lib/msyql_lib/ 
+LINKSQLITE3FLAGS = -l${LINKLIBSQLITE3} -L./lib/sqlite3/ -ldl -pthread
 
 
 
 ALLTARGET:$(BIN_TARGET_S) 
 $(BIN_TARGET_S):$(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LINKFLAGS)
+	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LINKFLAGSMYSQL) $(LINKSQLITE3FLAGS)
 
 $(OBJ):$(DIR_OBJ)/%.o : $(DIR_SRC)/%.c
 	$(CC) $(CFLAGS) -fPIC -c $^ -o $@ 

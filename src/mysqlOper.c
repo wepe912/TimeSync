@@ -7,7 +7,8 @@ int initDatabase(const char* host,const char* usr,const char* pwd,unsigned int p
 	mysql_library_init(0, NULL, NULL);
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,host,usr,pwd,"mysql",port,unix_socket,clientflag)){
-    	printf("无法连接到数据库，错误原因：%s\n", mysql_error(&mysql));
+    	//printf("无法连接到数据库，错误原因：%s\n", mysql_error(&mysql));
+    	//writeLog(mysql_error(&mysql));
     	return CONNECTERR;
     }else{
     	return 0;
@@ -31,6 +32,7 @@ int createDatabase(const char* databaseName) {
 		changeDatabase(databaseName);
 		return ret;
 	}else{
+		//writeLog(mysql_error(&mysql));
 		return ret;
 	}
 
@@ -88,15 +90,27 @@ int addData(const char* tableName,const char*  rowAndValues){
 int deleteData(const char* tableName,const char*  condition){
 	if(strlen(condition) < LONGLEN - strlen(tableName) - 16){
 		unsigned char sqlStrDelete[LONGLEN] = { 0 };
-		sprintf(sqlStrDelete,"%s%s%s%s","delete from ",tableName," ",condition);
+		if(condition == NULL){
+			sprintf(sqlStrDelete,"%s%s","delete from ",tableName);
+		}else{
+			sprintf(sqlStrDelete,"%s%s%s%s","delete from ",tableName," ",condition);
+		}		
 		return mysql_query(&mysql,sqlStrDelete);
 	}else{
 		unsigned char* sqlStrDelete = NULL; 
-		sqlStrDelete = (unsigned char*)calloc(strlen(condition) + strlen(tableName) + 16,sizeof(char));
-		if(sqlStrDelete == NULL){
-			return MALLOCERR;
+		if(condition == NULL){
+			sqlStrDelete = (unsigned char*)calloc(strlen(tableName) + 16,1);
+			if(sqlStrDelete == NULL){
+				return MALLOCERR;
+			}
+			sprintf(sqlStrDelete,"%s%s","delete from ",tableName);
+		}else{
+			sqlStrDelete = (unsigned char*)calloc(strlen(condition) + strlen(tableName) + 16,1);
+			if(sqlStrDelete == NULL){
+				return MALLOCERR;
+			}
+			sprintf(sqlStrDelete,"%s%s%s%s","delete from ",tableName," ",condition);
 		}	
-		sprintf(sqlStrDelete,"%s%s%s%s","delete from ",tableName," ",condition);	
 		int ret = mysql_query(&mysql,sqlStrDelete);
 		free(sqlStrDelete);
 		return ret;

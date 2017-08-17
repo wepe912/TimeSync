@@ -6,6 +6,8 @@
 #include "../include/mysqlOper.h"
 
 #include "../include/writeLogFile.h"
+//#include "../include/sqlite3.h"
+#include "../include/sqlite3Oper.h"
 int main(){
 	/*
 	unsigned char key[24] = { 0 };
@@ -55,7 +57,7 @@ int main(){
         }
 
     }*/
-    /*******test initDatabase***********************
+    /*******test initDatabase***********************    
     int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
     printf("ret initDatabase =%d \n",ret);
     ret = createDatabase("test1");
@@ -112,11 +114,40 @@ int main(){
     printf("ret getData =%d\n",ret);
     closeConnect();
     *************test initDatabase****************/
+    /***********test writeLog********************
     int ret = 0;
     ret = writeLog("every thing is ok!");
     printf("ret writeLog1 =%d\n",ret);
     ret = writeLog("no thing happen!");
     printf("ret writeLog2 =%d\n",ret);
+    ***********test writeLog*********************/
 
+    /*********test sqlite3*************************
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+
+    rc = sqlite3_open("test.db", &db);
+
+    if( rc ){
+      fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+      exit(0);
+    }else{
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Opened database successfully\n");
+    }
+    sqlite3_close(db);
+    ***************test sqlite3*********************/
+    int ret = sqlite3_init("./testdb.sqlite3");
+    printf("sqlite3_init =%d\n",ret);
+    ret = sqlite3_create_table("table111","(id int, name varchar(32))");
+    printf(" sqlite3_create_table =%d\n",ret);
+    //ret = sqlite3_drop_table("table111");
+    //printf(" sqlite3_drop_table =%d\n",ret);
+    ret = sqlite3_add_data("table111","(id,name)values(1,'www'),(2,'qq'),(3,'test'),(4,'tt'),(5,'ewer'),(6,'pp'),(123,'tttttt'),(1111,'ddddd')");
+    printf(" sqlite3_add_data =%d\n",ret);
+    ret = sqlite3_delete_data("table111",NULL);
+    printf(" sqlite3_delete_data =%d\n",ret);
+    sqlite3_close_database();
 	return 0;
 }
