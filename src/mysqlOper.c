@@ -126,6 +126,7 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 		MYSQL_RES *resPtr;
 		MYSQL_ROW sqlRow;
 		int sqlLen = 0 ;
+		//无where条件
 		if(condition == NULL){
 			sqlLen =  strlen(tableName) + strlen(selectArges)+ 16;
 			sqlStrSelect = (unsigned char*)calloc(sqlLen,sizeof(char));
@@ -134,6 +135,7 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 			}	
 			sprintf(sqlStrSelect,"%s%s%s%s","select ",selectArges," from ", tableName);
 		}else{
+			//有where条件
 			sqlLen = strlen(condition) + strlen(tableName) + strlen(selectArges)+ 16;
 			sqlStrSelect = (unsigned char*)calloc(sqlLen,sizeof(char));
 			if(sqlStrSelect == NULL){
@@ -151,6 +153,8 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 			*rowNum = mysql_num_rows(resPtr);
 			*fieldNum = mysql_num_fields(resPtr);
 			int simple = 0;
+			//小于30记录全面记录进行采样，大于30条，三分之一的随机条目进行采样
+			//以确定每条康的总长度以及字段间的间隔，便于存储和获取
 			if(*rowNum < 30){
 				simple = (*rowNum);
 			}else{
@@ -162,6 +166,7 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 			srand((unsigned)time(NULL));
 			for(i = 0 ; i < simple;i ++){
 				randNum = rand() % (*rowNum);
+				//printf("%d\n",randNum );
 				mysql_data_seek(resPtr, randNum);
 				sqlRow = mysql_fetch_row(resPtr);
 				for(j = 0; j < (*fieldNum); j++){
@@ -175,7 +180,7 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 				j += interval[i];
 			}
 			if(j*(*rowNum) > dataLen){
-				return -8;
+				return OUTPUTSAPACELESS;
 			}
 
 			mysql_data_seek(resPtr, 0);
@@ -191,7 +196,7 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 			return 0;
 		}else{
 			free(sqlStrSelect);
-			return -9;
+			return GETDATAERR;
 		}
 		
 		

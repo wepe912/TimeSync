@@ -5,6 +5,7 @@
 //#include "../include/mysql_include/mysql.h"
 #include "../include/mysqlOper.h"
 
+#include "../include/writeLogFile.h"
 int main(){
 	/*
 	unsigned char key[24] = { 0 };
@@ -54,6 +55,7 @@ int main(){
         }
 
     }*/
+    /*******test initDatabase***********************
     int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
     printf("ret initDatabase =%d \n",ret);
     ret = createDatabase("test1");
@@ -66,6 +68,7 @@ int main(){
     //printf("ret =%d\n",ret);
     //ret = deleteDatabase("test1");
     //printf("ret =%d\n",ret);
+
     int i = 0,j = 0;
     int randNum = 0;
     int randChar = 0;
@@ -108,7 +111,12 @@ int main(){
     ret = getData("table111","*",NULL,&rowNum,&fieldNum,interval,data,len*8);
     printf("ret getData =%d\n",ret);
     closeConnect();
-    
+    *************test initDatabase****************/
+    int ret = 0;
+    ret = writeLog("every thing is ok!");
+    printf("ret writeLog1 =%d\n",ret);
+    ret = writeLog("no thing happen!");
+    printf("ret writeLog2 =%d\n",ret);
 
 	return 0;
 }

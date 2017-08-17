@@ -21,6 +21,7 @@ int readConfig(unsigned char* key,unsigned char* value,int* configNum){
 			}
 			memset(key + keyOffset,0,keyLen + 1 );	
 			memcpy(key + keyOffset,contentLine,keyLen);
+			//过滤特殊字符
 			while(contentLine[conLen -1] < 0x2F){
 				conLen --;
 			}

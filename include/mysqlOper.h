@@ -6,7 +6,8 @@
 
 #define CONNECTERR  -0x0001
 #define MALLOCERR   -0x0002
-
+#define GETDATAERR	-0x0008
+#define OUTPUTSAPACELESS	-0x0009
 
 #define COMMENlEN	0x0040
 #define MIDDLELEN	0x0080
