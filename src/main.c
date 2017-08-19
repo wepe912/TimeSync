@@ -146,8 +146,19 @@ int main(){
     //printf(" sqlite3_drop_table =%d\n",ret);
     ret = sqlite3_add_data("table111","(id,name)values(1,'www'),(2,'qq'),(3,'test'),(4,'tt'),(5,'ewer'),(6,'pp'),(123,'tttttt'),(1111,'ddddd')");
     printf(" sqlite3_add_data =%d\n",ret);
-    ret = sqlite3_delete_data("table111",NULL);
+    ret = sqlite3_delete_data("table111","where id = 2");
     printf(" sqlite3_delete_data =%d\n",ret);
+    ret = sqlite3_change_data("table111","name = 'testupdate****' where id = 3");
+    printf("sqlite3_change_data = %d\n",ret );
+
+    int rowNum = 0;
+    int fieldNum = 0;
+    int interval[16] = {0};
+    unsigned char data[1024 *8] = {0};
+    int len = 1024;
+    ret = sqlite3_get_data("table111","*",NULL,&rowNum,&fieldNum,interval,data,len*8);
+    printf("sqlite3_get_data =%d\n",ret);
+
     sqlite3_close_database();
 	return 0;
 }

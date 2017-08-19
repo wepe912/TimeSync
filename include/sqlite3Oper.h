@@ -11,8 +11,13 @@
 #define		SQLITE_DROP_TABLE_ERR	-0x0004
 #define		SQLITE_INSERT_TABLE_ERR	-0x0005
 #define		SQLITE_DELETE_TABLE_ERR	-0x0006
+#define		SQLITE_UPDATE_DATA_ERR	-0x0007
+#define		SQLITE_GET_DATA_ERR		-0x0008
+#define		OUTPUT_SAPACE_ERR		-0x0009
 
-#define		SQLITE_MALLOCERR		-0x0007
+
+
+#define		SQLITE_MALLOCERR		-0x000a
 
 
 sqlite3 *sqlite3Db;
@@ -29,4 +34,8 @@ int sqlite3_drop_table(const char* tableName);
 int sqlite3_add_data(const char* tableName,const char*  rowAndValues);
 
 int sqlite3_delete_data(const char* tableName,const char*  condition);
+
+int sqlite3_change_data(const char* tableName,const char* rowAndValuesAndCon);
+
+int sqlite3_get_data(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen);
 #endif

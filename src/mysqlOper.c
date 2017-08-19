@@ -211,8 +211,5 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 		}else{
 			free(sqlStrSelect);
 			return GETDATAERR;
-		}
-		
-		
-	
+		}	
 }
