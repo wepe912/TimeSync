@@ -247,21 +247,16 @@ int sqlite3_get_data(const char* tableName,const char* selectArges,const char* c
 	srand((unsigned)time(NULL));
 	for(i = 0 ; i < simple;i ++){
 		randNum = rand() % (*rowNum);
-		printf("----------rowNum=%d--------------------\n",randNum );
 		int destNum = randNum*(*fieldNum);
-		printf("^^^^^destNum = %d\n",destNum );
 		indexField = (*fieldNum);
 		for(j = 0; j < (*fieldNum); j++){
-			printf("####strlen(pResult[  destNum + indexField] =%d\n",strlen(pResult[  destNum + indexField] ));
 			if(strlen(pResult[  destNum + indexField]) > interval[j]){
 				interval[j] = strlen(pResult[destNum + indexField]);
 				indexField ++;
-				printf("***indexField = %d\n",indexField );
 			}else{
 				indexField ++;
 			}
 		}
-		printf("------------------------------ \n");
 	}
 	j = 0;
 	for(i = 0; i < (*fieldNum); i++){
