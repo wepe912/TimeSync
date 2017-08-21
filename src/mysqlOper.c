@@ -213,3 +213,21 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 			return GETDATAERR;
 		}	
 }
+
+
+int transactionDeal(const char* transaction){
+	int ret = mysql_query(&mysql,"SET AUTOCOMMIT =0");
+	if(ret != 0){
+		return -777;
+	}
+	ret = mysql_query(&mysql,"BEGIN;");
+	ret = mysql_query(&mysql,transaction);
+	if(ret != 0){
+		printf("%s", mysql_error(&mysql));
+		return -7777;
+	}
+	ret = mysql_query(&mysql,"COMMIT;");
+
+	//printf("%s", mysql_error(&mysql));
+	return ret;
+}

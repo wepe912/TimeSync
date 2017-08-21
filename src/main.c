@@ -9,7 +9,7 @@
 //#include "../include/sqlite3.h"
 #include "../include/sqlite3Oper.h"
 int main(){
-	/*
+	/*********************************
 	unsigned char key[24] = { 0 };
 	unsigned char value[24] = { 0 };
 	int configNum = 0;
@@ -28,36 +28,8 @@ int main(){
     MYSQL_RES *res;
     MYSQL_ROW row;
     char sql[100];
-    */
-    /*
-    mysql_library_init(0, NULL, NULL);
-    mysql_init(&mysql);
-
-    if (!mysql_real_connect(&mysql,"192.168.0.31","root","P@ssw0rd","test",0,NULL,0)){
-        printf("无法连接到数据库，错误原因：%s\n", mysql_error(&mysql));
-    }
-
-    else {
-        printf("连接数据库成功\n");
-        sprintf(sql, "insert into students(name) values('eric')");
-        mysql_query(&mysql, sql);
-        sprintf(sql, "select name from students");
-        int t = mysql_query(&mysql, sql);
-        if (0 != t) {
-            printf("查询数据库失败%s\n", mysql_error(&mysql));
-        }
-        else {
-            res = mysql_store_result(&mysql);
-            while (row = mysql_fetch_row(res)) {
-                int r = 0;
-                for ( r = 0;r < mysql_num_fields(res); r++) {
-                    printf("%s\n", row[r]);
-                }
-            }
-        }
-
-    }*/
-    /*******test initDatabase***********************    
+    *****************************************/
+    /*******test mysql***********************/   
     int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
     printf("ret initDatabase =%d \n",ret);
     ret = createDatabase("test1");
@@ -112,8 +84,11 @@ int main(){
     int len = 1024;
     ret = getData("table111","*",NULL,&rowNum,&fieldNum,interval,data,len*8);
     printf("ret getData =%d\n",ret);
+
+    ret = transactionDeal("CREATE TABLE testTrancation (id int,name char(32));");
+    printf("ret transactionDeal = %d\n",ret);
     closeConnect();
-    *************test initDatabase****************/
+    /*************test initDatabase****************/
     /***********test writeLog********************
     int ret = 0;
     ret = writeLog("every thing is ok!");
@@ -138,6 +113,7 @@ int main(){
     }
     sqlite3_close(db);
     ***************test sqlite3*********************/
+    /**************test sqlite3Oper*****************
     int ret = sqlite3_init("./testdb.sqlite3");
     printf("sqlite3_init =%d\n",ret);
     ret = sqlite3_create_table("table111","(id int, name varchar(32))");
@@ -160,5 +136,22 @@ int main(){
     printf("sqlite3_get_data =%d\n",ret);
 
     sqlite3_close_database();
+    *************************************************/
+    /********************
+    unsigned char testStr[128] = { 0 };
+    unsigned char *ptest = NULL;
+    unsigned char **pptest = NULL;
+    unsigned char ***ppptest = NULL;
+    memcpy(testStr,"hello world!",13);
+    ptest = testStr;
+    pptest[0] = &testStr[0];
+    pptest[1] = &testStr[1];
+    ppptest = testStr;
+    printf("pptest[0] = %s\n",pptest[0] );
+    printf("pptest[1] = %s\n",pptest[1]);
+    //printf("ptest = %c\n",ptest[1] );
+    //printf("pptest = %c\n", pptest[1][0]);
+    //printf("ppptest = %c\n",ppptest[1][1][1] );
+    ***********************/
 	return 0;
 }
