@@ -284,3 +284,11 @@ int sqlite3_get_data(const char* tableName,const char* selectArges,const char* c
 	sqlite3_free_table(pResult);
 	return 0;	
 }
+
+int sqlite3_get_lasterr(unsigned char* err,int errLen){
+	//fprintf(stderr, "SQL error: %s\n", zErrMsg);
+	int sqlite3_err_len = strlen(zErrMsg);
+	if(sqlite3_err_len > errLen){
+		return OUTPUT_SAPACE_ERR;
+	}
+}

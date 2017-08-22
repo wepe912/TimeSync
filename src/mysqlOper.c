@@ -231,3 +231,14 @@ int transactionDeal(const char* transaction){
 	//printf("%s", mysql_error(&mysql));
 	return ret;
 }
+
+
+int getLastErr(unsigned char* err,int errLen){
+	//printf("%s", mysql_error(&mysql));
+	int msqlErrLen = strlen(mysql_error(&mysql));
+	if(errLen < msqlErrLen){
+		return OUTPUTSAPACELESS;
+	}
+	memcpy(err,mysql_error(&mysql),errLen);
+	return 0;
+}
