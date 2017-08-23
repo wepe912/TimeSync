@@ -138,6 +138,9 @@ int getAllTableName(unsigned char* tableName,int *tableNum){
 	MYSQL_RES *resPtr;
 	MYSQL_ROW sqlRow;
 	int ret = mysql_query(&mysql,"show tables");
+	if(ret != 0 ){
+		return GETALLTABLENAMEERR;
+	}
 	resPtr = mysql_store_result(&mysql); 
 	*tableNum = mysql_num_rows(resPtr);
 	int i = 0;
