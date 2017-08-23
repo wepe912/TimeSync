@@ -44,5 +44,5 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 
 int transactionDeal(const char* transaction);
 
-//int getLastErr(unsigned char* err,int errLen);
+int getLastErr(unsigned char* err,int errLen);
 #endif

@@ -38,4 +38,6 @@ int sqlite3_delete_data(const char* tableName,const char*  condition);
 int sqlite3_change_data(const char* tableName,const char* rowAndValuesAndCon);
 
 int sqlite3_get_data(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen);
+
+int sqlite3_get_lasterr(unsigned char* err,int errLen);
 #endif
