@@ -42,7 +42,11 @@ int changeData(const char* tableName,const char* rowAndValuesAndCon);
 
 int getData(const char* tableName,const char* selectArges,const char* condition,int *rowNum,int*fieldNum, int* interval , unsigned char* data,int dataLen);
 
+int getAllTableName(unsigned char* tableName,int* tableNum);
+
 int transactionDeal(const char* transaction);
 
 int getLastErr(unsigned char* err,int errLen);
+
+
 #endif

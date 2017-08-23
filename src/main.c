@@ -29,7 +29,7 @@ int main(){
     MYSQL_ROW row;
     char sql[100];
     *****************************************/
-    /*******test mysql***********************   
+    /*******test mysql***********************/
     int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
     printf("ret initDatabase =%d \n",ret);
     ret = createDatabase("test1");
@@ -90,9 +90,13 @@ int main(){
 
     ret = transactionDeal("CREATE TABLE testTrancation (id int,name char(32));");
     printf("ret transactionDeal = %d\n",ret);
+    unsigned char tableName[1024] = { 0 };
+    int tableNum = 0;
+    ret = getAllTableName(tableName,&tableNum);
+    printf("ret getAllTableName = %d\n",ret);
     closeConnect();
-    ************test initDatabase****************/
-    /***********test writeLog********************/
+    /************test initDatabase****************/
+    /***********test writeLog********************
     int ret = 0;
     ret = writeLog("every thing is ok!",0);
     printf("ret writeLog1 =%d\n",ret);
@@ -102,7 +106,7 @@ int main(){
     printf("ret writeLog3 =%d\n",ret);
     ret = writeLog("other thing happen!",3);
     printf("ret writeLog3 =%d\n",ret);
-    /***********test writeLog*********************/
+    ***********test writeLog*********************/
 
     /*********test sqlite3*************************
     sqlite3 *db;

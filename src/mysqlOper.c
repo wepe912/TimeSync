@@ -134,6 +134,20 @@ int changeData(const char* tableName,const char* rowAndValuesAndCon){
 		return ret;
 	}
 }
+int getAllTableName(unsigned char* tableName,int *tableNum){
+	MYSQL_RES *resPtr;
+	MYSQL_ROW sqlRow;
+	int ret = mysql_query(&mysql,"show tables");
+	resPtr = mysql_store_result(&mysql); 
+	*tableNum = mysql_num_rows(resPtr);
+	int i = 0;
+	for( i = 0; i < *tableNum; i ++){
+		sqlRow = mysql_fetch_row(resPtr);
+		memcpy(tableName + i*32,sqlRow[0],strlen(sqlRow[0]));
+	}
+	return 0;
+}
+
 /*查询数据 ，selectArges是select参数，condition为select条件，rowNum为查询返回行数，fieldNum为字段数，interval为各字段间的存储间隔，data为select出的数据*/
 int getData(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen){
 		unsigned char* sqlStrSelect = NULL; 
