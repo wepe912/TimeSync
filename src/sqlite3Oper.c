@@ -4,14 +4,19 @@
 int sqlite3_init(const char* databaseName){
 	int ret = 0;
 	ret = sqlite3_open(databaseName,&sqlite3Db);
-	if(ret){
+	if(ret != 0){
 		return SQLITE_OPENDATABAS_ERR;
+	}
+	sqlite3_err = (unsigned char*)calloc(512,1);
+	if(sqlite3_err == NULL){
+		return SQLITE_MALLOCERR;
 	}
 	return 0;
 }
 
 void sqlite3_close_database(void){
 	sqlite3_close(sqlite3Db);
+	free(sqlite3_err);
 }
 
 
@@ -30,6 +35,7 @@ int sqlite3_create_table(const char* tableName,const char* nameAndType){
    	ret = sqlite3_exec(sqlite3Db, sqlStrCreate, callback_create, 0, &zErrMsg);
    	if( ret != 0 ){
    		///fprintf(stderr, "SQL error: %s\n", zErrMsg);
+   		memcpy(sqlite3_err,zErrMsg,strlen(zErrMsg));
       	sqlite3_free(zErrMsg);
       	free(sqlStrCreate);
       	return SQLITE_CREATE_TABLE_ERR;
@@ -52,6 +58,7 @@ int sqlite3_drop_table(const char* tableName){
    	ret = sqlite3_exec(sqlite3Db, sqlStrDrop, callback_drop, 0, &zErrMsg);
    	if( ret != 0 ){
    		///fprintf(stderr, "SQL error: %s\n", zErrMsg);
+   		memcpy(sqlite3_err,zErrMsg,strlen(zErrMsg));
       	sqlite3_free(zErrMsg);
       	return SQLITE_DROP_TABLE_ERR;
    	}
@@ -75,6 +82,7 @@ int sqlite3_add_data(const char* tableName,const char*  rowAndValues){
    	ret = sqlite3_exec(sqlite3Db, sqlStrInsert, callback_insert, 0, &zErrMsg);
    	if( ret != 0 ){
    		///fprintf(stderr, "SQL error: %s\n", zErrMsg);
+   		memcpy(sqlite3_err,zErrMsg,strlen(zErrMsg));
       	sqlite3_free(zErrMsg);
       	free(sqlStrInsert);
       	return SQLITE_INSERT_TABLE_ERR;
@@ -111,6 +119,7 @@ int sqlite3_delete_data(const char* tableName,const char*  condition){
    	ret = sqlite3_exec(sqlite3Db, sqlStrDelete, callback_delete, 0, &zErrMsg);
    	if( ret != 0 ){
    		///fprintf(stderr, "SQL error: %s\n", zErrMsg);
+   		memcpy(sqlite3_err,zErrMsg,strlen(zErrMsg));
       	sqlite3_free(zErrMsg);
       	free(sqlStrDelete);
       	return SQLITE_DELETE_TABLE_ERR;
@@ -138,6 +147,7 @@ int sqlite3_change_data(const char* tableName,const char* rowAndValuesAndCon){
    	ret = sqlite3_exec(sqlite3Db, sqlStrUpdate, callback_update, 0, &zErrMsg);
    	if( ret != 0 ){
    		///fprintf(stderr, "SQL error: %s\n", zErrMsg);
+   		memcpy(sqlite3_err,zErrMsg,strlen(zErrMsg));
       	sqlite3_free(zErrMsg);
       	free(sqlStrUpdate);
       	return SQLITE_UPDATE_DATA_ERR;
@@ -145,6 +155,28 @@ int sqlite3_change_data(const char* tableName,const char* rowAndValuesAndCon){
 	free(sqlStrUpdate);
 	return 0;
 }
+
+//获取数据库中所有表的名称
+int sqlite3_get_alltable_name(unsigned char* tableName,int* tableNum){
+	char *zErrMsg = 0;
+	char** pResult = NULL; 
+   	int ret = 0;
+   	int fieldNum = 0;
+   	ret = sqlite3_get_table(sqlite3Db,"SELECT name FROM sqlite_master WHERE type='table' order by name",&pResult,tableNum,&fieldNum,&zErrMsg); 
+   	if( ret != 0 ){
+   		//fprintf(stderr, "SQL error: %s\n", zErrMsg);
+   		memcpy(sqlite3_err,zErrMsg,strlen(zErrMsg));
+      	sqlite3_free(zErrMsg);
+      	return SQLITE_GET_DATA_ERR;
+   	}
+   	int i = 0;
+	for(i = 0; i < (*tableNum); i ++){
+		memcpy(tableName + i*32,pResult[i + fieldNum],strlen(pResult[i + fieldNum]));
+	}
+	return 0;
+}
+
+
 
 int sqlite3_get_data(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen){
 	unsigned char* sqlStrSelect = NULL; 
@@ -227,6 +259,7 @@ int sqlite3_get_data(const char* tableName,const char* selectArges,const char* c
    	ret = sqlite3_get_table(sqlite3Db,sqlStrSelect,&pResult,rowNum,fieldNum,&zErrMsg); 
    	if( ret != 0 ){
    		///fprintf(stderr, "SQL error: %s\n", zErrMsg);
+   		memcpy(sqlite3_err,zErrMsg,strlen(zErrMsg));
       	sqlite3_free(zErrMsg);
       	free(sqlStrSelect);
       	return SQLITE_GET_DATA_ERR;
@@ -283,4 +316,16 @@ int sqlite3_get_data(const char* tableName,const char* selectArges,const char* c
 	free(sqlStrSelect);
 	sqlite3_free_table(pResult);
 	return 0;	
+}
+
+
+int sqlite3_get_lasterr(unsigned char* err,int errLen){
+	int errRealLen = strlen(sqlite3_err);
+	if(errRealLen > errLen){
+		memcpy(err,sqlite3_err,errLen);
+		return OUTPUT_SAPACE_ERR;
+	}else{
+		memcpy(err,sqlite3_err,errRealLen);
+		return 0;
+	}
 }

@@ -21,7 +21,7 @@
 
 
 sqlite3 *sqlite3Db;
-
+unsigned char* sqlite3_err;
 
 
 int sqlite3_init(const char* databaseName);
@@ -36,6 +36,8 @@ int sqlite3_add_data(const char* tableName,const char*  rowAndValues);
 int sqlite3_delete_data(const char* tableName,const char*  condition);
 
 int sqlite3_change_data(const char* tableName,const char* rowAndValuesAndCon);
+
+int sqlite3_get_alltable_name(unsigned char* tableName,int* tableNum);
 
 int sqlite3_get_data(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen);
 

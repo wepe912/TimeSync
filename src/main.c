@@ -29,7 +29,7 @@ int main(){
     MYSQL_ROW row;
     char sql[100];
     *****************************************/
-    /*******test mysql***********************/
+    /*******test mysql***********************
     int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
     printf("ret initDatabase =%d \n",ret);
     ret = createDatabase("test1");
@@ -95,7 +95,7 @@ int main(){
     ret = getAllTableName(tableName,&tableNum);
     printf("ret getAllTableName = %d\n",ret);
     closeConnect();
-    /************test initDatabase****************/
+    ************test initDatabase****************/
     /***********test writeLog********************
     int ret = 0;
     ret = writeLog("every thing is ok!",0);
@@ -124,11 +124,16 @@ int main(){
     }
     sqlite3_close(db);
     ***************test sqlite3*********************/
-    /**************test sqlite3Oper*****************
+    /**************test sqlite3Oper*****************/
     int ret = sqlite3_init("./testdb.sqlite3");
     printf("sqlite3_init =%d\n",ret);
     ret = sqlite3_create_table("table111","(id int, name varchar(32))");
+    ret = sqlite3_create_table("tablee222","(id int, name varchar(32))");
+    unsigned char sqlite3_err[128] = { 0 };
+
     printf(" sqlite3_create_table =%d\n",ret);
+    sqlite3_get_lasterr(sqlite3_err,128);
+    printf("sqlite3_get_lasterr :%s\n",sqlite3_err );
     //ret = sqlite3_drop_table("table111");
     //printf(" sqlite3_drop_table =%d\n",ret);
     ret = sqlite3_add_data("table111","(id,name)values(1,'www'),(2,'qq'),(3,'test'),(4,'tt'),(5,'ewer'),(6,'pp'),(123,'tttttt'),(1111,'ddddd')");
@@ -145,9 +150,12 @@ int main(){
     int len = 1024;
     ret = sqlite3_get_data("table111","*",NULL,&rowNum,&fieldNum,interval,data,len*8);
     printf("sqlite3_get_data =%d\n",ret);
-
+    unsigned char tableName[128] = { 0 };
+    int tableNum = 0;
+    ret = sqlite3_get_alltable_name(tableName,&tableNum);
+    printf("sqlite3_get_alltable_name =%d\n",ret);
     sqlite3_close_database();
-    *************************************************/
+    /*********************test sqlite3Oper*******************/
     /********************
     unsigned char testStr[128] = { 0 };
     unsigned char *ptest = NULL;
