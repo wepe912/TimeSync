@@ -1,7 +1,7 @@
 #include "../include/writeLogFile.h"
 
 
-int writeLog(const char* logs){
+int writeLog(const char* logs,int logType){
 
  	struct tm *t;
  	time_t tt;
@@ -13,7 +13,33 @@ int writeLog(const char* logs){
 	if((logFileP = fopen(LOGFILE,"a+")) == NULL){
 		return OPENFILEERR;
 	} 
-	fprintf(logFileP,"%s %s\n",timeNow,logs);
+	
+ 	switch(logType){
+ 		case WRITELOG_SUCCESS:
+ 		{
+ 			fprintf(logFileP,"%s%s %s\n",timeNow,"[SUCCESS]",logs);
+ 		}
+ 		break;
+ 		case WRITELOG_WARNING:
+ 		{
+ 			fprintf(logFileP,"%s%s %s\n",timeNow,"[WARNING]",logs);
+ 		}
+ 		break;
+ 		case WRITELOG_ERROR:
+ 		{
+ 			fprintf(logFileP,"%s%s %s\n",timeNow,"[ERROR]",logs);
+ 		}
+ 		break;
+ 		case WRITELOG_OTHERS:
+ 		{
+ 			fprintf(logFileP,"%s%s %s\n",timeNow,"[OTHERS]",logs);
+ 		}
+ 		break;
+ 		default:
+ 			fclose(logFileP);
+ 			return LOGTYPEERR;
+ 	}
+
 	//fwrite(timeNow,strlen(timeNow),1,logFileP);
 	fclose(logFileP);
 	return 0;

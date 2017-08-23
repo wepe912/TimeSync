@@ -237,8 +237,10 @@ int getLastErr(unsigned char* err,int errLen){
 	//printf("%s", mysql_error(&mysql));
 	int msqlErrLen = strlen(mysql_error(&mysql));
 	if(errLen < msqlErrLen){
+		memcpy(err,mysql_error(&mysql),errLen);
+		//虽然存储不够，仍返回部分错误信息
 		return OUTPUTSAPACELESS;
 	}
-	memcpy(err,mysql_error(&mysql),errLen);
+	memcpy(err,mysql_error(&mysql),msqlErrLen);
 	return 0;
 }
