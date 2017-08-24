@@ -4,7 +4,7 @@
 
 
 int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,const char* pwd,unsigned int port){
-	
+	//读取配置项
 	unsigned char key[32*50] = { 0 };//最多50个配置项
 	unsigned char value[64*50] = { 0 };
 	int configNum = 0;
@@ -27,7 +27,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				writeLog(mysqlDbErr,WRITELOG_ERROR);
 				return INITDATABASEERR;
 			}else{
-				writeLog("connect Database success.",WRITELOG_SUCCESS);
+				writeLog("connect Mysql Database success.",WRITELOG_SUCCESS);
 			}
 			ret = createDatabase(DBName);
 			if(ret != 0){
@@ -79,6 +79,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							return 0;
 						}else{
 							writeLog("existed database is not the database we used before,please rename database to complete initial!",WRITELOG_ERROR);
+							closeConnect();
 							return SAMENAMEDATABASEERR;
 						}
 
@@ -86,6 +87,32 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				}
 			}else{
 				writeLog("createDatabase success.",WRITELOG_SUCCESS);
+				//数据库创建成功后开始建表
+				unsigned char createTableErr[128] = { 0 };
+				int ret = createTable("Config","(`Name`  varchar(32) NOT NULL ,`Value`  longtext NULL ,PRIMARY KEY (`Name`))");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETABLEERR;
+				}else{
+					writeLog("create table Config success",WRITELOG_SUCCESS);
+				}
+				ret = createTable("OperLog","(`ID`  int(8) NOT NULL AUTO_INCREMENT ,\
+											`IP`  varchar(32) NULL ,\
+											`Name`  varchar(128) NULL ,\
+											`Content`  longtext NULL ,\
+											`Result`  varchar(16) NULL ,\
+											`Time`  datetime NULL ,PRIMARY KEY (`ID`))");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETABLEERR;
+				}else{
+					writeLog("create table OperLog success",WRITELOG_SUCCESS);
+				}
+				//ret = createTable();
 			}
 			 
 		}

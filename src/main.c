@@ -176,7 +176,7 @@ int main(){
     ***********************/
 
     /*********************test timeSync***************************/
-    int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql","192.168.0.31","root","P@ssw0rd",3306);
+    int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql1","192.168.0.31","root","P@ssw0rd",3306);
     /*********************test timeSync***************************/
 	return 0;
 }

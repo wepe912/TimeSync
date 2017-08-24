@@ -29,7 +29,7 @@ int createDatabase(const char* databaseName) {
 	sprintf(sqlStr, "%s%s", "create database ", databaseName);
 	int ret = mysql_query(&mysql, sqlStr);
 	if(ret == 0){
-		changeDatabase(databaseName);
+		ret = changeDatabase(databaseName);
 		return ret;
 	}else{
 		//writeLog(mysql_error(&mysql));

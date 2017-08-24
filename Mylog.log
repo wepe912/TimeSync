@@ -1,12 +1,4 @@
-[2016年06月28日 02:04:25]:[SUCCESS] read config success
-[2016年06月28日 02:04:25]:[SUCCESS] connect Database success.
-[2016年06月28日 02:04:25]:[WARNING] Can't create database 'testdb_mysql'; database exists
-[2016年06月28日 02:04:25]:[OTHERS ] now we change into the existed database to check! 
-[2016年06月28日 02:04:25]:[SUCCESS] change existed database success.
-[2016年06月28日 02:04:25]:[ERROR  ] existed database is not the database we used before,please rename database to complete initial!
-[2016年06月28日 02:06:24]:[SUCCESS] read config success
-[2016年06月28日 02:06:24]:[SUCCESS] connect Database success.
-[2016年06月28日 02:06:24]:[WARNING] Can't create database 'testdb_mysql'; database exists
-[2016年06月28日 02:06:24]:[OTHERS ] now we change into the existed database to check! 
-[2016年06月28日 02:06:24]:[SUCCESS] change existed database success.
-[2016年06月28日 02:06:24]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2016年06月28日 06:30:05]:[SUCCESS] read config success
+[2016年06月28日 06:30:05]:[SUCCESS] connect Mysql Database success.
+[2016年06月28日 06:30:40]:[SUCCESS] createDatabase success.
+[2016年06月28日 06:31:01]:[SUCCESS] create table Config success
