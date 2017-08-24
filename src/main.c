@@ -10,6 +10,8 @@
 #include "../include/sqlite3Oper.h"
 
 #include "../include/timeSync.h"
+
+#include <time.h>
 int main(){
 	/*********************************
 	unsigned char key[24] = { 0 };
@@ -31,10 +33,10 @@ int main(){
     MYSQL_ROW row;
     char sql[100];
     *****************************************/
-    /*******test mysql***********************
+    /*******test mysql***********************/
     int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
     printf("ret initDatabase =%d \n",ret);
-    ret = createDatabase("test1");
+    ret = createDatabase("test2");
     unsigned char mysqlDberr[128] = { 0 };
     getLastErr(mysqlDberr,128);
     printf("createDatabase err = %s\n",mysqlDberr );
@@ -47,7 +49,7 @@ int main(){
     //printf("ret =%d\n",ret);
     //ret = deleteDatabase("test1");
     //printf("ret =%d\n",ret);
-
+    /*************add_test***********************
     int i = 0,j = 0;
     int randNum = 0;
     int randChar = 0;
@@ -72,8 +74,13 @@ int main(){
     }
     
 
-    //ret = addData("table111","(id,name)values(1,'www'),(2,'qq'),(3,'test'),(4,'tt'),(5,'ewer'),(6,'pp'),(123,'tttttt'),(1111,'ddddd')");
+    //
     ret = addData("table111",nameValue);
+
+    printf("ret addData=%d\n",ret);
+    ********************************************************/
+    ret = addData("table111","(id,name)values(1,'www'),(2,'qq'),(3,'test'),(4,'tt'),(5,'ewer'),(6,'pp'),(123,'tttttt'),(1111,'ddddd')");
+
     printf("ret addData=%d\n",ret);
     ret = deleteData("table111"," where id = 2");
     printf("ret deleteData =%d\n",ret);
@@ -89,15 +96,30 @@ int main(){
     int len = 1024;
     ret = getData("table111","*",NULL,&rowNum,&fieldNum,interval,data,len*8);
     printf("ret getData =%d\n",ret);
-
     ret = transactionDeal("CREATE TABLE testTrancation (id int,name char(32));");
     printf("ret transactionDeal = %d\n",ret);
     unsigned char tableName[1024] = { 0 };
     int tableNum = 0;
+
     ret = getAllTableName(tableName,&tableNum);
     printf("ret getAllTableName = %d\n",ret);
+    //测试trigger的影响
+
+    clock_t start,finish;
+    printf("test 10000 insert no triger\n");
+
+    start = clock();
+    
+    int i = 0;
+    while(i < 100){
+        ret = addData("table111","(id,name)values(8,'ww')");
+        i ++ ;
+    }
+   
+    finish = clock();
+    printf("time = %d\n",finish - start );
     closeConnect();
-    ************test initDatabase****************/
+    /************test initDatabase****************/
     /***********test writeLog********************
     int ret = 0;
     ret = writeLog("every thing is ok!",0);
@@ -175,8 +197,8 @@ int main(){
     //printf("ppptest = %c\n",ppptest[1][1][1] );
     ***********************/
 
-    /*********************test timeSync***************************/
+    /*********************test timeSync***************************
     int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql1","192.168.0.31","root","P@ssw0rd",3306);
-    /*********************test timeSync***************************/
+    *********************test timeSync***************************/
 	return 0;
 }

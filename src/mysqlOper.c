@@ -234,6 +234,7 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 
 int transactionDeal(const char* transaction){
 	int ret = mysql_query(&mysql,"SET AUTOCOMMIT =0");
+	//设置为手动会影响其他sql的提交，慎用
 	if(ret != 0){
 		return -777;
 	}
@@ -244,7 +245,8 @@ int transactionDeal(const char* transaction){
 		return -7777;
 	}
 	ret = mysql_query(&mysql,"COMMIT;");
-
+	ret = mysql_query(&mysql,"SET AUTOCOMMIT =1");
+	//设置会自动模式
 	//printf("%s", mysql_error(&mysql));
 	return ret;
 }
