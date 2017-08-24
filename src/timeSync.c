@@ -9,15 +9,16 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 	unsigned char value[64*50] = { 0 };
 	int configNum = 0;
 	int ret = 0;
-	ret = readConfig(key,value,configNum);//读取配置文件
+	ret = readConfig(key,value,&configNum);//读取配置文件
 	if(ret != 0){
 		writeLog("read config error",WRITELOG_ERROR);
+		return READCONFIGFILERR;
 	}else{
 		writeLog("read config success",WRITELOG_SUCCESS);
 	}
 
 	switch(DBType){
-		case 0:
+		case DBTYP_MYSQL:
 		{
 			int ret = initDatabase(host,usr, pwd, port,NULL,0);
 			if(ret != 0){
@@ -35,25 +36,52 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				unsigned char mysqlDbErr[128] = {0};
 				getLastErr(mysqlDbErr,128);
 				writeLog(mysqlDbErr,WRITELOG_WARNING);
+				writeLog("now we change into the existed database to check! ",WRITELOG_OTHERS);
 				ret = changeDatabase(DBName);
 				if(ret != 0){
 					getLastErr(mysqlDbErr,128);
 					writeLog(mysqlDbErr,WRITELOG_ERROR);
-					writeLog("this database is not the one we have used ! please change another database name.",WRITELOG_OTHERS);
+					writeLog("change the existed database err.",WRITELOG_ERROR);
 					closeConnect();
 					return CHANGEDATABASEERR;
 				}else{
-					writeLog("changeDatabase success.",WRITELOG_SUCCESS);
+					writeLog("change existed database success.",WRITELOG_SUCCESS);
 					//检查同名数据库是否是以前使用过的，主要是检查同名库中的表名是否与配置文件中使用的表名相同
 					/*code here*/
 					unsigned char allTable[32*20]  = { 0 };//最多20个表
 					int tableNum = 0;
 					if(getAllTableName(allTable,&tableNum) != 0){
-						writeLog("get same_name_database all table err!",WRITELOG_ERROR);
+						writeLog("get all table  in existed database err!",WRITELOG_ERROR);
 						closeConnect();
 						return GETALLTABLENAMEERR;
 					}else{
 						//开始匹配同名数据库中的表与配置文件中的表名相同不
+						int i = 0;
+						int j = 0;
+						int k = 0;
+						int tableCount = 0;
+						//配置文件中以tables为标识，表示有多少个表，tables=xxx,下面就是表名名称，如table1=config
+						while(strcmp(key + i*32,"tables" ) != 0){
+							i ++;
+						}
+						int configTableNum = atoi(value + i*64);
+						i ++;
+						for(j = i ; j< i + configTableNum; j ++ ){
+							for(k = 0; k < tableNum; k ++){
+								if(strcmp(value + j*64,allTable + k*32) == 0){
+									tableCount ++;
+									break;
+								}
+							}
+						}
+						if(tableCount == configTableNum){
+							writeLog("existed database is the database we might used before ,now we can use it!",WRITELOG_SUCCESS);
+							return 0;
+						}else{
+							writeLog("existed database is not the database we used before,please rename database to complete initial!",WRITELOG_ERROR);
+							return SAMENAMEDATABASEERR;
+						}
+
 					}
 				}
 			}else{
@@ -62,7 +90,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 			 
 		}
 		break;
-		case 1:
+		case DBTYP_SQLIGHT3:
 			break;
 		default:
 			writeLog("unknow database type.",WRITELOG_ERROR);

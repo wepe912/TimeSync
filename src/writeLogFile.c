@@ -27,12 +27,12 @@ int writeLog(const char* logs,int logType){
  		break;
  		case WRITELOG_ERROR:
  		{
- 			fprintf(logFileP,"%s%s %s\n",timeNow,"[ERROR]",logs);
+ 			fprintf(logFileP,"%s%s %s\n",timeNow,"[ERROR  ]",logs);
  		}
  		break;
  		case WRITELOG_OTHERS:
  		{
- 			fprintf(logFileP,"%s%s %s\n",timeNow,"[OTHERS]",logs);
+ 			fprintf(logFileP,"%s%s %s\n",timeNow,"[OTHERS ]",logs);
  		}
  		break;
  		default:

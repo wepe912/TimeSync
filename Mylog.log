@@ -1,8 +1,12 @@
-[2016年06月21日 00:55:57]: every thing is ok!
-[2016年06月21日 00:55:57]: no thing happen!
-[2016年06月21日 00:57:48]: every thing is ok!
-[2016年06月21日 00:57:48]: no thing happen!
-[2016年06月27日 03:09:54]:[SUCCESS] every thing is ok!
-[2016年06月27日 03:09:54]:[WARNING] some thing happen!
-[2016年06月27日 03:09:54]:[ERROR] bad thing happen!
-[2016年06月27日 03:09:54]:[OTHERS] other thing happen!
+[2016年06月28日 02:04:25]:[SUCCESS] read config success
+[2016年06月28日 02:04:25]:[SUCCESS] connect Database success.
+[2016年06月28日 02:04:25]:[WARNING] Can't create database 'testdb_mysql'; database exists
+[2016年06月28日 02:04:25]:[OTHERS ] now we change into the existed database to check! 
+[2016年06月28日 02:04:25]:[SUCCESS] change existed database success.
+[2016年06月28日 02:04:25]:[ERROR  ] existed database is not the database we used before,please rename database to complete initial!
+[2016年06月28日 02:06:24]:[SUCCESS] read config success
+[2016年06月28日 02:06:24]:[SUCCESS] connect Database success.
+[2016年06月28日 02:06:24]:[WARNING] Can't create database 'testdb_mysql'; database exists
+[2016年06月28日 02:06:24]:[OTHERS ] now we change into the existed database to check! 
+[2016年06月28日 02:06:24]:[SUCCESS] change existed database success.
+[2016年06月28日 02:06:24]:[SUCCESS] existed database is the database we might used before ,now we can use it!

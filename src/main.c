@@ -8,6 +8,8 @@
 #include "../include/writeLogFile.h"
 //#include "../include/sqlite3.h"
 #include "../include/sqlite3Oper.h"
+
+#include "../include/timeSync.h"
 int main(){
 	/*********************************
 	unsigned char key[24] = { 0 };
@@ -124,7 +126,7 @@ int main(){
     }
     sqlite3_close(db);
     ***************test sqlite3*********************/
-    /**************test sqlite3Oper*****************/
+    /**************test sqlite3Oper*****************
     int ret = sqlite3_init("./testdb.sqlite3");
     printf("sqlite3_init =%d\n",ret);
     ret = sqlite3_create_table("table111","(id int, name varchar(32))");
@@ -155,7 +157,7 @@ int main(){
     ret = sqlite3_get_alltable_name(tableName,&tableNum);
     printf("sqlite3_get_alltable_name =%d\n",ret);
     sqlite3_close_database();
-    /*********************test sqlite3Oper*******************/
+    *********************test sqlite3Oper*******************/
     /********************
     unsigned char testStr[128] = { 0 };
     unsigned char *ptest = NULL;
@@ -172,5 +174,9 @@ int main(){
     //printf("pptest = %c\n", pptest[1][0]);
     //printf("ppptest = %c\n",ppptest[1][1][1] );
     ***********************/
+
+    /*********************test timeSync***************************/
+    int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql","192.168.0.31","root","P@ssw0rd",3306);
+    /*********************test timeSync***************************/
 	return 0;
 }
