@@ -321,7 +321,7 @@ int createTrigger(const char* triggerName,const char* triggerTable,int beforeOra
 	if(ret == 0){
 		return 0;
 	}else{
-		printf("%s\n",mysql_error(&mysql) );
+		//printf("%s\n",mysql_error(&mysql) );
 		return CREATETRIGGERERR;
 	}
 }
