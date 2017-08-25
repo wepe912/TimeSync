@@ -11,6 +11,10 @@
 #define GETDATAERR	-0x0008
 #define OUTPUTSAPACELESS	-0x0009
 #define	GETALLTABLENAMEERR	-0x000a
+#define	TRIGGEROPERERR		-0x000b
+#define	CREATETRIGGERERR	-0x000c
+#define	DROPTRIGGERERR		-0x000d
+
 
 #define COMMENlEN	0x0040
 #define MIDDLELEN	0x0080
@@ -49,5 +53,7 @@ int transactionDeal(const char* transaction);
 
 int getLastErr(unsigned char* err,int errLen);
 
+int createTrigger(const char* triggerName,const char* triggerTable,int beforeOrafter,int triggerOper,const char* oper);
 
+int dropTrigger(const char* triggerName);
 #endif

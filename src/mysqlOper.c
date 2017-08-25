@@ -263,3 +263,77 @@ int getLastErr(unsigned char* err,int errLen){
 	memcpy(err,mysql_error(&mysql),msqlErrLen);
 	return 0;
 }
+
+/*
+CREATE TRIGGER `test_trigger` AFTER INSERT ON `table111`
+FOR EACH ROW BEGIN
+     insert into tab2(tab2_id) values(new.tab1_id);
+END;;
+*/
+
+int createTrigger(const char* triggerName,const char* triggerTable,int beforeOrafter,int triggerOper,const char* oper){
+	unsigned char afterOrbefore[8] = { 0 };
+	unsigned char triOper[8] = { 0 };
+	unsigned char sqlTrigger[512] = { 0 };
+	if(beforeOrafter == 0){
+		memcpy(afterOrbefore,"before",6);
+		switch(triggerOper){
+			case 0:{
+				memcpy(triOper,"insert",7);
+			}
+			break;
+			case 1:{
+				memcpy(triOper,"delete",6);
+			}
+			break;
+			case 2:{
+				memcpy(triOper,"update",6);
+			}
+			break;
+			default:{
+				return TRIGGEROPERERR;
+			}
+			break;
+		}
+	}else{
+		memcpy(afterOrbefore,"after",6);
+		switch(triggerOper){
+			case 0:{
+				memcpy(triOper,"insert",7);
+			}
+			break;
+			case 1:{
+				memcpy(triOper,"delete",6);
+			}
+			break;
+			case 2:{
+				memcpy(triOper,"update",6);
+			}
+			break;
+			default:{
+				return TRIGGEROPERERR;
+			}
+			break;
+		}
+	}
+	sprintf(sqlTrigger,"%s%s%s%s%s%s%s%s%s%s%s","CREATE TRIGGER ",triggerName," ",afterOrbefore," ",triOper," ON ",triggerTable," FOR EACH ROW BEGIN ",oper,"END;");
+	int ret = mysql_query(&mysql,sqlTrigger);
+	if(ret == 0){
+		return 0;
+	}else{
+		printf("%s\n",mysql_error(&mysql) );
+		return CREATETRIGGERERR;
+	}
+}
+
+
+int dropTrigger(const char* triggerName){
+	unsigned char sqlTrigger[64] = { 0 };
+	sprintf(sqlTrigger,"%s%s%s","DROP TRIGGER ",triggerName,";");
+	int ret = mysql_query(&mysql,sqlTrigger);
+	if(ret == 0){
+		return 0;
+	}else{
+		return DROPTRIGGERERR;
+	}
+}

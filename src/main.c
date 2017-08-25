@@ -36,11 +36,12 @@ int main(){
     /*******test mysql***********************/
     int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
     printf("ret initDatabase =%d \n",ret);
-    ret = createDatabase("test2");
-    unsigned char mysqlDberr[128] = { 0 };
-    getLastErr(mysqlDberr,128);
-    printf("createDatabase err = %s\n",mysqlDberr );
-    printf("ret createDatabase=%d \n",ret);
+    //ret = createDatabase("test2");
+    //unsigned char mysqlDberr[128] = { 0 };
+    //getLastErr(mysqlDberr,128);
+    //printf("createDatabase err = %s\n",mysqlDberr );
+    //printf("ret createDatabase=%d \n",ret);
+    changeDatabase("test2");
     ret = createTable("table111","(id int, name varchar(32))");
     printf("ret createTable =%d\n",ret);
     //ret = changeDatabase("test1");
@@ -96,8 +97,8 @@ int main(){
     int len = 1024;
     ret = getData("table111","*",NULL,&rowNum,&fieldNum,interval,data,len*8);
     printf("ret getData =%d\n",ret);
-    ret = transactionDeal("CREATE TABLE testTrancation (id int,name char(32));");
-    printf("ret transactionDeal = %d\n",ret);
+    //ret = transactionDeal("CREATE TABLE testTrancation (id int,name char(32));");
+    //printf("ret transactionDeal = %d\n",ret);
     unsigned char tableName[1024] = { 0 };
     int tableNum = 0;
 
@@ -105,19 +106,34 @@ int main(){
     printf("ret getAllTableName = %d\n",ret);
     //测试trigger的影响
 
-    clock_t start,finish;
     printf("test 10000 insert no triger\n");
 
-    start = clock();
-    
+
+    /* 定义两个结构体 */
+    struct timeval start;
+    struct timeval end;
+    unsigned long timer;
+    /* 程序开始之前计时start */
     int i = 0;
-    while(i < 100){
-        ret = addData("table111","(id,name)values(8,'ww')");
-        i ++ ;
+    gettimeofday(&start, NULL);
+    while(i < 1){
+            ret = addData("table111","(id,name)values(8,'ww')");
+            i ++ ;
     }
    
-    finish = clock();
-    printf("time = %d\n",finish - start );
+    /* 程序块结束后计时end */
+    gettimeofday(&end, NULL);
+    /* 统计程序段运行时间(unit is usec)*/
+    timer = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
+    printf("timer = %ld us\n", timer);
+    //int createTrigger(const char* triggerName,const char* triggerTable,int beforeOrafter,int triggerOper,const char* oper)
+    ret = createTrigger("testTrigger1","table111",0,0,"update Counts set Counts=Counts+1 where id =1;");
+    ret = createTrigger("testTrigger2","table111",1,0,"update Counts set Counts=Counts+1 where id =1;");
+    ret = createTrigger("testTrigger3","table111",1,1,"update Counts set Counts=Counts-1 where id =1;");
+    ret = createTrigger("testTrigger4","table111",1,2,"update Counts set Counts=Counts where id =1;");
+    printf("createTrigger = %d \n", ret);
+    ret = dropTrigger("testTrigger1");
+    printf("dropTrigger = %d \n", ret);
     closeConnect();
     /************test initDatabase****************/
     /***********test writeLog********************
