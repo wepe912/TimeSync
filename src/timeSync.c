@@ -9,7 +9,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 	unsigned char value[64*50] = { 0 };
 	int configNum = 0;
 	int ret = 0;
-	ret = readConfig(key,value,&configNum);//读取配置文件
+	ret = readConfig("./tsync.conf",key,value,&configNum);//读取配置文件
 	if(ret != 0){
 		writeLog("read config error",WRITELOG_ERROR);
 		return READCONFIGFILERR;

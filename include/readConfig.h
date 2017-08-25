@@ -10,7 +10,7 @@
 
 #define OPENFILEERR		-0x0002
 
-int readConfig(unsigned char* key,unsigned char* value,int* configNum);
+int readConfig(const char* fileName,unsigned char* key,unsigned char* value,int* configNum);
 
 
 

@@ -337,3 +337,4 @@ int dropTrigger(const char* triggerName){
 		return DROPTRIGGERERR;
 	}
 }
+

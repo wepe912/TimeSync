@@ -1,13 +1,13 @@
 #include "../include/readConfig.h"
 
-int readConfig(unsigned char* key,unsigned char* value,int* configNum){
+int readConfig(const char* fileName,unsigned char* key,unsigned char* value,int* configNum){
 	FILE* configFp = NULL;
 	unsigned char contentLine[CONTENTlEN];
 	int keyOffset = 0;
 	int valueOffset = 0;
 
 	*configNum =0;
-	if((configFp = fopen("./tsync.conf","r")) == NULL){
+	if((configFp = fopen(fileName,"r")) == NULL){
 		return OPENFILEERR;
 	} 
 	while((fgets(contentLine,CONTENTlEN,configFp)) != NULL){

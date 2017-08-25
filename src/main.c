@@ -33,7 +33,7 @@ int main(){
     MYSQL_ROW row;
     char sql[100];
     *****************************************/
-    /*******test mysql***********************/
+    /*******test mysql***********************
     int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
     printf("ret initDatabase =%d \n",ret);
     //ret = createDatabase("test2");
@@ -79,7 +79,7 @@ int main(){
     ret = addData("table111",nameValue);
 
     printf("ret addData=%d\n",ret);
-    ********************************************************/
+    /********************************************************
     ret = addData("table111","(id,name)values(1,'www'),(2,'qq'),(3,'test'),(4,'tt'),(5,'ewer'),(6,'pp'),(123,'tttttt'),(1111,'ddddd')");
 
     printf("ret addData=%d\n",ret);
@@ -109,11 +109,11 @@ int main(){
     printf("test 10000 insert no triger\n");
 
 
-    /* 定义两个结构体 */
+
     struct timeval start;
     struct timeval end;
     unsigned long timer;
-    /* 程序开始之前计时start */
+  
     int i = 0;
     gettimeofday(&start, NULL);
     while(i < 1){
@@ -121,9 +121,9 @@ int main(){
             i ++ ;
     }
    
-    /* 程序块结束后计时end */
+ 
     gettimeofday(&end, NULL);
-    /* 统计程序段运行时间(unit is usec)*/
+
     timer = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
     printf("timer = %ld us\n", timer);
     //int createTrigger(const char* triggerName,const char* triggerTable,int beforeOrafter,int triggerOper,const char* oper)
@@ -135,7 +135,7 @@ int main(){
     ret = dropTrigger("testTrigger1");
     printf("dropTrigger = %d \n", ret);
     closeConnect();
-    /************test initDatabase****************/
+    ************test initDatabase****************/
     /***********test writeLog********************
     int ret = 0;
     ret = writeLog("every thing is ok!",0);
@@ -213,8 +213,8 @@ int main(){
     //printf("ppptest = %c\n",ppptest[1][1][1] );
     ***********************/
 
-    /*********************test timeSync***************************
+    /*********************test timeSync***************************/
     int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql1","192.168.0.31","root","P@ssw0rd",3306);
-    *********************test timeSync***************************/
+    /*********************test timeSync***************************/
 	return 0;
 }
