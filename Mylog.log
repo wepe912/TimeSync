@@ -1,4 +1,12 @@
-[2016年06月28日 06:30:05]:[SUCCESS] read config success
-[2016年06月28日 06:30:05]:[SUCCESS] connect Mysql Database success.
-[2016年06月28日 06:30:40]:[SUCCESS] createDatabase success.
-[2016年06月28日 06:31:01]:[SUCCESS] create table Config success
+[2016年06月29日 03:30:30]:[SUCCESS] read config success
+[2016年06月29日 03:30:30]:[SUCCESS] connect Mysql Database success.
+[2016年06月29日 03:30:30]:[WARNING] Can't create database 'testdb_mysql1'; database exists
+[2016年06月29日 03:30:30]:[OTHERS ] now we change into the existed database to check! 
+[2016年06月29日 03:30:30]:[SUCCESS] change existed database success.
+[2016年06月29日 03:30:30]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2016年06月29日 05:59:01]:[SUCCESS] read config success
+[2016年06月29日 05:59:01]:[SUCCESS] connect Mysql Database success.
+[2016年06月29日 05:59:01]:[WARNING] Can't create database 'testdb_mysql1'; database exists
+[2016年06月29日 05:59:01]:[OTHERS ] now we change into the existed database to check! 
+[2016年06月29日 05:59:01]:[SUCCESS] change existed database success.
+[2016年06月29日 05:59:01]:[SUCCESS] existed database is the database we might used before ,now we can use it!

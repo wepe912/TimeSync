@@ -9,7 +9,7 @@
 //#include "../include/sqlite3.h"
 #include "../include/sqlite3Oper.h"
 
-#include "../include/timeSync.h"
+#include "../include/timeInit.h"
 
 #include <time.h>
 int main(){
@@ -215,6 +215,7 @@ int main(){
 
     /*********************test timeSync***************************/
     int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql1","192.168.0.31","root","P@ssw0rd",3306);
+
     /*********************test timeSync***************************/
 	return 0;
 }

@@ -1,4 +1,4 @@
-#include "../include/timeSync.h"
+#include "../include/timeInit.h"
 #include "../include/writeLogFile.h"
 #include "../include/mysqlOper.h"
 
