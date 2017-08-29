@@ -24,9 +24,14 @@ void closeConnect(){
 
 
 /*新建数据库*/
-int createDatabase(const char* databaseName) {
+int createDatabase(const char* databaseName,const char* arg) {
 	char sqlStr[COMMENlEN] = { 0 };
-	sprintf(sqlStr, "%s%s", "create database ", databaseName);
+	if(arg == NULL){
+		sprintf(sqlStr, "%s%s", "create database ", databaseName);
+	}else{
+		sprintf(sqlStr, "%s%s%s%s", "create database ",databaseName," ", arg);
+	}
+	
 	int ret = mysql_query(&mysql, sqlStr);
 	if(ret == 0){
 		ret = changeDatabase(databaseName);
@@ -54,7 +59,7 @@ int changeDatabase(const char* databaseName){
 
 /*创建表，nameAndType参数如："(id int, name varchar(32))"*/
 int createTable(const char* tableName,const char* nameAndType) {
-	char sqlStrCreate[MIDDLELEN] = { 0 };
+	char sqlStrCreate[LONGLEN] = { 0 };
 	sprintf(sqlStrCreate, "%s%s%s", "create table ",tableName,nameAndType);
 	return mysql_query(&mysql, sqlStrCreate);
 		//printf("%s", mysql_error(&mysql));
@@ -274,7 +279,7 @@ END;;
 int createTrigger(const char* triggerName,const char* triggerTable,int beforeOrafter,int triggerOper,const char* oper){
 	unsigned char afterOrbefore[8] = { 0 };
 	unsigned char triOper[8] = { 0 };
-	unsigned char sqlTrigger[512] = { 0 };
+	unsigned char* sqlTrigger = (unsigned char*)calloc(strlen(oper) + 256,sizeof(char));
 	if(beforeOrafter == 0){
 		memcpy(afterOrbefore,"before",6);
 		switch(triggerOper){
@@ -319,9 +324,11 @@ int createTrigger(const char* triggerName,const char* triggerTable,int beforeOra
 	sprintf(sqlTrigger,"%s%s%s%s%s%s%s%s%s%s%s","CREATE TRIGGER ",triggerName," ",afterOrbefore," ",triOper," ON ",triggerTable," FOR EACH ROW BEGIN ",oper,"END;");
 	int ret = mysql_query(&mysql,sqlTrigger);
 	if(ret == 0){
+		free(sqlTrigger);
 		return 0;
 	}else{
 		//printf("%s\n",mysql_error(&mysql) );
+		free(sqlTrigger);
 		return CREATETRIGGERERR;
 	}
 }

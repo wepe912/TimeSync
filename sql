@@ -1,8 +1,8 @@
 #建数据库，utf-8
 CREATE DATABASE IF NOT EXISTS testdbName DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 #建WorkLog表
-CREATE TABLE `worklog` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `Worklog` (
+  `ID` int NOT NULL AUTO_INCREMENT,
   `IP` varchar(32) NOT NULL,
   `Name` varchar(128) DEFAULT NULL,
   `Content` longtext NOT NULL,
@@ -60,4 +60,51 @@ FOR EACH ROW BEGIN
 end if;
 END;
 
+#建 TimeStampRecord表
+CREATE TABLE `TimeStampRecord` (
+`ID`  int NOT NULL AUTO_INCREMENT,
+`SerialNum`  varchar(40) NOT NULL ,
+`IP`  varchar(32) NOT NULL ,
+`Name`  varchar(128) NULL ,
+`HashOid`  varchar(128) NOT NULL ,
+`HashData`  longblob NOT NULL ,
+`TimeStampContent`  longblob NOT NULL ,
+`Time`  datetime NOT NULL ,
+PRIMARY KEY (`ID`)
+)
+;
+#建TimeStampClient表
+CREATE TABLE `TimeStampClient` (
+`ID`  int NOT NULL AUTO_INCREMENT,
+`IP`  varchar(32) NOT NULL ,
+`Name`  varchar(128) NOT NULL ,
+`TimeStampSignCounts`  int NOT NULL DEFAULT 0 ,
+`LastSignTime`  datetime NULL ,
+`TimeStampVerifyCounts`  int NOT NULL DEFAULT 0 ,
+`LastVerifyTime`  datetime NULL ,
+`Allowed`  int NOT NULL DEFAULT 0 
+)
+;
 
+#建TimeStampRecord表中的inset trigger
+CREATE TRIGGER `ClientRecord_trigger_insert` AFTER INSERT ON `ClientRecord`
+FOR EACH ROW BEGIN
+ declare lastIP varchar(32);
+ declare countIP int(32);
+ declare appName varchar(128);
+ declare lastUpdatetime datetime;
+ select IP, Name,Time into lastIP,appName,lastUpdatetime  from TimeStampRecord where ID = (select max(ID) from TimeStampRecord) ;
+ update TimeStampClient set TimeStampSignCounts=TimeStampSignCounts + 1 , LastSignTime = lastUpdatetime where IP=lastIP and Name=appName;
+ insert into WorkLog(IP,Name,Content,Result,Time)values(lastIP,appName,'Signed New TimeStamp ','success',lastUpdatetime);
+END;
+
+#建Tsync_Black_White_List表
+CREATE TABLE `NewTable` (
+`ID`  int NOT NULL AUTO_INCREMENT ,
+`IP`  varchar(32) NOT NULL ,
+`AllowedNTP`  int NOT NULL DEFAULT 0 ,
+`AllowedNTPS`  int NOT NULL DEFAULT 0 ,
+`LastChangeTime`  datetime NOT NULL ,
+PRIMARY KEY (`ID`)
+)
+;

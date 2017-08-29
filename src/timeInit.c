@@ -29,7 +29,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 			}else{
 				writeLog("connect Mysql Database success.",WRITELOG_SUCCESS);
 			}
-			ret = createDatabase(DBName);
+			ret = createDatabase(DBName,NULL);
 			if(ret != 0){
 				//这种情况一般是数据库已经存在了的情况，所以需要进一步检查是不是应用期望的数据库
 				//目前想法是通过表结构和重点表（config表）中的数据来检查，如果是以前的数据库，继续使用，如果不满足，提示改名
@@ -98,19 +98,14 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				}else{
 					writeLog("create table Config success",WRITELOG_SUCCESS);
 				}
-				ret = createTable("OperLog","(`ID`  int(8) NOT NULL AUTO_INCREMENT ,\
-											`IP`  varchar(32) NULL ,\
-											`Name`  varchar(128) NULL ,\
-											`Content`  longtext NULL ,\
-											`Result`  varchar(16) NULL ,\
-											`Time`  datetime NULL ,PRIMARY KEY (`ID`))");
+				ret = createTable("Worklog","(`ID`  int NOT NULL AUTO_INCREMENT ,`IP`  varchar(32) NOT NULL ,`NTPCounts`  int NOT NULL DEFAULT 0 ,`NTPSCounts`  int NOT NULL DEFAULT 0 ,`LastNTPType`  varchar(8) NOT NULL ,`LastUpdateTime`  datetime NOT NULL ,PRIMARY KEY (`ID`))");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
 					closeConnect();
 					return CREATETABLEERR;
 				}else{
-					writeLog("create table OperLog success",WRITELOG_SUCCESS);
+					writeLog("create table Worklog success",WRITELOG_SUCCESS);
 				}
 				//ret = createTable();
 			}

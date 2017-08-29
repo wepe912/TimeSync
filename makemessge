@@ -1,0 +1,233 @@
+gcc -g -D_DEBUG -Wall -I./include  -fPIC -c src/mysqlOper.c -o obj/mysqlOper.o 
+src/mysqlOper.c: In function ‘addData’:
+src/mysqlOper.c:77:2: warning: implicit declaration of function ‘strlen’ [-Wimplicit-function-declaration]
+  if(strlen(rowAndValues) < LONGLEN - strlen(tableName) - 16){
+  ^
+src/mysqlOper.c:77:5: warning: incompatible implicit declaration of built-in function ‘strlen’ [enabled by default]
+  if(strlen(rowAndValues) < LONGLEN - strlen(tableName) - 16){
+     ^
+src/mysqlOper.c:79:3: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+   sprintf(sqlStrInsert,"%s%s%s","insert into ",tableName,rowAndValues);
+   ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:80:3: warning: pointer targets in passing argument 2 of ‘mysql_query’ differ in signedness [-Wpointer-sign]
+   return mysql_query(&mysql,sqlStrInsert);
+   ^
+In file included from src/../include/mysqlOper.h:5:0,
+                 from src/mysqlOper.c:1:
+src/../include/../include/mysql_include/mysql.h:425:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int  STDCALL mysql_query(MYSQL *mysql, const char *q);
+              ^
+src/mysqlOper.c:87:3: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+   sprintf(sqlStrInsert,"%s%s%s","insert into ",tableName,rowAndValues); 
+   ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:88:3: warning: pointer targets in passing argument 2 of ‘mysql_query’ differ in signedness [-Wpointer-sign]
+   int ret = mysql_query(&mysql,sqlStrInsert);
+   ^
+In file included from src/../include/mysqlOper.h:5:0,
+                 from src/mysqlOper.c:1:
+src/../include/../include/mysql_include/mysql.h:425:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int  STDCALL mysql_query(MYSQL *mysql, const char *q);
+              ^
+src/mysqlOper.c: In function ‘deleteData’:
+src/mysqlOper.c:96:5: warning: incompatible implicit declaration of built-in function ‘strlen’ [enabled by default]
+  if(strlen(condition) < LONGLEN - strlen(tableName) - 16){
+     ^
+src/mysqlOper.c:99:4: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+    sprintf(sqlStrDelete,"%s%s","delete from ",tableName);
+    ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:101:4: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+    sprintf(sqlStrDelete,"%s%s%s%s","delete from ",tableName," ",condition);
+    ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:103:3: warning: pointer targets in passing argument 2 of ‘mysql_query’ differ in signedness [-Wpointer-sign]
+   return mysql_query(&mysql,sqlStrDelete);
+   ^
+In file included from src/../include/mysqlOper.h:5:0,
+                 from src/mysqlOper.c:1:
+src/../include/../include/mysql_include/mysql.h:425:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int  STDCALL mysql_query(MYSQL *mysql, const char *q);
+              ^
+src/mysqlOper.c:111:4: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+    sprintf(sqlStrDelete,"%s%s","delete from ",tableName);
+    ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:117:4: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+    sprintf(sqlStrDelete,"%s%s%s%s","delete from ",tableName," ",condition);
+    ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:119:3: warning: pointer targets in passing argument 2 of ‘mysql_query’ differ in signedness [-Wpointer-sign]
+   int ret = mysql_query(&mysql,sqlStrDelete);
+   ^
+In file included from src/../include/mysqlOper.h:5:0,
+                 from src/mysqlOper.c:1:
+src/../include/../include/mysql_include/mysql.h:425:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int  STDCALL mysql_query(MYSQL *mysql, const char *q);
+              ^
+src/mysqlOper.c: In function ‘changeData’:
+src/mysqlOper.c:126:5: warning: incompatible implicit declaration of built-in function ‘strlen’ [enabled by default]
+  if(strlen(rowAndValuesAndCon) < LONGLEN - strlen(tableName) - 16){
+     ^
+src/mysqlOper.c:128:3: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+   sprintf(sqlStrUpdate,"%s%s%s%s","update ",tableName," set ",rowAndValuesAndCon);
+   ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:129:3: warning: pointer targets in passing argument 2 of ‘mysql_query’ differ in signedness [-Wpointer-sign]
+   return mysql_query(&mysql,sqlStrUpdate);
+   ^
+In file included from src/../include/mysqlOper.h:5:0,
+                 from src/mysqlOper.c:1:
+src/../include/../include/mysql_include/mysql.h:425:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int  STDCALL mysql_query(MYSQL *mysql, const char *q);
+              ^
+src/mysqlOper.c:136:3: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+   sprintf(sqlStrUpdate,"%s%s%s%s","update ",tableName," set ",rowAndValuesAndCon); 
+   ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:137:3: warning: pointer targets in passing argument 2 of ‘mysql_query’ differ in signedness [-Wpointer-sign]
+   int ret = mysql_query(&mysql,sqlStrUpdate);
+   ^
+In file included from src/../include/mysqlOper.h:5:0,
+                 from src/mysqlOper.c:1:
+src/../include/../include/mysql_include/mysql.h:425:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int  STDCALL mysql_query(MYSQL *mysql, const char *q);
+              ^
+src/mysqlOper.c: In function ‘getAllTableName’:
+src/mysqlOper.c:154:3: warning: implicit declaration of function ‘memcpy’ [-Wimplicit-function-declaration]
+   memcpy(tableName + i*32,sqlRow[0],strlen(sqlRow[0]));
+   ^
+src/mysqlOper.c:154:3: warning: incompatible implicit declaration of built-in function ‘memcpy’ [enabled by default]
+src/mysqlOper.c:154:37: warning: incompatible implicit declaration of built-in function ‘strlen’ [enabled by default]
+   memcpy(tableName + i*32,sqlRow[0],strlen(sqlRow[0]));
+                                     ^
+src/mysqlOper.c: In function ‘getData’:
+src/mysqlOper.c:167:14: warning: incompatible implicit declaration of built-in function ‘strlen’ [enabled by default]
+    sqlLen =  strlen(tableName) + strlen(selectArges)+ 16;
+              ^
+src/mysqlOper.c:172:4: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+    sprintf(sqlStrSelect,"%s%s%s%s","select ",selectArges," from ", tableName);
+    ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:175:13: warning: incompatible implicit declaration of built-in function ‘strlen’ [enabled by default]
+    sqlLen = strlen(condition) + strlen(tableName) + strlen(selectArges)+ 16;
+             ^
+src/mysqlOper.c:180:4: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+    sprintf(sqlStrSelect,"%s%s%s%s%s","select ",selectArges," from ", tableName,condition);
+    ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:182:3: warning: pointer targets in passing argument 2 of ‘mysql_query’ differ in signedness [-Wpointer-sign]
+   int ret = mysql_query(&mysql,sqlStrSelect);
+   ^
+In file included from src/../include/mysqlOper.h:5:0,
+                 from src/mysqlOper.c:1:
+src/../include/../include/mysql_include/mysql.h:425:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int  STDCALL mysql_query(MYSQL *mysql, const char *q);
+              ^
+src/mysqlOper.c:209:9: warning: incompatible implicit declaration of built-in function ‘strlen’ [enabled by default]
+      if(strlen(sqlRow[j]) > interval[j]){
+         ^
+src/mysqlOper.c:227:6: warning: incompatible implicit declaration of built-in function ‘memcpy’ [enabled by default]
+      memcpy(tmpData,sqlRow[j],strlen(sqlRow[j]));
+      ^
+src/mysqlOper.c:227:31: warning: incompatible implicit declaration of built-in function ‘strlen’ [enabled by default]
+      memcpy(tmpData,sqlRow[j],strlen(sqlRow[j]));
+                               ^
+src/mysqlOper.c: In function ‘getLastErr’:
+src/mysqlOper.c:262:19: warning: incompatible implicit declaration of built-in function ‘strlen’ [enabled by default]
+  int msqlErrLen = strlen(mysql_error(&mysql));
+                   ^
+src/mysqlOper.c:264:3: warning: incompatible implicit declaration of built-in function ‘memcpy’ [enabled by default]
+   memcpy(err,mysql_error(&mysql),errLen);
+   ^
+src/mysqlOper.c:268:2: warning: incompatible implicit declaration of built-in function ‘memcpy’ [enabled by default]
+  memcpy(err,mysql_error(&mysql),msqlErrLen);
+  ^
+src/mysqlOper.c: In function ‘createTrigger’:
+src/mysqlOper.c:282:53: warning: incompatible implicit declaration of built-in function ‘strlen’ [enabled by default]
+  unsigned char* sqlTrigger = (unsigned char*)calloc(strlen(oper) + 256);
+                                                     ^
+src/mysqlOper.c:282:2: error: too few arguments to function ‘calloc’
+  unsigned char* sqlTrigger = (unsigned char*)calloc(strlen(oper) + 256);
+  ^
+src/mysqlOper.c:284:3: warning: incompatible implicit declaration of built-in function ‘memcpy’ [enabled by default]
+   memcpy(afterOrbefore,"before",6);
+   ^
+src/mysqlOper.c:304:3: warning: incompatible implicit declaration of built-in function ‘memcpy’ [enabled by default]
+   memcpy(afterOrbefore,"after",6);
+   ^
+src/mysqlOper.c:324:2: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+  sprintf(sqlTrigger,"%s%s%s%s%s%s%s%s%s%s%s","CREATE TRIGGER ",triggerName," ",afterOrbefore," ",triOper," ON ",triggerTable," FOR EACH ROW BEGIN ",oper,"END;");
+  ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:325:2: warning: pointer targets in passing argument 2 of ‘mysql_query’ differ in signedness [-Wpointer-sign]
+  int ret = mysql_query(&mysql,sqlTrigger);
+  ^
+In file included from src/../include/mysqlOper.h:5:0,
+                 from src/mysqlOper.c:1:
+src/../include/../include/mysql_include/mysql.h:425:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int  STDCALL mysql_query(MYSQL *mysql, const char *q);
+              ^
+src/mysqlOper.c: In function ‘dropTrigger’:
+src/mysqlOper.c:339:2: warning: pointer targets in passing argument 1 of ‘sprintf’ differ in signedness [-Wpointer-sign]
+  sprintf(sqlTrigger,"%s%s%s","DROP TRIGGER ",triggerName,";");
+  ^
+In file included from src/../include/mysqlOper.h:3:0,
+                 from src/mysqlOper.c:1:
+/usr/include/stdio.h:364:12: note: expected ‘char * __restrict__’ but argument is of type ‘unsigned char *’
+ extern int sprintf (char *__restrict __s,
+            ^
+src/mysqlOper.c:340:2: warning: pointer targets in passing argument 2 of ‘mysql_query’ differ in signedness [-Wpointer-sign]
+  int ret = mysql_query(&mysql,sqlTrigger);
+  ^
+In file included from src/../include/mysqlOper.h:5:0,
+                 from src/mysqlOper.c:1:
+src/../include/../include/mysql_include/mysql.h:425:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int  STDCALL mysql_query(MYSQL *mysql, const char *q);
+              ^
+make: *** [obj/mysqlOper.o] Error 1

@@ -10,3 +10,29 @@
 [2016年06月29日 05:59:01]:[OTHERS ] now we change into the existed database to check! 
 [2016年06月29日 05:59:01]:[SUCCESS] change existed database success.
 [2016年06月29日 05:59:01]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2016年07月03日 11:32:08]:[SUCCESS] read config success
+[2016年07月03日 11:32:08]:[SUCCESS] connect Mysql Database success.
+[2016年07月03日 11:32:08]:[SUCCESS] createDatabase success.
+[2016年07月03日 11:32:08]:[SUCCESS] create table Config success
+[2016年07月03日 11:33:51]:[SUCCESS] read config success
+[2016年07月03日 11:34:00]:[SUCCESS] connect Mysql Database success.
+[2016年07月03日 11:34:06]:[SUCCESS] createDatabase success.
+[2016年07月03日 11:34:13]:[SUCCESS] create table Config success
+[2016年07月03日 11:35:32]:[SUCCESS] read config success
+[2016年07月03日 11:35:46]:[SUCCESS] connect Mysql Database success.
+[2016年07月03日 11:35:46]:[SUCCESS] createDatabase success.
+[2016年07月03日 11:35:47]:[SUCCESS] create table Config success
+[2016年07月03日 11:39:42]:[SUCCESS] read config success
+[2016年07月03日 11:39:42]:[SUCCESS] connect Mysql Database success.
+[2016年07月03日 11:39:42]:[SUCCESS] createDatabase success.
+[2016年07月03日 11:39:43]:[SUCCESS] create table Config success
+[2016年07月03日 11:42:14]:[SUCCESS] read config success
+[2016年07月03日 11:42:14]:[SUCCESS] connect Mysql Database success.
+[2016年07月03日 11:42:14]:[SUCCESS] createDatabase success.
+[2016年07月03日 11:42:14]:[SUCCESS] create table Config success
+[2016年07月03日 11:42:14]:[SUCCESS] create table Worklog success
+[2016年07月03日 11:54:48]:[SUCCESS] read config success
+[2016年07月03日 11:54:48]:[SUCCESS] connect Mysql Database success.
+[2016年07月03日 11:54:48]:[SUCCESS] createDatabase success.
+[2016年07月03日 11:54:49]:[SUCCESS] create table Config success
+[2016年07月03日 11:54:49]:[SUCCESS] create table Worklog success

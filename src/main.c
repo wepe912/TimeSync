@@ -212,10 +212,12 @@ int main(){
     //printf("pptest = %c\n", pptest[1][0]);
     //printf("ppptest = %c\n",ppptest[1][1][1] );
     ***********************/
-
+    /************createDatabase 2 test*************************
+    int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
+    ret = createDatabase("test2111",NULL);
+    ************createDatabase 2 test*************************/
     /*********************test timeSync***************************/
-    int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql1","192.168.0.31","root","P@ssw0rd",3306);
-
+    int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.31","root","P@ssw0rd",3306);
     /*********************test timeSync***************************/
 	return 0;
 }

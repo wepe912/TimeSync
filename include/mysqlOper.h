@@ -29,7 +29,7 @@ int initDatabase(const char* host,const char* usr,const char* pwd,unsigned int p
 
 void closeConnect();
 
-int createDatabase(const char* databasename);
+int createDatabase(const char* databasename,const char* arg);
 
 int changeDatabase(const char* databasename);
 
