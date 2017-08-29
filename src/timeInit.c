@@ -2,7 +2,7 @@
 #include "../include/writeLogFile.h"
 #include "../include/mysqlOper.h"
 
-
+//初始化完成记得断开数据 连接，至于 后面要用，谁用谁去连接 
 int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,const char* pwd,unsigned int port){
 	//读取配置项
 	unsigned char key[32*50] = { 0 };//最多50个配置项
@@ -98,7 +98,13 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				}else{
 					writeLog("create table Config success",WRITELOG_SUCCESS);
 				}
-				ret = createTable("Worklog","(`ID`  int NOT NULL AUTO_INCREMENT ,`IP`  varchar(32) NOT NULL ,`NTPCounts`  int NOT NULL DEFAULT 0 ,`NTPSCounts`  int NOT NULL DEFAULT 0 ,`LastNTPType`  varchar(8) NOT NULL ,`LastUpdateTime`  datetime NOT NULL ,PRIMARY KEY (`ID`))");
+				ret = createTable("Worklog","(`ID`  int NOT NULL AUTO_INCREMENT ,\
+					`IP`  varchar(32) NOT NULL ,\
+					`NTPCounts`  int NOT NULL DEFAULT 0 ,\
+					`NTPSCounts`  int NOT NULL DEFAULT 0 ,\
+					`LastNTPType`  varchar(8) NOT NULL ,\
+					`LastUpdateTime`  datetime NOT NULL ,\
+					PRIMARY KEY (`ID`))");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
