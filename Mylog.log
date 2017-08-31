@@ -1,0 +1,54 @@
+[2016年07月04日 05:49:29]:[SUCCESS] read config success
+[2016年07月04日 05:49:29]:[SUCCESS] connect Mysql Database success.
+[2016年07月04日 05:49:29]:[SUCCESS] createDatabase success.
+[2016年07月04日 05:49:29]:[SUCCESS] create table Config success
+[2016年07月04日 05:49:30]:[SUCCESS] create table Worklog success
+[2016年07月04日 05:49:30]:[SUCCESS] create table NTPClient success
+[2016年07月04日 05:49:30]:[SUCCESS] create table ClientRecord success
+[2016年07月04日 05:49:31]:[SUCCESS] create table TimeStampRecord success
+[2016年07月04日 05:49:31]:[SUCCESS] create table TimeStampClient success
+[2016年07月04日 05:49:31]:[SUCCESS] create table Tsync_Black_White_List success
+[2016年07月04日 05:49:31]:[SUCCESS] create all tables success,begin create triggers
+[2016年07月04日 05:49:31]:[SUCCESS] create trigger ClientRecord_trigger_insert success
+[2016年07月04日 06:00:05]:[SUCCESS] read config success
+[2016年07月04日 06:00:05]:[SUCCESS] connect Mysql Database success.
+[2016年07月04日 06:00:05]:[SUCCESS] createDatabase success.
+[2016年07月04日 06:00:05]:[SUCCESS] create table Config success
+[2016年07月04日 06:00:05]:[SUCCESS] create table Worklog success
+[2016年07月04日 06:00:06]:[SUCCESS] create table NTPClient success
+[2016年07月04日 06:00:06]:[SUCCESS] create table ClientRecord success
+[2016年07月04日 06:00:06]:[SUCCESS] create table TimeStampRecord success
+[2016年07月04日 06:00:06]:[SUCCESS] create table TimeStampClient success
+[2016年07月04日 06:00:06]:[SUCCESS] create table Tsync_Black_White_List success
+[2016年07月04日 06:00:06]:[SUCCESS] create all tables success,begin create triggers
+[2016年07月04日 06:00:07]:[SUCCESS] create trigger ClientRecord_trigger_insert success
+[2016年07月04日 06:03:56]:[SUCCESS] read config success
+[2016年07月04日 06:03:56]:[SUCCESS] connect Mysql Database success.
+[2016年07月04日 06:03:56]:[SUCCESS] createDatabase success.
+[2016年07月04日 06:03:56]:[SUCCESS] create table Config success
+[2016年07月04日 06:03:56]:[ERROR  ] You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use
+[2016年07月04日 06:05:46]:[SUCCESS] read config success
+[2016年07月04日 06:05:46]:[SUCCESS] connect Mysql Database success.
+[2016年07月04日 06:05:46]:[SUCCESS] createDatabase success.
+[2016年07月04日 06:05:46]:[SUCCESS] create table Config success
+[2016年07月04日 06:05:46]:[SUCCESS] create table Worklog success
+[2016年07月04日 06:05:47]:[SUCCESS] create table NTPClient success
+[2016年07月04日 06:05:47]:[SUCCESS] create table ClientRecord success
+[2016年07月04日 06:05:47]:[SUCCESS] create table TimeStampRecord success
+[2016年07月04日 06:05:48]:[SUCCESS] create table TimeStampClient success
+[2016年07月04日 06:05:48]:[SUCCESS] create table Tsync_Black_White_List success
+[2016年07月04日 06:05:48]:[SUCCESS] create all tables success,begin create triggers
+[2016年07月04日 06:05:48]:[SUCCESS] create trigger ClientRecord_trigger_insert success
+[2016年07月04日 06:19:59]:[SUCCESS] read config success
+[2016年07月04日 06:19:59]:[SUCCESS] connect Mysql Database success.
+[2016年07月04日 06:19:59]:[SUCCESS] createDatabase success.
+[2016年07月04日 06:20:00]:[SUCCESS] create table Config success
+[2016年07月04日 06:20:00]:[SUCCESS] create table Worklog success
+[2016年07月04日 06:20:00]:[SUCCESS] create table NTPClient success
+[2016年07月04日 06:20:00]:[SUCCESS] create table ClientRecord success
+[2016年07月04日 06:20:01]:[SUCCESS] create table TimeStampRecord success
+[2016年07月04日 06:20:01]:[SUCCESS] create table TimeStampClient success
+[2016年07月04日 06:20:01]:[SUCCESS] create table Tsync_Black_White_List success
+[2016年07月04日 06:20:01]:[SUCCESS] create table CountsTable success
+[2016年07月04日 06:20:01]:[SUCCESS] create all tables success,begin create triggers
+[2016年07月04日 06:20:01]:[SUCCESS] create trigger ClientRecord_trigger_insert success

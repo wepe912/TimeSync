@@ -98,13 +98,13 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				}else{
 					writeLog("create table Config success",WRITELOG_SUCCESS);
 				}
-				ret = createTable("Worklog","(`ID`  int NOT NULL AUTO_INCREMENT ,\
-					`IP`  varchar(32) NOT NULL ,\
-					`NTPCounts`  int NOT NULL DEFAULT 0 ,\
-					`NTPSCounts`  int NOT NULL DEFAULT 0 ,\
-					`LastNTPType`  varchar(8) NOT NULL ,\
-					`LastUpdateTime`  datetime NOT NULL ,\
-					PRIMARY KEY (`ID`))");
+				ret = createTable("Worklog","(`ID` int NOT NULL AUTO_INCREMENT,\
+					`IP` varchar(32) NOT NULL,\
+					`Name` varchar(128) DEFAULT NULL,\
+					`Content` longtext NOT NULL,\
+					`Result` varchar(16) NOT NULL,\
+					`Time` datetime NOT NULL,\
+					PRIMARY KEY (`ID`));");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
@@ -114,6 +114,132 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					writeLog("create table Worklog success",WRITELOG_SUCCESS);
 				}
 				//ret = createTable();
+				ret = createTable("NTPClient","(`ID`  int NOT NULL AUTO_INCREMENT ,\
+					`IP`  varchar(32) NOT NULL ,\
+					`NTPCounts`  int NOT NULL DEFAULT 0 ,\
+					`NTPSCounts`  int NOT NULL DEFAULT 0 ,\
+					`LastNTPType`  varchar(8) NOT NULL ,\
+					`LastUpdateTime`  datetime NOT NULL ,\
+					PRIMARY KEY (`ID`));");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETABLEERR;
+				}else{
+					writeLog("create table NTPClient success",WRITELOG_SUCCESS);
+				}
+
+				ret = createTable("ClientRecord","(`ID`  int NOT NULL AUTO_INCREMENT ,\
+					`IP`  varchar(32) NOT NULL ,\
+					`Type`  varchar(16) NOT NULL ,\
+					`Time`  datetime NOT NULL ,\
+					PRIMARY KEY (`ID`));");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETABLEERR;
+				}else{
+					writeLog("create table ClientRecord success",WRITELOG_SUCCESS);
+				}
+
+				ret = createTable("TimeStampRecord","(`ID`  int NOT NULL AUTO_INCREMENT,\
+					`SerialNum`  varchar(40) NOT NULL ,\
+					`IP`  varchar(32) NOT NULL ,\
+					`Name`  varchar(128) NULL ,\
+					`HashOid`  varchar(128) NOT NULL ,\
+					`HashData`  longblob NOT NULL ,\
+					`TimeStampContent`  longblob NOT NULL ,\
+					`Time`  datetime NOT NULL ,\
+					PRIMARY KEY (`ID`));");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETABLEERR;
+				}else{
+					writeLog("create table TimeStampRecord success",WRITELOG_SUCCESS);
+				}
+
+				ret = createTable("TimeStampClient","(`ID`  int NOT NULL AUTO_INCREMENT,\
+					`IP`  varchar(32) NOT NULL ,\
+					`Name`  varchar(128) NOT NULL ,\
+					`TimeStampSignCounts`  int NOT NULL DEFAULT 0 ,\
+					`LastSignTime`  datetime NULL ,\
+					`TimeStampVerifyCounts`  int NOT NULL DEFAULT 0 ,\
+					`LastVerifyTime`  datetime NULL ,\
+					`Allowed`  int NOT NULL DEFAULT 0,\
+					PRIMARY KEY (`ID`) );");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETABLEERR;
+				}else{
+					writeLog("create table TimeStampClient success",WRITELOG_SUCCESS);
+				}
+				ret = createTable("Tsync_Black_White_List","(`ID`  int NOT NULL AUTO_INCREMENT ,\
+					`IP`  varchar(32) NOT NULL ,\
+					`AllowedNTP`  int NOT NULL DEFAULT 0 ,\
+					`AllowedNTPS`  int NOT NULL DEFAULT 0 ,\
+					`LastChangeTime`  datetime NOT NULL ,\
+					PRIMARY KEY (`ID`));");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETABLEERR;
+				}else{
+					writeLog("create table Tsync_Black_White_List success",WRITELOG_SUCCESS);
+				}
+
+				ret = createTable("CountsTable","(`TableName`  varchar(32) NOT NULL ,\
+					`Counts`  int NULL DEFAULT 0 ,\
+					PRIMARY KEY (`TableName`));");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETABLEERR;
+				}else{
+					writeLog("create table CountsTable success",WRITELOG_SUCCESS);
+				}
+				writeLog("create all tables success,begin create triggers",WRITELOG_SUCCESS);
+				//ret = createTrigger("testTrigger4","table111",1,2,"update Counts set Counts=Counts where id =1;");
+				ret = createTrigger("ClientRecord_trigger_insert","ClientRecord",1,0,"declare lastIP varchar(32);\
+					declare countIP int(32);\
+					declare syncType varchar(16);\
+					declare lastUpdatetime datetime;\
+					select IP, Type,Time into lastIP,syncType,lastUpdatetime  from ClientRecord where ID = (select max(ID) from ClientRecord) ;\
+					set countIP=(select count(*) from NTPClient where IP = lastIP );\
+					if countIP = 0 then\
+						if syncType = 'NTP' then\
+							insert into NTPClient (IP,NTPcounts,LastNTPType,LastUpdateTime) values(lastIP,1,syncType,lastUpdatetime );\
+							insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTP','success',lastUpdatetime);\
+						else\
+							insert into NTPClient (IP,NTPScounts,LastNTPType,LastUpdateTime) values(lastIP,1,syncType,lastUpdatetime);\
+							insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTPS','success',lastUpdatetime);\
+						end if;\
+					else\
+						if syncType = 'NTP' then\
+							update NTPClient set NTPcounts=NTPcounts + 1 , LastNTPType=syncType,LastUpdateTime = lastUpdatetime where IP=lastIP;\
+							insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTP','success',lastUpdatetime);\
+						else\
+							update NTPClient set NTPScounts=NTPScounts + 1 , LastNTPType=syncType,LastUpdateTime = lastUpdatetime where IP=lastIP;\
+							insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTPS','success',lastUpdatetime);\
+						end if;\
+					end if;\
+					update CountsTable set Counts=Counts+1 where TableName = 'ClientRecordCounts';");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETRIGGERLEERR;
+				}else{
+					writeLog("create trigger ClientRecord_trigger_insert success",WRITELOG_SUCCESS);
+				}
+				//closeConnect();
 			}
 			 
 		}

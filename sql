@@ -9,7 +9,7 @@ CREATE TABLE `Worklog` (
   `Result` varchar(16) NOT NULL,
   `Time` datetime NOT NULL,
   PRIMARY KEY (`ID`)
-)；
+);
 #建NTPClient表
 CREATE TABLE `NTPClient` (
 `ID`  int NOT NULL AUTO_INCREMENT ,
@@ -31,6 +31,16 @@ CREATE TABLE `ClientRecord` (
 PRIMARY KEY (`ID`)
 )
 ;
+#建CountsTable表
+
+CREATE TABLE `CountsTable` (
+`TableName`  varchar(32) NOT NULL ,
+`Counts`  int NULL DEFAULT 0 ,
+PRIMARY KEY (`TableName`)
+)
+;
+
+
 
 #建ClientRecord表中的inset trigger
 CREATE TRIGGER `ClientRecord_trigger_insert` AFTER INSERT ON `ClientRecord`
@@ -58,6 +68,7 @@ FOR EACH ROW BEGIN
   insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTPS','success',lastUpdatetime);
  end if;
 end if;
+update CountsTable set Counts=Counts+1 where TableName = 'ClientRecordCounts';
 END;
 
 #建 TimeStampRecord表
@@ -82,7 +93,8 @@ CREATE TABLE `TimeStampClient` (
 `LastSignTime`  datetime NULL ,
 `TimeStampVerifyCounts`  int NOT NULL DEFAULT 0 ,
 `LastVerifyTime`  datetime NULL ,
-`Allowed`  int NOT NULL DEFAULT 0 
+`Allowed`  int NOT NULL DEFAULT 0 ,
+PRIMARY KEY (`ID`)
 )
 ;
 
@@ -99,7 +111,7 @@ FOR EACH ROW BEGIN
 END;
 
 #建Tsync_Black_White_List表
-CREATE TABLE `NewTable` (
+CREATE TABLE `Tsync_Black_White_List` (
 `ID`  int NOT NULL AUTO_INCREMENT ,
 `IP`  varchar(32) NOT NULL ,
 `AllowedNTP`  int NOT NULL DEFAULT 0 ,
@@ -108,3 +120,10 @@ CREATE TABLE `NewTable` (
 PRIMARY KEY (`ID`)
 )
 ;
+
+建ClientRecord_trigger_delete表
+CREATE TRIGGER `ClientRecord_trigger_delete` AFTER DELETE ON `clientrecord`
+FOR EACH ROW BEGIN
+ update CountsTable set Counts=Counts-1 where TableName = 'ClientRecordCounts';
+END;;
+
