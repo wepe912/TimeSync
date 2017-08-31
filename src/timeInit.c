@@ -239,6 +239,45 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				}else{
 					writeLog("create trigger ClientRecord_trigger_insert success",WRITELOG_SUCCESS);
 				}
+
+				ret = createTrigger("ClientRecord_trigger_delete","ClientRecord",1,1,"update CountsTable set Counts=Counts-1 where TableName = 'ClientRecordCounts';");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETRIGGERLEERR;
+				}else{
+					writeLog("create trigger ClientRecord_trigger_delete success",WRITELOG_SUCCESS);
+				}
+
+				ret = createTrigger("TimeStampRecord_trigger_insert","TimeStampRecord",1,0,"declare lastIP varchar(32);\
+					declare countIP int(32);\
+					declare appName varchar(128);\
+					declare lastUpdatetime datetime;\
+					select IP, Name,Time into lastIP,appName,lastUpdatetime  from TimeStampRecord where ID = (select max(ID) from TimeStampRecord) ;\
+					update TimeStampClient set TimeStampSignCounts=TimeStampSignCounts + 1 , LastSignTime = lastUpdatetime where IP=lastIP and Name=appName;\
+					insert into WorkLog(IP,Name,Content,Result,Time)values(lastIP,appName,'Signed New TimeStamp ','success',lastUpdatetime);\
+					update CountsTable set Counts=Counts+1 where TableName = 'TimeStampRecordCounts';");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETRIGGERLEERR;
+				}else{
+					writeLog("create trigger TimeStampRecord_trigger_insert success",WRITELOG_SUCCESS);
+				}
+
+				ret = createTrigger("TimeStampRecord_trigger_delete","TimeStampRecord",1,1,"update CountsTable set Counts=Counts-1 where TableName = 'TimeStampRecordCounts';");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETRIGGERLEERR;
+				}else{
+					writeLog("create trigger TimeStampRecord_trigger_delete success",WRITELOG_SUCCESS);
+				}
+
+
 				//closeConnect();
 			}
 			 

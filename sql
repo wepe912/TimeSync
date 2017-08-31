@@ -99,7 +99,7 @@ PRIMARY KEY (`ID`)
 ;
 
 #建TimeStampRecord表中的inset trigger
-CREATE TRIGGER `ClientRecord_trigger_insert` AFTER INSERT ON `ClientRecord`
+CREATE TRIGGER `TimeStampRecord_trigger_insert` AFTER INSERT ON `TimeStampRecord`
 FOR EACH ROW BEGIN
  declare lastIP varchar(32);
  declare countIP int(32);
@@ -108,7 +108,11 @@ FOR EACH ROW BEGIN
  select IP, Name,Time into lastIP,appName,lastUpdatetime  from TimeStampRecord where ID = (select max(ID) from TimeStampRecord) ;
  update TimeStampClient set TimeStampSignCounts=TimeStampSignCounts + 1 , LastSignTime = lastUpdatetime where IP=lastIP and Name=appName;
  insert into WorkLog(IP,Name,Content,Result,Time)values(lastIP,appName,'Signed New TimeStamp ','success',lastUpdatetime);
+ update CountsTable set Counts=Counts+1 where TableName = 'TimeStampRecordCounts';
 END;
+
+
+
 
 #建Tsync_Black_White_List表
 CREATE TABLE `Tsync_Black_White_List` (
@@ -121,9 +125,13 @@ PRIMARY KEY (`ID`)
 )
 ;
 
-建ClientRecord_trigger_delete表
+建ClientRecord_trigger_delete
 CREATE TRIGGER `ClientRecord_trigger_delete` AFTER DELETE ON `clientrecord`
 FOR EACH ROW BEGIN
  update CountsTable set Counts=Counts-1 where TableName = 'ClientRecordCounts';
 END;;
-
+建TimeStampRecord_trigger_delete
+CREATE TRIGGER `TimeStampRecord_trigger_delete` AFTER DELETE ON `TimeStampRecord`
+FOR EACH ROW BEGIN
+ update CountsTable set Counts=Counts-1 where TableName = 'TimeStampRecordCounts';
+END;;
