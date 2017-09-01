@@ -329,3 +329,71 @@ int sqlite3_get_lasterr(unsigned char* err,int errLen){
 		return 0;
 	}
 }
+
+int sqlite3_createTrigger(const char* triggerName,const char* triggerTable,int beforeOrafter,int triggerOper,const char* oper){
+	unsigned char afterOrbefore[8] = { 0 };
+	unsigned char triOper[8] = { 0 };
+	unsigned char* sqlTrigger = (unsigned char*)calloc(strlen(oper) + 256,sizeof(char));
+	if(beforeOrafter == 0){
+		memcpy(afterOrbefore,"before",6);
+		switch(triggerOper){
+			case 0:{
+				memcpy(triOper,"insert",7);
+			}
+			break;
+			case 1:{
+				memcpy(triOper,"delete",6);
+			}
+			break;
+			case 2:{
+				memcpy(triOper,"update",6);
+			}
+			break;
+			default:{
+				return SQLITE3_TRIGGEROPERERR;
+			}
+			break;
+		}
+	}else{
+		memcpy(afterOrbefore,"after",6);
+		switch(triggerOper){
+			case 0:{
+				memcpy(triOper,"insert",7);
+			}
+			break;
+			case 1:{
+				memcpy(triOper,"delete",6);
+			}
+			break;
+			case 2:{
+				memcpy(triOper,"update",6);
+			}
+			break;
+			default:{
+				return SQLITE3_TRIGGEROPERERR;
+			}
+			break;
+		}
+	}
+	sprintf(sqlTrigger,"%s%s%s%s%s%s%s%s%s%s%s","CREATE TRIGGER ",triggerName," ",afterOrbefore," ",triOper," ON ",triggerTable," FOR EACH ROW BEGIN ",oper,"END;");
+	int callback_update(void *NotUsed, int argc, char **argv, char **azColName){
+   		return 0;
+	}
+
+	char *zErrMsg = 0;
+   	int  ret = 0;
+
+
+   	ret = sqlite3_exec(sqlite3Db, sqlTrigger, callback_update, 0, &zErrMsg);
+   	if( ret != 0 ){
+   		///fprintf(stderr, "SQL error: %s\n", zErrMsg);
+   		memcpy(sqlite3_err,zErrMsg,strlen(zErrMsg));
+      	sqlite3_free(zErrMsg);
+      	free(sqlTrigger);
+      	return SQLITE_CREATETRIGGER_ERR;
+   	}
+   	free(sqlTrigger);
+
+   	return 0;
+
+}

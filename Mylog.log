@@ -1,8 +1,13 @@
-[2017年09月01日 10:13:30]:[SUCCESS] read config success
-[2017年09月01日 10:13:30]:[SUCCESS] connect database success
-[2017年09月01日 10:13:30]:[OTHERS ] exist samename database,now we check it !
-[2017年09月01日 10:13:30]:[ERROR  ] the existed database is used by another system,we can not use it,please change the database name
-[2017年09月01日 10:15:01]:[SUCCESS] read config success
-[2017年09月01日 10:15:01]:[SUCCESS] connect database success
-[2017年09月01日 10:15:01]:[OTHERS ] exist samename database,now we check it !
-[2017年09月01日 10:15:01]:[SUCCESS] the existed database is used before by the system,we can use it !
+[2017年09月01日 16:43:22]:[SUCCESS] read config success
+[2017年09月01日 16:43:22]:[SUCCESS] connect database success
+[2017年09月01日 16:43:22]:[SUCCESS] it is a new database,we can use it to init system ...
+[2017年09月01日 16:43:22]:[SUCCESS] create table Config success
+[2017年09月01日 16:43:22]:[SUCCESS] create table Worklog success
+[2017年09月01日 16:43:22]:[SUCCESS] create table NTPClient success
+[2017年09月01日 16:43:22]:[SUCCESS] create table ClientRecord success
+[2017年09月01日 16:43:22]:[SUCCESS] create table TimeStampRecord success
+[2017年09月01日 16:43:22]:[SUCCESS] create table TimeStampClient success
+[2017年09月01日 16:43:22]:[SUCCESS] create table Tsync_Black_White_List success
+[2017年09月01日 16:43:22]:[SUCCESS] create table CountsTable success
+[2017年09月01日 16:43:22]:[SUCCESS] create all tables success,begin create triggers
+[2017年09月01日 16:43:22]:[SUCCESS] create trigger ClientRecord_trigger_delete success

@@ -18,7 +18,8 @@
 
 
 #define		SQLITE_MALLOCERR		-0x000a
-
+#define		SQLITE_CREATETRIGGER_ERR	-0x000b
+#define		SQLITE3_TRIGGEROPERERR		-0x000c
 
 sqlite3 *sqlite3Db;
 unsigned char* sqlite3_err;
@@ -42,4 +43,6 @@ int sqlite3_get_alltable_name(unsigned char* tableName,int* tableNum);
 int sqlite3_get_data(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen);
 
 int sqlite3_get_lasterr(unsigned char* err,int errLen);
+
+int sqlite3_createTrigger(const char* triggerName,const char* triggerTable,int beforeOrafter,int triggerOper,const char* oper);
 #endif

@@ -310,11 +310,140 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					if(sqlite3_tables_num == 0){
 						writeLog("it is a new database,we can use it to init system ...",WRITELOG_SUCCESS);
 						/*code here to create tables and triggers*/
+						//建Config表
+						ret = sqlite3_create_table("Config","(`Name`  varchar(32) NOT NULL ,`Value`  longtext NULL ,PRIMARY KEY (`Name`))");
 
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETABLEERR;
+						}else{
+							writeLog("create table Config success",WRITELOG_SUCCESS);
+						}
+						//建Worklog表
+						ret = sqlite3_create_table("Worklog","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\
+							`IP` varchar(32) NOT NULL,\
+							`Name` varchar(128) DEFAULT NULL,\
+							`Content` longtext NOT NULL,\
+							`Result` varchar(16) NOT NULL,\
+							`Time` datetime NOT NULL);");
 
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETABLEERR;
+						}else{
+							writeLog("create table Worklog success",WRITELOG_SUCCESS);
+						}
+						//建NTPClient表
+						ret = sqlite3_create_table("NTPClient","(`ID`  INTEGER PRIMARY KEY AUTOINCREMENT,\
+							`IP`  varchar(32) NOT NULL ,\
+							`NTPCounts`  int NOT NULL DEFAULT 0 ,\
+							`NTPSCounts`  int NOT NULL DEFAULT 0 ,\
+							`LastNTPType`  varchar(8) NOT NULL ,\
+							`LastUpdateTime`  datetime NOT NULL);");
 
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETABLEERR;
+						}else{
+							writeLog("create table NTPClient success",WRITELOG_SUCCESS);
+						}
+						//建ClientRecord表
+						ret = sqlite3_create_table("ClientRecord","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT ,\
+							`IP`  varchar(32) NOT NULL ,\
+							`Type`  varchar(16) NOT NULL ,\
+							`Time`  datetime NOT NULL );");
 
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETABLEERR;
+						}else{
+							writeLog("create table ClientRecord success",WRITELOG_SUCCESS);
+						}
+						//建TimeStampRecord表
+						ret = sqlite3_create_table("TimeStampRecord","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT ,\
+							`SerialNum`  varchar(40) NOT NULL ,\
+							`IP`  varchar(32) NOT NULL ,\
+							`Name`  varchar(128) NULL ,\
+							`HashOid`  varchar(128) NOT NULL ,\
+							`HashData`  longblob NOT NULL ,\
+							`TimeStampContent`  longblob NOT NULL ,\
+							`Time`  datetime NOT NULL);");
 
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETABLEERR;
+						}else{
+							writeLog("create table TimeStampRecord success",WRITELOG_SUCCESS);
+						}
+						//建TimeStampClient表
+						ret = sqlite3_create_table("TimeStampClient","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\
+							`IP`  varchar(32) NOT NULL ,\
+							`Name`  varchar(128) NOT NULL ,\
+							`TimeStampSignCounts`  int NOT NULL DEFAULT 0 ,\
+							`LastSignTime`  datetime NULL ,\
+							`TimeStampVerifyCounts`  int NOT NULL DEFAULT 0 ,\
+							`LastVerifyTime`  datetime NULL ,\
+							`Allowed`  int NOT NULL DEFAULT 0);");
+
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETABLEERR;
+						}else{
+							writeLog("create table TimeStampClient success",WRITELOG_SUCCESS);
+						}
+						//建Tsync_Black_White_List表
+						ret = sqlite3_create_table("Tsync_Black_White_List","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT ,\
+							`IP`  varchar(32) NOT NULL ,\
+							`AllowedNTP`  int NOT NULL DEFAULT 0 ,\
+							`AllowedNTPS`  int NOT NULL DEFAULT 0 ,\
+							`LastChangeTime`  datetime NOT NULL);");
+
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETABLEERR;
+						}else{
+							writeLog("create table Tsync_Black_White_List success",WRITELOG_SUCCESS);
+						}
+						//建CountsTable表
+						ret = sqlite3_create_table("CountsTable","(`TableName`  varchar(32) NOT NULL ,\
+							`Counts`  int NULL DEFAULT 0);");
+
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETABLEERR;
+						}else{
+							writeLog("create table CountsTable success",WRITELOG_SUCCESS);
+						}
+						writeLog("create all tables success,begin create triggers",WRITELOG_SUCCESS);
+						//建ClientRecord_trigger_delete
+						ret = sqlite3_createTrigger("ClientRecord_trigger_delete","ClientRecord",1,1,"update CountsTable set Counts=Counts-1 where TableName = 'ClientRecordCounts';");
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETABLEERR;
+						}else{
+
+							writeLog("create trigger ClientRecord_trigger_delete success",WRITELOG_SUCCESS);
+							sqlite3_close_database();
+						}
+						//
 					}else{
 						//该数据库之前使用过，判断能不能继续使用
 						writeLog("exist samename database,now we check it !",WRITELOG_OTHERS);
