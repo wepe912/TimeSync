@@ -1,0 +1,170 @@
+gcc -g -D_DEBUG -Wall -I./include  -fPIC -c src/timeInit.c -o obj/timeInit.o 
+In file included from src/timeInit.c:3:0:
+src/../include/mysqlOper.h:13:0: warning: "GETALLTABLENAMEERR" redefined [enabled by default]
+ #define GETALLTABLENAMEERR -0x000a
+ ^
+In file included from src/timeInit.c:1:0:
+src/../include/timeInit.h:10:0: note: this is the location of the previous definition
+ #define  GETALLTABLENAMEERR -0x0004
+ ^
+src/timeInit.c: In function ‘initTimeSync’:
+src/timeInit.c:12:2: warning: implicit declaration of function ‘readConfig’ [-Wimplicit-function-declaration]
+  ret = readConfig("./tsync.conf",key,value,&configNum);//读取配置文件
+  ^
+src/timeInit.c:27:5: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+     writeLog(mysqlDbErr,WRITELOG_ERROR);
+     ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:38:5: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+     writeLog(mysqlDbErr,WRITELOG_WARNING);
+     ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:43:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(mysqlDbErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:64:7: warning: implicit declaration of function ‘strcmp’ [-Wimplicit-function-declaration]
+       while(strcmp(key + i*32,"tables" ) != 0){
+       ^
+src/timeInit.c:67:7: warning: pointer targets in passing argument 1 of ‘atoi’ differ in signedness [-Wpointer-sign]
+       int configTableNum = atoi(value + i*64);
+       ^
+In file included from src/../include/timeInit.h:4:0,
+                 from src/timeInit.c:1:
+/usr/include/stdlib.h:147:12: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ extern int atoi (const char *__nptr)
+            ^
+src/timeInit.c:97:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:112:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:128:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:142:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:160:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:178:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:192:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:204:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:238:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:248:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:265:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:275:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:294:4: warning: implicit declaration of function ‘sqlite3_init’ [-Wimplicit-function-declaration]
+    int ret = sqlite3_init(DBName);
+    ^
+src/timeInit.c:296:5: warning: implicit declaration of function ‘sqlite3_get_lasterr’ [-Wimplicit-function-declaration]
+     sqlite3_get_lasterr(sqlite3_err,128);
+     ^
+src/timeInit.c:297:5: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+     writeLog(sqlite3_err,WRITELOG_ERROR);
+     ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:303:5: warning: implicit declaration of function ‘sqlite3_get_alltable_name’ [-Wimplicit-function-declaration]
+     ret = sqlite3_get_alltable_name(sqlite3_tables,&sqlite3_tables_num);
+     ^
+src/timeInit.c:306:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(sqlite3_err,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:326:7: warning: pointer targets in passing argument 1 of ‘atoi’ differ in signedness [-Wpointer-sign]
+       int configTableNum = atoi(value + i*64);
+       ^
+In file included from src/../include/timeInit.h:4:0,
+                 from src/timeInit.c:1:
+/usr/include/stdlib.h:147:12: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ extern int atoi (const char *__nptr)
+            ^
+src/timeInit.c:341:8: warning: implicit declaration of function ‘sqlite3_close_database’ [-Wimplicit-function-declaration]
+        sqlite3_close_database();
+        ^
+src/timeInit.c:355:1: error: expected declaration or statement at end of input
+ }
+ ^
+src/timeInit.c:355:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+make: *** [obj/timeInit.o] Error 1

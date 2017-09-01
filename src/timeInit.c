@@ -76,6 +76,8 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 						}
 						if(tableCount == configTableNum){
 							writeLog("existed database is the database we might used before ,now we can use it!",WRITELOG_SUCCESS);
+							//初始化完成断不断开数据库？
+							//closeConnect();
 							return 0;
 						}else{
 							writeLog("existed database is not the database we used before,please rename database to complete initial!",WRITELOG_ERROR);
@@ -276,15 +278,74 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				}else{
 					writeLog("create trigger TimeStampRecord_trigger_delete success",WRITELOG_SUCCESS);
 				}
+				//write config into config table
+				/**************code here*****************/
 
-
+				//初始化完成断不断开数据库？
 				//closeConnect();
+				return 0;
 			}
 			 
 		}
 		break;
 		case DBTYP_SQLIGHT3:
+		{
+			unsigned char sqlite3_err[128] = { 0 };
+			int ret = sqlite3_init(DBName);
+			if(ret != 0){
+				sqlite3_get_lasterr(sqlite3_err,128);
+				writeLog(sqlite3_err,WRITELOG_ERROR);
+				return INITDATABASEERR;
+			}else{
+				writeLog("connect database success",WRITELOG_SUCCESS);
+				unsigned char sqlite3_tables[32*20] = { 0 };
+				int sqlite3_tables_num = 0;
+				ret = sqlite3_get_alltable_name(sqlite3_tables,&sqlite3_tables_num);
+				if( ret != 0){
+					sqlite3_get_lasterr(sqlite3_err,128);
+					writeLog(sqlite3_err,WRITELOG_ERROR);
+					return INITDATABASEERR;
+				}else{
+					//检查是否是之前使用过的数据库，对比第一个表是否在配置文件中即可
+					if(sqlite3_tables_num == 0){
+						writeLog("it is a new database,we can use it to init system ...",WRITELOG_SUCCESS);
+						/*code here to create tables and triggers*/
+
+
+
+
+
+					}else{
+						//该数据库之前使用过，判断能不能继续使用
+						writeLog("exist samename database,now we check it !",WRITELOG_OTHERS);
+						int i = 0;
+						int tmpCountNum = 0;
+						while(strcmp(key + i*32,"tables" ) != 0){
+								i ++;
+						}
+						int configTableNum = atoi(value + i*64);
+						i ++;
+						tmpCountNum = configTableNum + i;
+
+						for (; i < tmpCountNum; i++)
+						{
+							/* code */
+							if(strcmp(sqlite3_tables,value +i*64) == 0){
+								break;
+							}
+						}
+						if(i < tmpCountNum){
+							writeLog("the existed database is used before by the system,we can use it !",WRITELOG_SUCCESS);
+						}else{
+							writeLog("the existed database is used by another system,we can not use it,please change the database name",WRITELOG_ERROR);
+							sqlite3_close_database();
+							return SAMENAMEDATABASEERR;
+						}
+					}
+				}
+			}
 			break;
+		}
 		default:
 			writeLog("unknow database type.",WRITELOG_ERROR);
 			return UNKNOWNDATABASETYPE;

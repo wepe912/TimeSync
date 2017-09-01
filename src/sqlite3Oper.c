@@ -156,7 +156,7 @@ int sqlite3_change_data(const char* tableName,const char* rowAndValuesAndCon){
 	return 0;
 }
 
-//获取数据库中所有表的名称
+//获取数据库中所有表的名称，每个表名使用32字节存储
 int sqlite3_get_alltable_name(unsigned char* tableName,int* tableNum){
 	char *zErrMsg = 0;
 	char** pResult = NULL; 
@@ -177,7 +177,7 @@ int sqlite3_get_alltable_name(unsigned char* tableName,int* tableNum){
 }
 
 
-
+//interval 用于记录每个字段需要使用多少个字节来存储
 int sqlite3_get_data(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen){
 	unsigned char* sqlStrSelect = NULL; 
 	int sqlLen = 0 ;
