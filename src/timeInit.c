@@ -431,13 +431,48 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							writeLog("create table CountsTable success",WRITELOG_SUCCESS);
 						}
 						writeLog("create all tables success,begin create triggers",WRITELOG_SUCCESS);
+						//建ClientRecord_trigger_insert
+						ret = sqlite3_createTrigger("ClientRecord_trigger_insert","ClientRecord",1,0,"declare lastIP varchar(32);\
+							declare countIP int(32);\
+							declare syncType varchar(16);\
+							declare lastUpdatetime datetime;\
+							select IP, Type,Time into lastIP,syncType,lastUpdatetime  from ClientRecord where ID = (select max(ID) from ClientRecord) ;\
+							set countIP=(select count(*) from NTPClient where IP = lastIP );\
+							if countIP = 0 then\
+								if syncType = 'NTP' then\
+									insert into NTPClient (IP,NTPcounts,LastNTPType,LastUpdateTime) values(lastIP,1,syncType,lastUpdatetime );\
+									insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTP','success',lastUpdatetime);\
+								else\
+									insert into NTPClient (IP,NTPScounts,LastNTPType,LastUpdateTime) values(lastIP,1,syncType,lastUpdatetime);\
+									insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTPS','success',lastUpdatetime);\
+								end if;\
+							else\
+								if syncType = 'NTP' then\
+									update NTPClient set NTPcounts=NTPcounts + 1 , LastNTPType=syncType,LastUpdateTime = lastUpdatetime where IP=lastIP;\
+									insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTP','success',lastUpdatetime);\
+								else\
+									update NTPClient set NTPScounts=NTPScounts + 1 , LastNTPType=syncType,LastUpdateTime = lastUpdatetime where IP=lastIP;\
+									insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTPS','success',lastUpdatetime);\
+								end if;\
+							end if;\
+							update CountsTable set Counts=Counts+1 where TableName = 'ClientRecordCounts';");
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETRIGGERLEERR;
+						}else{
+
+							writeLog("create trigger ClientRecord_trigger_insert success",WRITELOG_SUCCESS);
+							sqlite3_close_database();
+						}
 						//建ClientRecord_trigger_delete
 						ret = sqlite3_createTrigger("ClientRecord_trigger_delete","ClientRecord",1,1,"update CountsTable set Counts=Counts-1 where TableName = 'ClientRecordCounts';");
 						if(ret != 0){
 							sqlite3_get_lasterr(sqlite3_err,128);
 							writeLog(sqlite3_err,WRITELOG_ERROR);
 							sqlite3_close_database();
-							return CREATETABLEERR;
+							return CREATETRIGGERLEERR;
 						}else{
 
 							writeLog("create trigger ClientRecord_trigger_delete success",WRITELOG_SUCCESS);
@@ -445,7 +480,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 						}
 						//
 					}else{
-						//该数据库之前使用过，判断能不能继续使用
+						//该数据库之前使用过，判断能不能继续使用，只要配置中有表有一个在已经存在的数据库中，表示该表被用过
 						writeLog("exist samename database,now we check it !",WRITELOG_OTHERS);
 						int i = 0;
 						int tmpCountNum = 0;
