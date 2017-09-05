@@ -158,80 +158,46 @@ BEGIN
      WHERE TableName = 'ClientRecordCounts';
 END;
 #sqlite ClientRecord trigger
-CREATE TRIGGER insert_test
+CREATE TRIGGER ClientRecord_trigger_insert
          AFTER INSERT
             ON ClientRecord
 BEGIN
-    UPDATE NTPClient
-       SET NTPCounts = NTPCounts + 1,
-           LastNTPType = 'NTP',
-           LastUpdateTime = new.Time
-     WHERE (
-               SELECT IP
-                 FROM NTPClient
-                WHERE IP = new.IP AND 
-                      new.Type = 'NTP'
-           )
-AND 
-           IP = new.IP;
-    UPDATE NTPClient
-       SET NTPSCounts = NTPSCounts + 1,
-           LastNTPType = 'NTPS',
-           LastUpdateTime = new.Time
-     WHERE (
-               SELECT IP
-                 FROM NTPClient
-                WHERE IP = new.IP AND 
-                      new.Type = 'NTPS'
-           )
-AND 
-           IP = new.IP;
-    INSERT INTO NTPClient (
-                              IP,
-                              LastNTPType,
-                              LastUpdateTime
-                          )
-                          SELECT IP,
-                                 Type,
-                                 Time
-                            FROM ClientRecord
-                           WHERE (
-                                     SELECT IP
-                                       FROM NTPClient
-                                      WHERE IP = new.IP
-                                 )
-                                 ISNULL AND 
-                                 IP = new.IP;
-    UPDATE NTPClient
-       SET NTPCounts = 1
-     WHERE (
-               SELECT NTPCounts
-                 FROM NTPClient
-                WHERE IP = new.IP
-           )
-=          0 AND 
-           (
-               SELECT NTPSCounts
-                 FROM NTPClient
-                WHERE IP = new.IP
-           )
-=          0 AND 
-           new.Type = 'NTP' AND 
-           IP = new.IP;
-    UPDATE NTPClient
-       SET NTPSCounts = 1
-     WHERE (
-               SELECT NTPCounts
-                 FROM NTPClient
-                WHERE IP = new.IP
-           )
-=          0 AND 
-           (
-               SELECT NTPSCounts
-                 FROM NTPClient
-                WHERE IP = new.IP
-           )
-=          0 AND 
-           new.Type = 'NTPS' AND 
-           IP = new.IP;
+    UPDATE NTPClient SET NTPCounts = NTPCounts + 1,LastNTPType = 'NTP',LastUpdateTime = new.Time WHERE (SELECT IP FROM NTPClient WHERE IP = new.IP AND new.Type = 'NTP') AND IP = new.IP;
+    UPDATE NTPClient SET NTPSCounts = NTPSCounts + 1,LastNTPType = 'NTPS',LastUpdateTime = new.Time WHERE (SELECT IP FROM NTPClient WHERE IP = new.IP AND new.Type = 'NTPS') AND IP = new.IP;
+    INSERT INTO NTPClient (IP,LastNTPType,LastUpdateTime) SELECT IP,Type,Time FROM ClientRecord WHERE (SELECT IP FROM NTPClient WHERE IP = new.IP) ISNULL AND IP = new.IP;
+    UPDATE NTPClient SET NTPCounts = 1 WHERE (SELECT NTPCounts FROM NTPClient WHERE IP = new.IP)=0 AND ( SELECT NTPSCounts FROM NTPClient  WHERE IP = new.IP )= 0 AND new.Type = 'NTP' AND IP = new.IP;
+    UPDATE NTPClient SET NTPSCounts = 1 WHERE ( SELECT NTPCounts FROM NTPClient  WHERE IP = new.IP )= 0 AND ( SELECT NTPSCounts FROM NTPClient WHERE IP = new.IP)=0 AND new.Type = 'NTPS' AND IP = new.IP;
+    INSERT INTO Worklog (IP, Content, Result,Time) VALUES (new.IP,new.Type,"success",new.Time);
+    update CountsTable set Counts=Counts + 1 where TableName = 'ClientRecordCounts';
+END;
+
+
+#sqlite TimeStampRecord_trigger_insert
+CREATE TRIGGER TimeStampRecord_trigger_insert
+         AFTER INSERT
+            ON TimeStampRecord
+      FOR EACH ROW
+BEGIN
+    UPDATE TimeStampClient
+       SET TimeStampSignCounts = TimeStampSignCounts + 1,
+           LastSignTime = new.Time
+     WHERE IP = new.IP AND 
+           Name = new.Name;
+    INSERT INTO Worklog (
+                            IP,
+                            Name,
+                            Content,
+                            Result,
+                            Time
+                        )
+                        VALUES (
+                            new.IP,
+                            new.Name,
+                            "Sign new TimeStamp",
+                            success,
+                            new.Time
+                        );
+    UPDATE CountsTable
+       SET Counts = Counts + 1
+     WHERE TableName = 'TimeStampRecordCounts';
 END;

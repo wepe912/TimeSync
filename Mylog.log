@@ -1,13 +1,40 @@
-[2017年09月04日 12:53:40]:[SUCCESS] read config success
-[2017年09月04日 12:53:40]:[SUCCESS] connect database success
-[2017年09月04日 12:53:40]:[SUCCESS] it is a new database,we can use it to init system ...
-[2017年09月04日 12:53:40]:[SUCCESS] create table Config success
-[2017年09月04日 12:53:40]:[SUCCESS] create table Worklog success
-[2017年09月04日 12:53:40]:[SUCCESS] create table NTPClient success
-[2017年09月04日 12:53:40]:[SUCCESS] create table ClientRecord success
-[2017年09月04日 12:53:40]:[SUCCESS] create table TimeStampRecord success
-[2017年09月04日 12:53:40]:[SUCCESS] create table TimeStampClient success
-[2017年09月04日 12:53:40]:[SUCCESS] create table Tsync_Black_White_List success
-[2017年09月04日 12:53:40]:[SUCCESS] create table CountsTable success
-[2017年09月04日 12:53:40]:[SUCCESS] create all tables success,begin create triggers
-[2017年09月04日 12:53:40]:[ERROR  ] near "declare": syntax error
+[2017年09月05日 10:13:24]:[SUCCESS] read config success
+[2017年09月05日 10:13:24]:[SUCCESS] connect database success
+[2017年09月05日 10:13:24]:[SUCCESS] it is a new database,we can use it to init system ...
+[2017年09月05日 10:13:24]:[SUCCESS] create table Config success
+[2017年09月05日 10:13:24]:[SUCCESS] create table Worklog success
+[2017年09月05日 10:13:24]:[SUCCESS] create table NTPClient success
+[2017年09月05日 10:13:24]:[SUCCESS] create table ClientRecord success
+[2017年09月05日 10:13:24]:[SUCCESS] create table TimeStampRecord success
+[2017年09月05日 10:13:24]:[SUCCESS] create table TimeStampClient success
+[2017年09月05日 10:13:24]:[SUCCESS] create table Tsync_Black_White_List success
+[2017年09月05日 10:13:24]:[SUCCESS] create table CountsTable success
+[2017年09月05日 10:13:24]:[SUCCESS] create all tables success,begin create triggers
+[2017年09月05日 10:13:24]:[SUCCESS] create trigger ClientRecord_trigger_insert success
+[2017年09月05日 10:13:24]:[SUCCESS] create trigger ClientRecord_trigger_delete success
+[2017年09月05日 10:13:24]:[SUCCESS] create trigger TimeStampRecord_trigger_insert success
+[2017年09月05日 10:13:24]:[SUCCESS] create trigger TimeStampRecord_trigger_delete success
+[2017年09月05日 10:13:24]:[SUCCESS] create trigger Worklog_trigger_insert success
+[2017年09月05日 10:13:24]:[SUCCESS] create trigger Worklog_trigger_delete success
+[2017年09月05日 10:13:24]:[SUCCESS] create all triggers success
+[2017年09月05日 10:13:24]:[SUCCESS] Add data into CountsTable success 
+[2017年09月05日 10:13:24]:[SUCCESS] read config success
+[2017年09月05日 10:13:34]:[SUCCESS] connect Mysql Database success.
+[2017年09月05日 10:13:34]:[SUCCESS] createDatabase success.
+[2017年09月05日 10:13:34]:[SUCCESS] create table Config success
+[2017年09月05日 10:13:34]:[SUCCESS] create table Worklog success
+[2017年09月05日 10:13:35]:[SUCCESS] create table NTPClient success
+[2017年09月05日 10:13:35]:[SUCCESS] create table ClientRecord success
+[2017年09月05日 10:13:35]:[SUCCESS] create table TimeStampRecord success
+[2017年09月05日 10:13:35]:[SUCCESS] create table TimeStampClient success
+[2017年09月05日 10:13:35]:[SUCCESS] create table Tsync_Black_White_List success
+[2017年09月05日 10:13:36]:[SUCCESS] create table CountsTable success
+[2017年09月05日 10:13:36]:[SUCCESS] create all tables success,begin create triggers
+[2017年09月05日 10:13:36]:[SUCCESS] create trigger ClientRecord_trigger_insert success
+[2017年09月05日 10:13:36]:[SUCCESS] create trigger ClientRecord_trigger_delete success
+[2017年09月05日 10:13:36]:[SUCCESS] create trigger TimeStampRecord_trigger_insert success
+[2017年09月05日 10:13:36]:[SUCCESS] create trigger TimeStampRecord_trigger_delete success
+[2017年09月05日 10:13:36]:[SUCCESS] create trigger Worklog_trigger_insert success
+[2017年09月05日 10:13:36]:[SUCCESS] create trigger Worklog_trigger_delete success
+[2017年09月05日 10:13:36]:[SUCCESS] create all triggers success
+[2017年09月05日 10:13:36]:[SUCCESS] Add data into CountsTable success 
