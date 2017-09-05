@@ -1,6 +1,7 @@
 #include "../include/timeInit.h"
 #include "../include/writeLogFile.h"
 #include "../include/mysqlOper.h"
+#include "../include/sqlite3Oper.h"
 
 //初始化完成记得断开数据 连接，至于 后面要用，谁用谁去连接 
 int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,const char* pwd,unsigned int port){
@@ -91,7 +92,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				writeLog("createDatabase success.",WRITELOG_SUCCESS);
 				//数据库创建成功后开始建表
 				unsigned char createTableErr[128] = { 0 };
-				int ret = createTable("Config","(`Name`  varchar(32) NOT NULL ,`Value`  longtext NULL ,PRIMARY KEY (`Name`))");
+				int ret = createTable("config","(`Name`  varchar(32) NOT NULL ,`Value`  longtext NULL ,PRIMARY KEY (`Name`))");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
@@ -100,7 +101,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				}else{
 					writeLog("create table Config success",WRITELOG_SUCCESS);
 				}
-				ret = createTable("Worklog","(`ID` int NOT NULL AUTO_INCREMENT,\
+				ret = createTable("work_log","(`ID` int NOT NULL AUTO_INCREMENT,\
 					`IP` varchar(32) NOT NULL,\
 					`Name` varchar(128) DEFAULT NULL,\
 					`Content` longtext NOT NULL,\
@@ -113,10 +114,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					closeConnect();
 					return CREATETABLEERR;
 				}else{
-					writeLog("create table Worklog success",WRITELOG_SUCCESS);
+					writeLog("create table work_log success",WRITELOG_SUCCESS);
 				}
 				//ret = createTable();
-				ret = createTable("NTPClient","(`ID`  int NOT NULL AUTO_INCREMENT ,\
+				ret = createTable("ntp_client","(`ID`  int NOT NULL AUTO_INCREMENT ,\
 					`IP`  varchar(32) NOT NULL ,\
 					`NTPCounts`  int NOT NULL DEFAULT 0 ,\
 					`NTPSCounts`  int NOT NULL DEFAULT 0 ,\
@@ -129,10 +130,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					closeConnect();
 					return CREATETABLEERR;
 				}else{
-					writeLog("create table NTPClient success",WRITELOG_SUCCESS);
+					writeLog("create table ntp_client success",WRITELOG_SUCCESS);
 				}
 
-				ret = createTable("ClientRecord","(`ID`  int NOT NULL AUTO_INCREMENT ,\
+				ret = createTable("client_record","(`ID`  int NOT NULL AUTO_INCREMENT ,\
 					`IP`  varchar(32) NOT NULL ,\
 					`Type`  varchar(16) NOT NULL ,\
 					`Time`  datetime NOT NULL ,\
@@ -143,10 +144,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					closeConnect();
 					return CREATETABLEERR;
 				}else{
-					writeLog("create table ClientRecord success",WRITELOG_SUCCESS);
+					writeLog("create table client_record success",WRITELOG_SUCCESS);
 				}
 
-				ret = createTable("TimeStampRecord","(`ID`  int NOT NULL AUTO_INCREMENT,\
+				ret = createTable("timestamp_record","(`ID`  int NOT NULL AUTO_INCREMENT,\
 					`SerialNum`  varchar(40) NOT NULL ,\
 					`IP`  varchar(32) NOT NULL ,\
 					`Name`  varchar(128) NULL ,\
@@ -161,10 +162,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					closeConnect();
 					return CREATETABLEERR;
 				}else{
-					writeLog("create table TimeStampRecord success",WRITELOG_SUCCESS);
+					writeLog("create table timestamp_record success",WRITELOG_SUCCESS);
 				}
 
-				ret = createTable("TimeStampClient","(`ID`  int NOT NULL AUTO_INCREMENT,\
+				ret = createTable("timestamp_client","(`ID`  int NOT NULL AUTO_INCREMENT,\
 					`IP`  varchar(32) NOT NULL ,\
 					`Name`  varchar(128) NOT NULL ,\
 					`TimeStampSignCounts`  int NOT NULL DEFAULT 0 ,\
@@ -179,9 +180,9 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					closeConnect();
 					return CREATETABLEERR;
 				}else{
-					writeLog("create table TimeStampClient success",WRITELOG_SUCCESS);
+					writeLog("create table timestamp_client success",WRITELOG_SUCCESS);
 				}
-				ret = createTable("Tsync_Black_White_List","(`ID`  int NOT NULL AUTO_INCREMENT ,\
+				ret = createTable("tsync_black_white_List","(`ID`  int NOT NULL AUTO_INCREMENT ,\
 					`IP`  varchar(32) NOT NULL ,\
 					`AllowedNTP`  int NOT NULL DEFAULT 0 ,\
 					`AllowedNTPS`  int NOT NULL DEFAULT 0 ,\
@@ -193,10 +194,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					closeConnect();
 					return CREATETABLEERR;
 				}else{
-					writeLog("create table Tsync_Black_White_List success",WRITELOG_SUCCESS);
+					writeLog("create table tsync_black_white_List success",WRITELOG_SUCCESS);
 				}
 
-				ret = createTable("CountsTable","(`TableName`  varchar(32) NOT NULL ,\
+				ret = createTable("counts_table","(`TableName`  varchar(32) NOT NULL ,\
 					`Counts`  int NULL DEFAULT 0 ,\
 					PRIMARY KEY (`TableName`));");
 				if(ret != 0){
@@ -205,81 +206,81 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					closeConnect();
 					return CREATETABLEERR;
 				}else{
-					writeLog("create table CountsTable success",WRITELOG_SUCCESS);
+					writeLog("create table counts_table success",WRITELOG_SUCCESS);
 				}
 				writeLog("create all tables success,begin create triggers",WRITELOG_SUCCESS);
 				//ret = createTrigger("testTrigger4","table111",1,2,"update Counts set Counts=Counts where id =1;");
-				ret = createTrigger("ClientRecord_trigger_insert","ClientRecord",1,0,"declare lastIP varchar(32);\
+				ret = createTrigger("client_record_trigger_insert","client_record",1,0,"declare lastIP varchar(32);\
 					declare countIP int(32);\
 					declare syncType varchar(16);\
 					declare lastUpdatetime datetime;\
-					select IP, Type,Time into lastIP,syncType,lastUpdatetime  from ClientRecord where ID = (select max(ID) from ClientRecord) ;\
-					set countIP=(select count(*) from NTPClient where IP = lastIP );\
+					select IP, Type,Time into lastIP,syncType,lastUpdatetime  from client_record where ID = (select max(ID) from client_record) ;\
+					set countIP=(select count(*) from ntp_client where IP = lastIP );\
 					if countIP = 0 then\
 						if syncType = 'NTP' then\
-							insert into NTPClient (IP,NTPcounts,LastNTPType,LastUpdateTime) values(lastIP,1,syncType,lastUpdatetime );\
-							insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTP','success',lastUpdatetime);\
+							insert into ntp_client (IP,NTPcounts,LastNTPType,LastUpdateTime) values(lastIP,1,syncType,lastUpdatetime );\
+							insert into work_log(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTP','success',lastUpdatetime);\
 						else\
-							insert into NTPClient (IP,NTPScounts,LastNTPType,LastUpdateTime) values(lastIP,1,syncType,lastUpdatetime);\
-							insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTPS','success',lastUpdatetime);\
+							insert into ntp_client (IP,NTPScounts,LastNTPType,LastUpdateTime) values(lastIP,1,syncType,lastUpdatetime);\
+							insert into work_log(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTPS','success',lastUpdatetime);\
 						end if;\
 					else\
 						if syncType = 'NTP' then\
-							update NTPClient set NTPcounts=NTPcounts + 1 , LastNTPType=syncType,LastUpdateTime = lastUpdatetime where IP=lastIP;\
-							insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTP','success',lastUpdatetime);\
+							update ntp_client set NTPcounts=NTPcounts + 1 , LastNTPType=syncType,LastUpdateTime = lastUpdatetime where IP=lastIP;\
+							insert into work_log(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTP','success',lastUpdatetime);\
 						else\
-							update NTPClient set NTPScounts=NTPScounts + 1 , LastNTPType=syncType,LastUpdateTime = lastUpdatetime where IP=lastIP;\
-							insert into WorkLog(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTPS','success',lastUpdatetime);\
+							update ntp_client set NTPScounts=NTPScounts + 1 , LastNTPType=syncType,LastUpdateTime = lastUpdatetime where IP=lastIP;\
+							insert into work_log(IP,Content,Result,Time)values(lastIP,'client synchronize time from server by NTPS','success',lastUpdatetime);\
 						end if;\
 					end if;\
-					update CountsTable set Counts=Counts+1 where TableName = 'ClientRecordCounts';");
+					update counts_table set Counts=Counts+1 where TableName = 'client_record_counts';");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
 					closeConnect();
 					return CREATETRIGGERLEERR;
 				}else{
-					writeLog("create trigger ClientRecord_trigger_insert success",WRITELOG_SUCCESS);
+					writeLog("create trigger client_record_trigger_insert success",WRITELOG_SUCCESS);
 				}
 
-				ret = createTrigger("ClientRecord_trigger_delete","ClientRecord",1,1,"update CountsTable set Counts=Counts-1 where TableName = 'ClientRecordCounts';");
+				ret = createTrigger("client_record_trigger_delete","client_record",1,1,"update counts_table set Counts=Counts-1 where TableName = 'client_record_counts';");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
 					closeConnect();
 					return CREATETRIGGERLEERR;
 				}else{
-					writeLog("create trigger ClientRecord_trigger_delete success",WRITELOG_SUCCESS);
+					writeLog("create trigger client_record_trigger_delete success",WRITELOG_SUCCESS);
 				}
 
-				ret = createTrigger("TimeStampRecord_trigger_insert","TimeStampRecord",1,0,"declare lastIP varchar(32);\
+				ret = createTrigger("timestamp_record_trigger_insert","timestamp_record",1,0,"declare lastIP varchar(32);\
 					declare countIP int(32);\
 					declare appName varchar(128);\
 					declare lastUpdatetime datetime;\
-					select IP, Name,Time into lastIP,appName,lastUpdatetime  from TimeStampRecord where ID = (select max(ID) from TimeStampRecord) ;\
-					update TimeStampClient set TimeStampSignCounts=TimeStampSignCounts + 1 , LastSignTime = lastUpdatetime where IP=lastIP and Name=appName;\
-					insert into WorkLog(IP,Name,Content,Result,Time)values(lastIP,appName,'Signed New TimeStamp ','success',lastUpdatetime);\
-					update CountsTable set Counts=Counts+1 where TableName = 'TimeStampRecordCounts';");
+					select IP, Name,Time into lastIP,appName,lastUpdatetime  from timestamp_record where ID = (select max(ID) from timestamp_record) ;\
+					update timestamp_client set TimeStampSignCounts=TimeStampSignCounts + 1 , LastSignTime = lastUpdatetime where IP=lastIP and Name=appName;\
+					insert into work_log(IP,Name,Content,Result,Time)values(lastIP,appName,'Signed New TimeStamp ','success',lastUpdatetime);\
+					update counts_table set Counts=Counts+1 where TableName = 'timestamp_record_counts';");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
 					closeConnect();
 					return CREATETRIGGERLEERR;
 				}else{
-					writeLog("create trigger TimeStampRecord_trigger_insert success",WRITELOG_SUCCESS);
+					writeLog("create trigger timestamp_record_trigger_insert success",WRITELOG_SUCCESS);
 				}
 
-				ret = createTrigger("TimeStampRecord_trigger_delete","TimeStampRecord",1,1,"update CountsTable set Counts=Counts-1 where TableName = 'TimeStampRecordCounts';");
+				ret = createTrigger("timestamp_record_trigger_delete","timestamp_record",1,1,"update counts_table set Counts=Counts-1 where TableName = 'timestamp_record_counts';");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
 					closeConnect();
 					return CREATETRIGGERLEERR;
 				}else{
-					writeLog("create trigger TimeStampRecord_trigger_delete success",WRITELOG_SUCCESS);
+					writeLog("create trigger timestamp_record_trigger_delete success",WRITELOG_SUCCESS);
 				}
 						//建Worklog_trigger_insert
-				ret = createTrigger("Worklog_trigger_insert","Worklog",1,0,"update CountsTable set Counts=Counts + 1 where TableName = 'WorklogCounts';");
+				ret = createTrigger("work_log_trigger_insert","work_log",1,0,"update counts_table set Counts=Counts + 1 where TableName = 'work_log_counts';");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
@@ -287,13 +288,13 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					return CREATETRIGGERLEERR;
 				}else{
 
-					writeLog("create trigger Worklog_trigger_insert success",WRITELOG_SUCCESS);
+					writeLog("create trigger work_log_trigger_insert success",WRITELOG_SUCCESS);
 					//sqlite3_close_database();
 				}
 
 
 				//建Worklog_trigger_delete
-				ret = createTrigger("Worklog_trigger_delete","Worklog",1,1,"update CountsTable set Counts=Counts-1 where TableName = 'WorklogCounts';");
+				ret = createTrigger("work_log_trigger_delete","work_log",1,1,"update counts_table set Counts=Counts-1 where TableName = 'work_log_counts';");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
@@ -301,11 +302,12 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					return CREATETRIGGERLEERR;
 				}else{
 
-					writeLog("create trigger Worklog_trigger_delete success",WRITELOG_SUCCESS);
+					writeLog("create trigger work_log_trigger_delete success",WRITELOG_SUCCESS);
 					//sqlite3_close_database();
 				}
 				writeLog("create all triggers success",WRITELOG_SUCCESS);
-				ret = addData("CountsTable","(TableName,Counts)values('ClientRecordCounts',0),('TimeStampRecordCounts',0),('WorklogCounts',0);");
+				ret = addData("counts_table","(TableName,Counts)values('client_record_counts',0),('timestamp_record_counts',0),('work_log_counts',0);");
+
 				if(ret != 0){
 					getLastErr(createTableErr,128);
 					writeLog(createTableErr,WRITELOG_ERROR);
@@ -313,10 +315,13 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					return ADDDATAERR;
 				}else{
 
-					writeLog("Add data into CountsTable success ",WRITELOG_SUCCESS);
+					writeLog("Add data into counts_table success ",WRITELOG_SUCCESS);
 					//sqlite3_close_database();
 				}
-
+				P_addData = addData;
+				P_deleteData = deleteData;
+				P_changeData = changeData;
+				P_getData = getData;
 				//write config into config table
 				/**************code here*****************/
 
@@ -350,7 +355,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 						writeLog("it is a new database,we can use it to init system ...",WRITELOG_SUCCESS);
 						/*code here to create tables and triggers*/
 						//建Config表
-						ret = sqlite3_create_table("Config","(`Name`  varchar(32) NOT NULL ,`Value`  longtext NULL ,PRIMARY KEY (`Name`))");
+						ret = sqlite3_create_table("config","(`Name`  varchar(32) NOT NULL ,`Value`  longtext NULL ,PRIMARY KEY (`Name`))");
 
 						if(ret != 0){
 							sqlite3_get_lasterr(sqlite3_err,128);
@@ -358,10 +363,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							sqlite3_close_database();
 							return CREATETABLEERR;
 						}else{
-							writeLog("create table Config success",WRITELOG_SUCCESS);
+							writeLog("create table config success",WRITELOG_SUCCESS);
 						}
 						//建Worklog表
-						ret = sqlite3_create_table("Worklog","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\
+						ret = sqlite3_create_table("work_log","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\
 							`IP` varchar(32) NOT NULL,\
 							`Name` varchar(128) DEFAULT NULL,\
 							`Content` longtext NOT NULL,\
@@ -374,10 +379,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							sqlite3_close_database();
 							return CREATETABLEERR;
 						}else{
-							writeLog("create table Worklog success",WRITELOG_SUCCESS);
+							writeLog("create table work_log success",WRITELOG_SUCCESS);
 						}
 						//建NTPClient表
-						ret = sqlite3_create_table("NTPClient","(`ID`  INTEGER PRIMARY KEY AUTOINCREMENT,\
+						ret = sqlite3_create_table("ntp_client","(`ID`  INTEGER PRIMARY KEY AUTOINCREMENT,\
 							`IP`  varchar(32) NOT NULL ,\
 							`NTPCounts`  int NOT NULL DEFAULT 0 ,\
 							`NTPSCounts`  int NOT NULL DEFAULT 0 ,\
@@ -390,10 +395,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							sqlite3_close_database();
 							return CREATETABLEERR;
 						}else{
-							writeLog("create table NTPClient success",WRITELOG_SUCCESS);
+							writeLog("create table ntp_client success",WRITELOG_SUCCESS);
 						}
 						//建ClientRecord表
-						ret = sqlite3_create_table("ClientRecord","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT ,\
+						ret = sqlite3_create_table("client_record","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT ,\
 							`IP`  varchar(32) NOT NULL ,\
 							`Type`  varchar(16) NOT NULL ,\
 							`Time`  datetime NOT NULL );");
@@ -404,10 +409,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							sqlite3_close_database();
 							return CREATETABLEERR;
 						}else{
-							writeLog("create table ClientRecord success",WRITELOG_SUCCESS);
+							writeLog("create table client_record success",WRITELOG_SUCCESS);
 						}
 						//建TimeStampRecord表
-						ret = sqlite3_create_table("TimeStampRecord","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT ,\
+						ret = sqlite3_create_table("timestamp_record","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT ,\
 							`SerialNum`  varchar(40) NOT NULL ,\
 							`IP`  varchar(32) NOT NULL ,\
 							`Name`  varchar(128) NULL ,\
@@ -422,10 +427,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							sqlite3_close_database();
 							return CREATETABLEERR;
 						}else{
-							writeLog("create table TimeStampRecord success",WRITELOG_SUCCESS);
+							writeLog("create table timestamp_record success",WRITELOG_SUCCESS);
 						}
 						//建TimeStampClient表
-						ret = sqlite3_create_table("TimeStampClient","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\
+						ret = sqlite3_create_table("timestamp_client","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\
 							`IP`  varchar(32) NOT NULL ,\
 							`Name`  varchar(128) NOT NULL ,\
 							`TimeStampSignCounts`  int NOT NULL DEFAULT 0 ,\
@@ -440,10 +445,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							sqlite3_close_database();
 							return CREATETABLEERR;
 						}else{
-							writeLog("create table TimeStampClient success",WRITELOG_SUCCESS);
+							writeLog("create table timestamp_client success",WRITELOG_SUCCESS);
 						}
 						//建Tsync_Black_White_List表
-						ret = sqlite3_create_table("Tsync_Black_White_List","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT ,\
+						ret = sqlite3_create_table("tsync_black_white_list","(`ID` INTEGER PRIMARY KEY AUTOINCREMENT ,\
 							`IP`  varchar(32) NOT NULL ,\
 							`AllowedNTP`  int NOT NULL DEFAULT 0 ,\
 							`AllowedNTPS`  int NOT NULL DEFAULT 0 ,\
@@ -455,10 +460,10 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							sqlite3_close_database();
 							return CREATETABLEERR;
 						}else{
-							writeLog("create table Tsync_Black_White_List success",WRITELOG_SUCCESS);
+							writeLog("create table tsync_black_white_list success",WRITELOG_SUCCESS);
 						}
 						//建CountsTable表
-						ret = sqlite3_create_table("CountsTable","(`TableName`  varchar(32) NOT NULL ,\
+						ret = sqlite3_create_table("counts_table","(`TableName`  varchar(32) NOT NULL ,\
 							`Counts`  int NULL DEFAULT 0);");
 
 						if(ret != 0){
@@ -467,24 +472,24 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							sqlite3_close_database();
 							return CREATETABLEERR;
 						}else{
-							writeLog("create table CountsTable success",WRITELOG_SUCCESS);
+							writeLog("create table counts_table success",WRITELOG_SUCCESS);
 						}
 						writeLog("create all tables success,begin create triggers",WRITELOG_SUCCESS);
 						//建ClientRecord_trigger_insert
 						
-						ret = sqlite3_createTrigger("ClientRecord_trigger_insert","ClientRecord",1,0," UPDATE NTPClient SET NTPCounts = NTPCounts + 1, \
-							LastNTPType = 'NTP',LastUpdateTime = new.Time WHERE (SELECT IP FROM NTPClient WHERE IP = new.IP AND new.Type = 'NTP') \
+						ret = sqlite3_createTrigger("client_record_trigger_insert","client_record",1,0," UPDATE ntp_client SET NTPCounts = NTPCounts + 1, \
+							LastNTPType = 'NTP',LastUpdateTime = new.Time WHERE (SELECT IP FROM ntp_client WHERE IP = new.IP AND new.Type = 'NTP') \
 							AND IP = new.IP;\
-							UPDATE NTPClient SET NTPSCounts = NTPSCounts + 1,LastNTPType = 'NTPS',LastUpdateTime = new.Time WHERE (SELECT IP FROM NTPClient \
+							UPDATE ntp_client SET NTPSCounts = NTPSCounts + 1,LastNTPType = 'NTPS',LastUpdateTime = new.Time WHERE (SELECT IP FROM ntp_client \
 							WHERE IP = new.IP AND new.Type = 'NTPS') AND IP = new.IP; \
-							INSERT INTO NTPClient (IP,LastNTPType,LastUpdateTime) SELECT IP,Type,\
-							Time FROM ClientRecord WHERE (SELECT IP FROM NTPClient WHERE IP = new.IP) ISNULL AND IP = new.IP;\
-							UPDATE NTPClient SET NTPCounts = 1 WHERE (SELECT NTPCounts FROM NTPClient WHERE IP = new.IP)=0 AND \
-							( SELECT NTPSCounts FROM NTPClient  WHERE IP = new.IP )= 0 AND new.Type = 'NTP' AND IP = new.IP;\
-							UPDATE NTPClient SET NTPSCounts = 1 WHERE ( SELECT NTPCounts FROM NTPClient  WHERE IP = new.IP )= 0 \
-							AND ( SELECT NTPSCounts FROM NTPClient WHERE IP = new.IP)=0 AND new.Type = 'NTPS' AND IP = new.IP;\
-							INSERT INTO Worklog (IP, Content, Result,Time) VALUES (new.IP,new.Type,'success',new.Time);\
-							update CountsTable set Counts=Counts + 1 where TableName = 'ClientRecordCounts';");
+							INSERT INTO ntp_client (IP,LastNTPType,LastUpdateTime) SELECT IP,Type,\
+							Time FROM client_record WHERE (SELECT IP FROM ntp_client WHERE IP = new.IP) ISNULL AND IP = new.IP;\
+							UPDATE ntp_client SET NTPCounts = 1 WHERE (SELECT NTPCounts FROM ntp_client WHERE IP = new.IP)=0 AND \
+							( SELECT NTPSCounts FROM ntp_client  WHERE IP = new.IP )= 0 AND new.Type = 'NTP' AND IP = new.IP;\
+							UPDATE ntp_client SET NTPSCounts = 1 WHERE ( SELECT NTPCounts FROM ntp_client  WHERE IP = new.IP )= 0 \
+							AND ( SELECT NTPSCounts FROM ntp_client WHERE IP = new.IP)=0 AND new.Type = 'NTPS' AND IP = new.IP;\
+							INSERT INTO work_log (IP, Content, Result,Time) VALUES (new.IP,new.Type,'success',new.Time);\
+							update counts_table set Counts=Counts + 1 where TableName = 'client_record_counts';");
 						if(ret != 0){
 							sqlite3_get_lasterr(sqlite3_err,128);
 							writeLog(sqlite3_err,WRITELOG_ERROR);
@@ -492,11 +497,11 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							return CREATETRIGGERLEERR;
 						}else{
 
-							writeLog("create trigger ClientRecord_trigger_insert success",WRITELOG_SUCCESS);
+							writeLog("create trigger client_record_trigger_insert success",WRITELOG_SUCCESS);
 							//sqlite3_close_database();
 						}
 						//建ClientRecord_trigger_delete
-						ret = sqlite3_createTrigger("ClientRecord_trigger_delete","ClientRecord",1,1,"update CountsTable set Counts=Counts-1 where TableName = 'ClientRecordCounts';");
+						ret = sqlite3_createTrigger("client_record_trigger_delete","client_record",1,1,"update counts_table set Counts=Counts-1 where TableName = 'client_record_counts';");
 						if(ret != 0){
 							sqlite3_get_lasterr(sqlite3_err,128);
 							writeLog(sqlite3_err,WRITELOG_ERROR);
@@ -504,14 +509,14 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							return CREATETRIGGERLEERR;
 						}else{
 
-							writeLog("create trigger ClientRecord_trigger_delete success",WRITELOG_SUCCESS);
+							writeLog("create trigger client_record_trigger_delete success",WRITELOG_SUCCESS);
 							//sqlite3_close_database();
 						}
 						//建TimeStampRecord_trigger_insert
-						ret = sqlite3_createTrigger("TimeStampRecord_trigger_insert","TimeStampRecord",1,0,"update TimeStampClient set \
+						ret = sqlite3_createTrigger("timestamp_record_trigger_insert","timestamp_record",1,0,"update timeStamp_client set \
 							TimeStampSignCounts=TimeStampSignCounts+1,LastSignTime=new.Time where IP=new.IP and Name=new.Name;\
-							INSERT INTO Worklog (IP,Name, Content, Result,Time) VALUES (new.IP,new.Name,'Sign new TimeStamp','success',new.Time);\
-							update CountsTable set Counts=Counts + 1 where TableName = 'TimeStampRecordCounts';");
+							INSERT INTO work_log (IP,Name, Content, Result,Time) VALUES (new.IP,new.Name,'Sign new TimeStamp','success',new.Time);\
+							update counts_table set Counts=Counts + 1 where TableName = 'timestamp_record_counts';");
 						if(ret != 0){
 							sqlite3_get_lasterr(sqlite3_err,128);
 							writeLog(sqlite3_err,WRITELOG_ERROR);
@@ -519,11 +524,11 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							return CREATETRIGGERLEERR;
 						}else{
 
-							writeLog("create trigger TimeStampRecord_trigger_insert success",WRITELOG_SUCCESS);
+							writeLog("create trigger timestamp_record_trigger_insert success",WRITELOG_SUCCESS);
 							//sqlite3_close_database();
 						}
 						//建TimeStampRecord_trigger_delete
-						ret = sqlite3_createTrigger("TimeStampRecord_trigger_delete","TimeStampRecord",1,1,"update CountsTable set Counts=Counts-1 where TableName = 'TimeStampRecordCounts';");
+						ret = sqlite3_createTrigger("timestamp_record_trigger_delete","timestamp_record",1,1,"update counts_table set Counts=Counts-1 where TableName = 'timestamp_record_counts';");
 						if(ret != 0){
 							sqlite3_get_lasterr(sqlite3_err,128);
 							writeLog(sqlite3_err,WRITELOG_ERROR);
@@ -531,11 +536,11 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							return CREATETRIGGERLEERR;
 						}else{
 
-							writeLog("create trigger TimeStampRecord_trigger_delete success",WRITELOG_SUCCESS);
+							writeLog("create trigger timestamp_record_trigger_delete success",WRITELOG_SUCCESS);
 							//sqlite3_close_database();
 						}
 						//建Worklog_trigger_insert
-						ret = sqlite3_createTrigger("Worklog_trigger_insert","Worklog",1,0,"update CountsTable set Counts=Counts + 1 where TableName = 'WorklogCounts';");
+						ret = sqlite3_createTrigger("work_log_trigger_insert","work_log",1,0,"update counts_table set Counts=Counts + 1 where TableName = 'work_log_counts';");
 						if(ret != 0){
 							sqlite3_get_lasterr(sqlite3_err,128);
 							writeLog(sqlite3_err,WRITELOG_ERROR);
@@ -543,13 +548,13 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							return CREATETRIGGERLEERR;
 						}else{
 
-							writeLog("create trigger Worklog_trigger_insert success",WRITELOG_SUCCESS);
+							writeLog("create trigger work_log_trigger_insert success",WRITELOG_SUCCESS);
 							//sqlite3_close_database();
 						}
 
 
 						//建Worklog_trigger_delete
-						ret = sqlite3_createTrigger("Worklog_trigger_delete","Worklog",1,1,"update CountsTable set Counts=Counts-1 where TableName = 'WorklogCounts';");
+						ret = sqlite3_createTrigger("work_log_trigger_delete","work_log",1,1,"update counts_table set Counts=Counts-1 where TableName = 'work_log_counts';");
 						if(ret != 0){
 							sqlite3_get_lasterr(sqlite3_err,128);
 							writeLog(sqlite3_err,WRITELOG_ERROR);
@@ -557,11 +562,11 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							return CREATETRIGGERLEERR;
 						}else{
 
-							writeLog("create trigger Worklog_trigger_delete success",WRITELOG_SUCCESS);
+							writeLog("create trigger work_log_trigger_delete success",WRITELOG_SUCCESS);
 							//sqlite3_close_database();
 						}
 						writeLog("create all triggers success",WRITELOG_SUCCESS);
-						ret = sqlite3_add_data("CountsTable","(TableName,Counts)values('ClientRecordCounts',0),('TimeStampRecordCounts',0),('WorklogCounts',0);");
+						ret = sqlite3_add_data("counts_table","(TableName,Counts)values('client_record_counts',0),('timestamp_record_counts',0),('work_log_counts',0);");
 						if(ret != 0){
 							sqlite3_get_lasterr(sqlite3_err,128);
 							writeLog(sqlite3_err,WRITELOG_ERROR);
@@ -569,9 +574,13 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							return ADDDATAERR;
 						}else{
 
-							writeLog("Add data into CountsTable success ",WRITELOG_SUCCESS);
+							writeLog("Add data into counts_table success ",WRITELOG_SUCCESS);
 							//sqlite3_close_database();
 						}
+						P_addData = sqlite3_add_data;
+						P_deleteData = sqlite3_delete_data;
+						P_changeData = sqlite3_change_data;
+						P_getData = sqlite3_get_data;
 					}else{
 						//该数据库之前使用过，判断能不能继续使用，只要配置中有表有一个在已经存在的数据库中，表示该表被用过
 						writeLog("exist samename database,now we check it !",WRITELOG_OTHERS);

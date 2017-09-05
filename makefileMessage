@@ -127,126 +127,178 @@ In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:294:4: warning: implicit declaration of function ‘sqlite3_init’ [-Wimplicit-function-declaration]
+src/timeInit.c:285:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:299:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:312:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+      writeLog(createTableErr,WRITELOG_ERROR);
+      ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:337:4: warning: implicit declaration of function ‘sqlite3_init’ [-Wimplicit-function-declaration]
     int ret = sqlite3_init(DBName);
     ^
-src/timeInit.c:296:5: warning: implicit declaration of function ‘sqlite3_get_lasterr’ [-Wimplicit-function-declaration]
+src/timeInit.c:339:5: warning: implicit declaration of function ‘sqlite3_get_lasterr’ [-Wimplicit-function-declaration]
      sqlite3_get_lasterr(sqlite3_err,128);
      ^
-src/timeInit.c:297:5: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:340:5: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
      writeLog(sqlite3_err,WRITELOG_ERROR);
      ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:303:5: warning: implicit declaration of function ‘sqlite3_get_alltable_name’ [-Wimplicit-function-declaration]
+src/timeInit.c:346:5: warning: implicit declaration of function ‘sqlite3_get_alltable_name’ [-Wimplicit-function-declaration]
      ret = sqlite3_get_alltable_name(sqlite3_tables,&sqlite3_tables_num);
      ^
-src/timeInit.c:306:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:349:6: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
       writeLog(sqlite3_err,WRITELOG_ERROR);
       ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:314:7: warning: implicit declaration of function ‘sqlite3_create_table’ [-Wimplicit-function-declaration]
+src/timeInit.c:357:7: warning: implicit declaration of function ‘sqlite3_create_table’ [-Wimplicit-function-declaration]
        ret = sqlite3_create_table("Config","(`Name`  varchar(32) NOT NULL ,`Value`  longtext NULL ,PRIMARY KEY (`Name`))");
        ^
-src/timeInit.c:318:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:361:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:319:8: warning: implicit declaration of function ‘sqlite3_close_database’ [-Wimplicit-function-declaration]
+src/timeInit.c:362:8: warning: implicit declaration of function ‘sqlite3_close_database’ [-Wimplicit-function-declaration]
         sqlite3_close_database();
         ^
-src/timeInit.c:334:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:377:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:350:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:393:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:364:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:407:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:382:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:425:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:400:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:443:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:415:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:458:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:427:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:470:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:436:7: warning: implicit declaration of function ‘sqlite3_createTrigger’ [-Wimplicit-function-declaration]
+src/timeInit.c:479:7: warning: implicit declaration of function ‘sqlite3_createTrigger’ [-Wimplicit-function-declaration]
        ret = sqlite3_createTrigger("ClientRecord_trigger_insert","ClientRecord",1,0," UPDATE NTPClient SET NTPCounts = NTPCounts + 1, \
        ^
-src/timeInit.c:451:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:494:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:463:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:506:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:474:85: error: expected ‘)’ before ‘Sign’
-        INSERT INTO Worklog (IP,Name, Content, Result,Time) VALUES (new.IP,new.Name,"Sign new TimeStamp","success",new.Time);\
-                                                                                     ^
-src/timeInit.c:478:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:521:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:490:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:533:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
         writeLog(sqlite3_err,WRITELOG_ERROR);
         ^
 In file included from src/timeInit.c:2:0:
 src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
  int writeLog(const char* logs,int logType);
      ^
-src/timeInit.c:508:7: warning: pointer targets in passing argument 1 of ‘atoi’ differ in signedness [-Wpointer-sign]
+src/timeInit.c:545:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+        writeLog(sqlite3_err,WRITELOG_ERROR);
+        ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:559:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+        writeLog(sqlite3_err,WRITELOG_ERROR);
+        ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:568:7: warning: implicit declaration of function ‘sqlite3_add_data’ [-Wimplicit-function-declaration]
+       ret = sqlite3_add_data("CountsTable","(TableName,Counts)values('ClientRecordCounts',0),('TimeStampRecordCounts',0),('WorklogCounts',0);");
+       ^
+src/timeInit.c:571:8: warning: pointer targets in passing argument 1 of ‘writeLog’ differ in signedness [-Wpointer-sign]
+        writeLog(sqlite3_err,WRITELOG_ERROR);
+        ^
+In file included from src/timeInit.c:2:0:
+src/../include/writeLogFile.h:17:5: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
+ int writeLog(const char* logs,int logType);
+     ^
+src/timeInit.c:580:22: error: ‘sqlite3_delete_data’ undeclared (first use in this function)
+       P_deleteData = sqlite3_delete_data;
+                      ^
+src/timeInit.c:580:22: note: each undeclared identifier is reported only once for each function it appears in
+src/timeInit.c:581:22: error: ‘sqlite3_change_data’ undeclared (first use in this function)
+       P_changeData = sqlite3_change_data;
+                      ^
+src/timeInit.c:582:19: error: ‘sqlite3_get_data’ undeclared (first use in this function)
+       P_getData = sqlite3_get_data;
+                   ^
+src/timeInit.c:591:7: warning: pointer targets in passing argument 1 of ‘atoi’ differ in signedness [-Wpointer-sign]
        int configTableNum = atoi(value + i*64);
        ^
 In file included from src/../include/timeInit.h:4:0,

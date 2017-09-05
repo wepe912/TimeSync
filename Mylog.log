@@ -1,40 +1,20 @@
-[2017年09月05日 10:13:24]:[SUCCESS] read config success
-[2017年09月05日 10:13:24]:[SUCCESS] connect database success
-[2017年09月05日 10:13:24]:[SUCCESS] it is a new database,we can use it to init system ...
-[2017年09月05日 10:13:24]:[SUCCESS] create table Config success
-[2017年09月05日 10:13:24]:[SUCCESS] create table Worklog success
-[2017年09月05日 10:13:24]:[SUCCESS] create table NTPClient success
-[2017年09月05日 10:13:24]:[SUCCESS] create table ClientRecord success
-[2017年09月05日 10:13:24]:[SUCCESS] create table TimeStampRecord success
-[2017年09月05日 10:13:24]:[SUCCESS] create table TimeStampClient success
-[2017年09月05日 10:13:24]:[SUCCESS] create table Tsync_Black_White_List success
-[2017年09月05日 10:13:24]:[SUCCESS] create table CountsTable success
-[2017年09月05日 10:13:24]:[SUCCESS] create all tables success,begin create triggers
-[2017年09月05日 10:13:24]:[SUCCESS] create trigger ClientRecord_trigger_insert success
-[2017年09月05日 10:13:24]:[SUCCESS] create trigger ClientRecord_trigger_delete success
-[2017年09月05日 10:13:24]:[SUCCESS] create trigger TimeStampRecord_trigger_insert success
-[2017年09月05日 10:13:24]:[SUCCESS] create trigger TimeStampRecord_trigger_delete success
-[2017年09月05日 10:13:24]:[SUCCESS] create trigger Worklog_trigger_insert success
-[2017年09月05日 10:13:24]:[SUCCESS] create trigger Worklog_trigger_delete success
-[2017年09月05日 10:13:24]:[SUCCESS] create all triggers success
-[2017年09月05日 10:13:24]:[SUCCESS] Add data into CountsTable success 
-[2017年09月05日 10:13:24]:[SUCCESS] read config success
-[2017年09月05日 10:13:34]:[SUCCESS] connect Mysql Database success.
-[2017年09月05日 10:13:34]:[SUCCESS] createDatabase success.
-[2017年09月05日 10:13:34]:[SUCCESS] create table Config success
-[2017年09月05日 10:13:34]:[SUCCESS] create table Worklog success
-[2017年09月05日 10:13:35]:[SUCCESS] create table NTPClient success
-[2017年09月05日 10:13:35]:[SUCCESS] create table ClientRecord success
-[2017年09月05日 10:13:35]:[SUCCESS] create table TimeStampRecord success
-[2017年09月05日 10:13:35]:[SUCCESS] create table TimeStampClient success
-[2017年09月05日 10:13:35]:[SUCCESS] create table Tsync_Black_White_List success
-[2017年09月05日 10:13:36]:[SUCCESS] create table CountsTable success
-[2017年09月05日 10:13:36]:[SUCCESS] create all tables success,begin create triggers
-[2017年09月05日 10:13:36]:[SUCCESS] create trigger ClientRecord_trigger_insert success
-[2017年09月05日 10:13:36]:[SUCCESS] create trigger ClientRecord_trigger_delete success
-[2017年09月05日 10:13:36]:[SUCCESS] create trigger TimeStampRecord_trigger_insert success
-[2017年09月05日 10:13:36]:[SUCCESS] create trigger TimeStampRecord_trigger_delete success
-[2017年09月05日 10:13:36]:[SUCCESS] create trigger Worklog_trigger_insert success
-[2017年09月05日 10:13:36]:[SUCCESS] create trigger Worklog_trigger_delete success
-[2017年09月05日 10:13:36]:[SUCCESS] create all triggers success
-[2017年09月05日 10:13:36]:[SUCCESS] Add data into CountsTable success 
+[2017年09月05日 14:47:05]:[SUCCESS] read config success
+[2017年09月05日 14:47:05]:[SUCCESS] connect database success
+[2017年09月05日 14:47:05]:[SUCCESS] it is a new database,we can use it to init system ...
+[2017年09月05日 14:47:05]:[SUCCESS] create table config success
+[2017年09月05日 14:47:05]:[SUCCESS] create table work_log success
+[2017年09月05日 14:47:05]:[SUCCESS] create table ntp_client success
+[2017年09月05日 14:47:05]:[SUCCESS] create table client_record success
+[2017年09月05日 14:47:05]:[SUCCESS] create table timestamp_record success
+[2017年09月05日 14:47:05]:[SUCCESS] create table timestamp_client success
+[2017年09月05日 14:47:05]:[SUCCESS] create table tsync_black_white_list success
+[2017年09月05日 14:47:05]:[SUCCESS] create table counts_table success
+[2017年09月05日 14:47:05]:[SUCCESS] create all tables success,begin create triggers
+[2017年09月05日 14:47:05]:[SUCCESS] create trigger client_record_trigger_insert success
+[2017年09月05日 14:47:05]:[SUCCESS] create trigger client_record_trigger_delete success
+[2017年09月05日 14:47:05]:[SUCCESS] create trigger timestamp_record_trigger_insert success
+[2017年09月05日 14:47:05]:[SUCCESS] create trigger timestamp_record_trigger_delete success
+[2017年09月05日 14:47:05]:[SUCCESS] create trigger work_log_trigger_insert success
+[2017年09月05日 14:47:05]:[SUCCESS] create trigger work_log_trigger_delete success
+[2017年09月05日 14:47:05]:[SUCCESS] create all triggers success
+[2017年09月05日 14:47:05]:[SUCCESS] Add data into counts_table success 
