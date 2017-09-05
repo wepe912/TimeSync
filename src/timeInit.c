@@ -323,6 +323,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				P_changeData = changeData;
 				P_getData = getData;
 				P_close = closeConnect;
+				P_getLastErr = getLastErr;
 				//write config into config table
 				/**************code here*****************/
 
@@ -583,6 +584,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 						P_changeData = sqlite3_change_data;
 						P_getData = sqlite3_get_data;
 						P_close = sqlite3_close_database;
+						P_getLastErr = sqlite3_get_lasterr;
 					}else{
 						//该数据库之前使用过，判断能不能继续使用，只要配置中有表有一个在已经存在的数据库中，表示该表被用过
 						writeLog("exist samename database,now we check it !",WRITELOG_OTHERS);

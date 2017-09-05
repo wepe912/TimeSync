@@ -23,6 +23,7 @@ int (*P_deleteData)(const char* tableName,const char*  condition);
 int (*P_changeData)(const char* tableName,const char* rowAndValuesAndCon);
 int (*P_getData)(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen);
 void (*P_close)(void);
+int (*P_getLastErr)(unsigned char* err,int errLen);
 
 //DBType数据库类型0为Mysql,1为'sqlite3'
 int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,const char* pwd,unsigned int port);
