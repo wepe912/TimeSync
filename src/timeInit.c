@@ -6,17 +6,18 @@
 //初始化完成记得断开数据 连接，至于 后面要用，谁用谁去连接 
 int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,const char* pwd,unsigned int port){
 	//读取配置项
-	unsigned char key[32*50] = { 0 };//最多50个配置项
-	unsigned char value[64*50] = { 0 };
-	int configNum = 0;
-	int ret = 0;
-	ret = readConfig("./tsync.conf",key,value,&configNum);//读取配置文件
-	if(ret != 0){
-		writeLog("read config error",WRITELOG_ERROR);
-		return READCONFIGFILERR;
-	}else{
-		writeLog("read config success",WRITELOG_SUCCESS);
-	}
+	unsigned char needtables[9][64] = {"config","client_record","ntp_client","timestamp_client","work_log","timestamp_record","tsync_black_white_list","counts_table"};
+	//unsigned char key[32*50] = { 0 };//最多50个配置项
+	//unsigned char value[64*50] = { 0 };
+	//int configNum = 0;
+	//int ret = 0;
+	//ret = readConfig("./tsync.conf",key,value,&configNum);//读取配置文件
+	//if(ret != 0){
+	//	writeLog("read config error",WRITELOG_ERROR);
+	//	return READCONFIGFILERR;
+	//}else{
+	//	writeLog("read config success",WRITELOG_SUCCESS);
+	//}
 
 	switch(DBType){
 		case DBTYP_MYSQL:
@@ -59,23 +60,31 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 						//开始匹配同名数据库中的表与配置文件中的表名相同不
 						int i = 0;
 						int j = 0;
-						int k = 0;
+						//int k = 0;
 						int tableCount = 0;
 						//配置文件中以tables为标识，表示有多少个表，tables=xxx,下面就是表名名称，如table1=config
-						while(strcmp(key + i*32,"tables" ) != 0){
-							i ++;
-						}
-						int configTableNum = atoi(value + i*64);
-						i ++;
-						for(j = i ; j< i + configTableNum; j ++ ){
-							for(k = 0; k < tableNum; k ++){
-								if(strcmp(value + j*64,allTable + k*32) == 0){
+						//while(strcmp(key + i*32,"tables" ) != 0){
+						//	i ++;
+						//}
+						//int configTableNum = atoi(value + i*64);
+						//i ++;
+						//for(j = i ; j< i + configTableNum; j ++ ){
+						//	for(k = 0; k < tableNum; k ++){
+						//		if(strcmp(value + j*64,allTable + k*32) == 0){
+						//			tableCount ++;
+						//			break;
+						//		}
+						//	}
+						//}
+						//if(tableCount == configTableNum){
+						for(i = 0 ; i < TABLENUM;i ++){
+							for(j = 0; j < tableNum; j ++){
+								if(strcmp(needtables[i],allTable + j*32) == 0){
 									tableCount ++;
-									break;
 								}
 							}
 						}
-						if(tableCount == configTableNum){
+						if(tableCount == TABLENUM){
 							writeLog("existed database is the database we might used before ,now we can use it!",WRITELOG_SUCCESS);
 							//初始化完成断不断开数据库？
 							//closeConnect();
@@ -182,7 +191,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				}else{
 					writeLog("create table timestamp_client success",WRITELOG_SUCCESS);
 				}
-				ret = createTable("tsync_black_white_List","(`ID`  int NOT NULL AUTO_INCREMENT ,\
+				ret = createTable("tsync_black_white_list","(`ID`  int NOT NULL AUTO_INCREMENT ,\
 					`IP`  varchar(32) NOT NULL ,\
 					`AllowedNTP`  int NOT NULL DEFAULT 0 ,\
 					`AllowedNTPS`  int NOT NULL DEFAULT 0 ,\
@@ -194,7 +203,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					closeConnect();
 					return CREATETABLEERR;
 				}else{
-					writeLog("create table tsync_black_white_List success",WRITELOG_SUCCESS);
+					writeLog("create table tsync_black_white_list success",WRITELOG_SUCCESS);
 				}
 
 				ret = createTable("counts_table","(`TableName`  varchar(32) NOT NULL ,\
@@ -590,21 +599,22 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 						writeLog("exist samename database,now we check it !",WRITELOG_OTHERS);
 						int i = 0;
 						int tmpCountNum = 0;
-						while(strcmp(key + i*32,"tables" ) != 0){
-								i ++;
-						}
-						int configTableNum = atoi(value + i*64);
-						i ++;
-						tmpCountNum = configTableNum + i;
+						//while(strcmp(key + i*32,"tables" ) != 0){
+						//		i ++;
+						//}
+						//int configTableNum = atoi(value + i*64);
+						////i ++;
+						//tmpCountNum = configTableNum + i;
 
-						for (; i < tmpCountNum; i++)
+						for (i = 0; i < TABLENUM; i++)
 						{
 							/* code */
-							if(strcmp(sqlite3_tables,value +i*64) == 0){
+							//if(strcmp(sqlite3_tables,value +i*64) == 0){
+							if(strcmp(sqlite3_tables,needtables[i]) == 0){
 								break;
 							}
 						}
-						if(i < tmpCountNum){
+						if(i < TABLENUM){
 							writeLog("the existed database is used before by the system,we can use it !",WRITELOG_SUCCESS);
 						}else{
 							writeLog("the existed database is used by another system,we can not use it,please change the database name",WRITELOG_ERROR);

@@ -218,12 +218,12 @@ int main(){
     ret = createDatabase("test2111",NULL);
     ************createDatabase 2 test*************************/
     /*********************test timeSync***************************/
-    //int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.31","root","P@ssw0rd",3306);
+    int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.31","root","P@ssw0rd",3306);
     //ret = createTrigger("testTrigger4","table111",1,2,"update Counts set Counts=Counts where id =1;");
     /*********************test timeSync***************************/
-    int ret = initTimeSync(DBTYP_SQLIGHT3,"testdb.sqlite3",NULL,NULL,NULL,0);
+    ret = initTimeSync(DBTYP_SQLIGHT3,"testdb.sqlite3",NULL,NULL,NULL,0);
     //ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.31","root","P@ssw0rd",3306);
     //int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.59","root","123456",3306);
-    ret = P_addData("counts_table","(TableName,Counts)values('client_record_counts111',0);");
+    //ret = P_addData("counts_table","(TableName,Counts)values('client_record_counts111',0);");
 	return 0;
 }
