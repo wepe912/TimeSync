@@ -18,14 +18,13 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 	//}else{
 	//	writeLog("read config success",WRITELOG_SUCCESS);
 	//}
-
 	switch(DBType){
 		case DBTYP_MYSQL:
 		{
 			int ret = initDatabase(host,usr, pwd, port,NULL,0);
 			if(ret != 0){
 				unsigned char mysqlDbErr[128] = {0};
-				getLastErr(mysqlDbErr,128);
+				int testErr = getLastErr(mysqlDbErr,128);
 				writeLog(mysqlDbErr,WRITELOG_ERROR);
 				return INITDATABASEERR;
 			}else{
@@ -88,6 +87,25 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							writeLog("existed database is the database we might used before ,now we can use it!",WRITELOG_SUCCESS);
 							//初始化完成断不断开数据库？
 							//closeConnect();
+							P_addData = addData;
+							P_deleteData = deleteData;
+							P_changeData = changeData;
+							P_getData = getData;
+							P_close = closeConnect;
+							P_getLastErr = getLastErr;
+							//开始从存在的数据 库中获取配置
+							int rowNum =0;
+			    			int fieldNum = 0;
+			    			int interval[2] = {0};
+			    			unsigned char data[2];
+			    			//虽然只有个字符但是结尾有个0
+			    			ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,interval,data,1);
+			    			if(ret != 0 ){
+			    				writeLog("read config from existed database err ",WRITELOG_ERROR);
+			    			}else{
+			    				tsync_black_white_list_on=data[0];
+			    				writeLog("read config from existed database err ",WRITELOG_SUCCESS);
+			    			}
 							return 0;
 						}else{
 							writeLog("existed database is not the database we used before,please rename database to complete initial!",WRITELOG_ERROR);
@@ -288,7 +306,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				}else{
 					writeLog("create trigger timestamp_record_trigger_delete success",WRITELOG_SUCCESS);
 				}
-						//建Worklog_trigger_insert
+				//建Worklog_trigger_insert
 				ret = createTrigger("work_log_trigger_insert","work_log",1,0,"update counts_table set Counts=Counts + 1 where TableName = 'work_log_counts';");
 				if(ret != 0){
 					getLastErr(createTableErr,128);
@@ -300,7 +318,6 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					writeLog("create trigger work_log_trigger_insert success",WRITELOG_SUCCESS);
 					//sqlite3_close_database();
 				}
-
 
 				//建Worklog_trigger_delete
 				ret = createTrigger("work_log_trigger_delete","work_log",1,1,"update counts_table set Counts=Counts-1 where TableName = 'work_log_counts';");
@@ -314,8 +331,98 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					writeLog("create trigger work_log_trigger_delete success",WRITELOG_SUCCESS);
 					//sqlite3_close_database();
 				}
+
+				//建tsync_black_white_list_trigger_delete
+				ret = createTrigger("tsync_black_white_list_trigger_delete","tsync_black_white_list",1,1,"update counts_table set Counts=Counts-1 where TableName = 'tsync_black_white_list_counts';");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETRIGGERLEERR;
+				}else{
+
+					writeLog("create trigger tsync_black_white_list_trigger_delete success",WRITELOG_SUCCESS);
+					//sqlite3_close_database();
+				}
+				//建tsync_black_white_list_trigger_insert
+				ret = createTrigger("tsync_black_white_list_trigger_insert","tsync_black_white_list",1,0,"update counts_table set Counts=Counts + 1 where TableName = 'tsync_black_white_list_counts';");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETRIGGERLEERR;
+				}else{
+
+					writeLog("create trigger tsync_black_white_list_trigger_insert success",WRITELOG_SUCCESS);
+					//sqlite3_close_database();
+				}
+
+
+				//建ntp_client_trigger_delete
+				ret = createTrigger("ntp_client_trigger_delete","ntp_client",1,1,"update counts_table set Counts=Counts-1 where TableName = 'ntp_client_counts';");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETRIGGERLEERR;
+				}else{
+
+					writeLog("create trigger ntp_client_trigger_delete success",WRITELOG_SUCCESS);
+					//sqlite3_close_database();
+				}
+				//建ntp_client_trigger_insert
+				ret = createTrigger("ntp_client_trigger_insert","ntp_client",1,0,"update counts_table set Counts=Counts + 1 where TableName = 'ntp_client_counts';");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETRIGGERLEERR;
+				}else{
+
+					writeLog("create trigger ntp_client_trigger_insert success",WRITELOG_SUCCESS);
+					//sqlite3_close_database();
+				}
+
+				//建timestamp_client_trigger_delete
+				ret = createTrigger("timestamp_client_trigger_delete","timestamp_client",1,1,"update counts_table set Counts=Counts-1 where TableName = 'timestamp_client_counts';");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETRIGGERLEERR;
+				}else{
+
+					writeLog("create trigger timestamp_client_trigger_delete success",WRITELOG_SUCCESS);
+					//sqlite3_close_database();
+				}
+				//建timestamp_client_trigger_insert
+				ret = createTrigger("timestamp_client_trigger_insert","timestamp_client",1,0,"update counts_table set Counts=Counts + 1 where TableName = 'timestamp_client_counts';");
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return CREATETRIGGERLEERR;
+				}else{
+
+					writeLog("create trigger timestamp_client_trigger_insert success",WRITELOG_SUCCESS);
+					//sqlite3_close_database();
+				}
+
+
 				writeLog("create all triggers success",WRITELOG_SUCCESS);
-				ret = addData("counts_table","(TableName,Counts)values('client_record_counts',0),('timestamp_record_counts',0),('work_log_counts',0);");
+				ret = addData("config","(Name,Value)values('tsync_black_white_list_on','0');");
+
+				if(ret != 0){
+					getLastErr(createTableErr,128);
+					writeLog(createTableErr,WRITELOG_ERROR);
+					closeConnect();
+					return ADDDATAERR;
+				}else{
+
+					writeLog("Add data into config success ",WRITELOG_SUCCESS);
+					//sqlite3_close_database();
+				}
+				ret = addData("counts_table","(TableName,Counts)values('client_record_counts',0),('timestamp_record_counts',0),('work_log_counts',0),('tsync_black_white_list_counts',0),('ntp_client_counts',0),('timestamp_client_counts',0);");
 
 				if(ret != 0){
 					getLastErr(createTableErr,128);
@@ -333,6 +440,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 				P_getData = getData;
 				P_close = closeConnect;
 				P_getLastErr = getLastErr;
+
 				//write config into config table
 				/**************code here*****************/
 
@@ -576,8 +684,90 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							writeLog("create trigger work_log_trigger_delete success",WRITELOG_SUCCESS);
 							//sqlite3_close_database();
 						}
+
+						//建tsync_black_white_list_trigger_insert
+						ret = sqlite3_createTrigger("tsync_black_white_list_trigger_insert","tsync_black_white_list",1,0,"update counts_table set Counts=Counts + 1 where TableName = 'tsync_black_white_list_counts';");
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETRIGGERLEERR;
+						}else{
+
+							writeLog("create trigger tsync_black_white_list_trigger_insert success",WRITELOG_SUCCESS);
+							//sqlite3_close_database();
+						}
+
+
+						//建tsync_black_white_list_trigger_delete
+						ret = sqlite3_createTrigger("tsync_black_white_list_trigger_delete","tsync_black_white_list",1,1,"update counts_table set Counts=Counts-1 where TableName = 'tsync_black_white_list_counts';");
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETRIGGERLEERR;
+						}else{
+
+							writeLog("create trigger tsync_black_white_list_trigger_delete success",WRITELOG_SUCCESS);
+							//sqlite3_close_database();
+						}
+						//建ntp_client_trigger_insert
+						ret = sqlite3_createTrigger("ntp_client_trigger_insert","ntp_client",1,0,"update counts_table set Counts=Counts + 1 where TableName = 'ntp_client_counts';");
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETRIGGERLEERR;
+						}else{
+
+							writeLog("create trigger ntp_client_trigger_insert success",WRITELOG_SUCCESS);
+							//sqlite3_close_database();
+						}
+
+
+						//建ntp_client_trigger_delete
+						ret = sqlite3_createTrigger("ntp_client_trigger_delete","ntp_client",1,1,"update counts_table set Counts=Counts-1 where TableName = 'ntp_client_counts';");
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETRIGGERLEERR;
+						}else{
+
+							writeLog("create trigger ntp_client_trigger_delete success",WRITELOG_SUCCESS);
+							//sqlite3_close_database();
+						}
+
+						//建timestamp_client_trigger_insert
+						ret = sqlite3_createTrigger("timestamp_client_trigger_insert","timestamp_client",1,0,"update counts_table set Counts=Counts + 1 where TableName = 'timestamp_client_counts';");
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETRIGGERLEERR;
+						}else{
+
+							writeLog("create trigger timestamp_client_trigger_insert success",WRITELOG_SUCCESS);
+							//sqlite3_close_database();
+						}
+
+
+						//建timestamp_client_trigger_delete
+						ret = sqlite3_createTrigger("timestamp_client_trigger_delete","timestamp_client",1,1,"update counts_table set Counts=Counts-1 where TableName = 'timestamp_client_counts';");
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return CREATETRIGGERLEERR;
+						}else{
+
+							writeLog("create trigger timestamp_client_trigger_delete success",WRITELOG_SUCCESS);
+							//sqlite3_close_database();
+						}
+
+
 						writeLog("create all triggers success",WRITELOG_SUCCESS);
-						ret = sqlite3_add_data("counts_table","(TableName,Counts)values('client_record_counts',0),('timestamp_record_counts',0),('work_log_counts',0);");
+						ret = sqlite3_add_data("counts_table","(TableName,Counts)values('client_record_counts',0),('timestamp_record_counts',0),('work_log_counts',0),('timestamp_client_counts',0),('ntp_client_counts',0),('tsync_black_white_list_counts',0);");
 						if(ret != 0){
 							sqlite3_get_lasterr(sqlite3_err,128);
 							writeLog(sqlite3_err,WRITELOG_ERROR);
@@ -588,12 +778,25 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							writeLog("Add data into counts_table success ",WRITELOG_SUCCESS);
 							//sqlite3_close_database();
 						}
+
+						ret = sqlite3_add_data("config","(Name,Value)values('tsync_black_white_list_on','0');");
+						if(ret != 0){
+							sqlite3_get_lasterr(sqlite3_err,128);
+							writeLog(sqlite3_err,WRITELOG_ERROR);
+							sqlite3_close_database();
+							return ADDDATAERR;
+						}else{
+
+							writeLog("Add data into config success ",WRITELOG_SUCCESS);
+							//sqlite3_close_database();
+						}
 						P_addData = sqlite3_add_data;
 						P_deleteData = sqlite3_delete_data;
 						P_changeData = sqlite3_change_data;
 						P_getData = sqlite3_get_data;
 						P_close = sqlite3_close_database;
 						P_getLastErr = sqlite3_get_lasterr;
+						return 0;
 					}else{
 						//该数据库之前使用过，判断能不能继续使用，只要配置中有表有一个在已经存在的数据库中，表示该表被用过
 						writeLog("exist samename database,now we check it !",WRITELOG_OTHERS);
@@ -615,7 +818,28 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							}
 						}
 						if(i < TABLENUM){
+							P_addData = sqlite3_add_data;
+							P_deleteData = sqlite3_delete_data;
+							P_changeData = sqlite3_change_data;
+							P_getData = sqlite3_get_data;
+							P_close = sqlite3_close_database;
+							P_getLastErr = sqlite3_get_lasterr;
 							writeLog("the existed database is used before by the system,we can use it !",WRITELOG_SUCCESS);
+							//开始从存在的数据的数据 库中获取配置
+							int rowNum =0;
+			    			int fieldNum = 0;
+			    			int interval[2] = { 0 };
+			    			unsigned char data[2] = { 0 }; 
+			    			ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,interval,data,1);
+			    			if(ret != 0 ){
+			    				writeLog("read config from existed database err ",WRITELOG_ERROR);
+			    			}else{
+			    				tsync_black_white_list_on = data[0];
+			    				writeLog("read config from existed database err ",WRITELOG_SUCCESS);
+			    			}
+
+
+							return 0;
 						}else{
 							writeLog("the existed database is used by another system,we can not use it,please change the database name",WRITELOG_ERROR);
 							sqlite3_close_database();

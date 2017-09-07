@@ -196,7 +196,7 @@ int sqlite3_get_data(const char* tableName,const char* selectArges,const char* c
 		if(sqlStrSelect == NULL){
 			return SQLITE_MALLOCERR;
 		}
-		sprintf(sqlStrSelect,"%s%s%s%s%s","select ",selectArges," from ", tableName,condition);
+		sprintf(sqlStrSelect,"%s%s%s%s%s%s","select ",selectArges," from ", tableName," ",condition);
 	}
 
 	/*int callback_select(void *NotUsed, int argc, char **argv, char **azColName){
@@ -323,10 +323,11 @@ int sqlite3_get_lasterr(unsigned char* err,int errLen){
 	int errRealLen = strlen(sqlite3_err);
 	if(errRealLen > errLen){
 		memcpy(err,sqlite3_err,errLen);
-		return OUTPUT_SAPACE_ERR;
+		return sqlite3_errcode(sqlite3Db);
+		//return OUTPUT_SAPACE_ERR;
 	}else{
 		memcpy(err,sqlite3_err,errRealLen);
-		return 0;
+		return sqlite3_errcode(sqlite3Db);
 	}
 }
 

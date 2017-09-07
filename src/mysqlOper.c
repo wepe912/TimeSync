@@ -6,7 +6,10 @@ int initDatabase(const char* host,const char* usr,const char* pwd,unsigned int p
 
 	mysql_library_init(0, NULL, NULL);
     mysql_init(&mysql);
-    if(!mysql_real_connect(&mysql,host,usr,pwd,"mysql",port,unix_socket,clientflag)){
+    int ml_outtime = 20;
+	//mysql_options(&mysql, MYSQL_OPT_CONNECT_TIMEOUT, &ml_outtime);
+    //int ret = mysql_real_connect(&mysql,host,usr,pwd,"mysql",port,unix_socket,clientflag);
+    if(!mysql_real_connect(&mysql,host,usr,pwd,"mysql",port,unix_socket,clientflag) ){
     	//printf("无法连接到数据库，错误原因：%s\n", mysql_error(&mysql));
     	//writeLog(mysql_error(&mysql));
     	return CONNECTERR;
@@ -177,7 +180,7 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 			if(sqlStrSelect == NULL){
 				return MALLOCERR;
 			}
-			sprintf(sqlStrSelect,"%s%s%s%s%s","select ",selectArges," from ", tableName,condition);
+			sprintf(sqlStrSelect,"%s%s%s%s%s%s","select ",selectArges," from ", tableName," ",condition);
 		}
 		int ret = mysql_query(&mysql,sqlStrSelect);
 		if(ret != 0){
@@ -266,7 +269,7 @@ int getLastErr(unsigned char* err,int errLen){
 		return OUTPUTSAPACELESS;
 	}
 	memcpy(err,mysql_error(&mysql),msqlErrLen);
-	return 0;
+	return mysql_errno(&mysql);
 }
 
 /*
