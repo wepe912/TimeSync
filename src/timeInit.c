@@ -96,15 +96,15 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							//开始从存在的数据 库中获取配置
 							int rowNum =0;
 			    			int fieldNum = 0;
-			    			int interval[2] = {0};
-			    			unsigned char data[2];
+			    			int interval = 0;
+			    			//unsigned char data[2];
 			    			//虽然只有个字符但是结尾有个0
-			    			ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,interval,data,1);
+			    			ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,&interval,&tsync_black_white_list_on,1);
 			    			if(ret != 0 ){
 			    				writeLog("read config from existed database err ",WRITELOG_ERROR);
 			    			}else{
-			    				tsync_black_white_list_on=data[0];
-			    				writeLog("read config from existed database err ",WRITELOG_SUCCESS);
+			    				//tsync_black_white_list_on=data[0];
+			    				writeLog("read config from existed database success ",WRITELOG_SUCCESS);
 			    			}
 							return 0;
 						}else{
@@ -828,14 +828,14 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							//开始从存在的数据的数据 库中获取配置
 							int rowNum =0;
 			    			int fieldNum = 0;
-			    			int interval[2] = { 0 };
-			    			unsigned char data[2] = { 0 }; 
-			    			ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,interval,data,1);
+			    			int interval =  0 ;
+			    			//unsigned char data[2] = { 0 }; 
+			    			ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,&interval,&tsync_black_white_list_on,1);
 			    			if(ret != 0 ){
 			    				writeLog("read config from existed database err ",WRITELOG_ERROR);
 			    			}else{
-			    				tsync_black_white_list_on = data[0];
-			    				writeLog("read config from existed database err ",WRITELOG_SUCCESS);
+			    				//tsync_black_white_list_on = data[0];
+			    				writeLog("read config from existed database success ",WRITELOG_SUCCESS);
 			    			}
 
 
