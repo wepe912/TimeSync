@@ -93,12 +93,11 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 							P_getData = getData;
 							P_close = closeConnect;
 							P_getLastErr = getLastErr;
-							//开始从存在的数据 库中获取配置
+							//如果数据库存在，或者系统重新启动时需要将配置再次将配置载入
 							int rowNum =0;
 			    			int fieldNum = 0;
 			    			int interval = 0;
 			    			//unsigned char data[2];
-			    			//虽然只有个字符但是结尾有个0
 			    			ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,&interval,&tsync_black_white_list_on,1);
 			    			if(ret != 0 ){
 			    				writeLog("read config from existed database err ",WRITELOG_ERROR);
@@ -106,6 +105,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 			    				//tsync_black_white_list_on=data[0];
 			    				writeLog("read config from existed database success ",WRITELOG_SUCCESS);
 			    			}
+
 							return 0;
 						}else{
 							writeLog("existed database is not the database we used before,please rename database to complete initial!",WRITELOG_ERROR);

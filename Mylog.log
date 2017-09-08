@@ -1,0 +1,10 @@
+[2017年09月08日 14:41:25]:[SUCCESS] connect database success
+[2017年09月08日 14:41:25]:[OTHERS ] exist samename database,now we check it !
+[2017年09月08日 14:41:25]:[SUCCESS] the existed database is used before by the system,we can use it !
+[2017年09月08日 14:41:25]:[SUCCESS] read config from existed database success 
+[2017年09月08日 14:41:25]:[SUCCESS] connect Mysql Database success.
+[2017年09月08日 14:41:25]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月08日 14:41:25]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月08日 14:41:25]:[SUCCESS] change existed database success.
+[2017年09月08日 14:41:25]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月08日 14:41:25]:[SUCCESS] read config from existed database success 

@@ -218,10 +218,26 @@ int main(){
     ret = createDatabase("test2111",NULL);
     ************createDatabase 2 test*************************/
     /*********************test timeSync***************************/
-    int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.59","root","123456",3306);
+    int (*P_sqlite3_addData)(const char* tableName,const char*  rowAndValues);
+    int (*P_sqlite3_deleteData)(const char* tableName,const char*  condition);
+    int (*P_sqlite3_changeData)(const char* tableName,const char* rowAndValuesAndCon);
+    int (*P_sqlite3_getData)(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen);
+    void (*P_sqlite3_close)(void);
+    int (*P_sqlite3_getLastErr)(unsigned char* err,int errLen);
+
+    int  ret = initTimeSync(DBTYP_SQLIGHT3,"testdb.sqlite3",NULL,NULL,NULL,0);
+
+    P_sqlite3_addData = P_addData;
+    P_sqlite3_deleteData = P_deleteData;
+    P_sqlite3_changeData = P_changeData;
+    P_sqlite3_getData = P_getData;
+    P_sqlite3_close = P_close;
+    P_sqlite3_getLastErr = P_getLastErr;
+    ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.59","root","123456",3306);
+        printf("ret === %d\n", ret);
     //ret = createTrigger("testTrigger4","table111",1,2,"update Counts set Counts=Counts where id =1;");
     /*********************test timeSync***************************/
-    //ret = initTimeSync(DBTYP_SQLIGHT3,"testdb.sqlite3",NULL,NULL,NULL,0);
+   
     P_BW_list = (BW_list*)calloc(3,sizeof(BW_list));
     memcpy(P_BW_list[0].IP,"192.168.111.111",16);
     P_BW_list[0].allowed_ntp = '0';
@@ -235,12 +251,30 @@ int main(){
     int fieldNum = 0;
     int interval[8] = { 0 };
     unsigned char data[12] = { 0 };
+    int i = 0;
+    int errNum = 0;
+    unsigned char sqlerr[128] = { 0 };
+    while(1){
+        ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,interval,data,12);
 
-    ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,interval,data,12);
-    printf("data = %s\n", data);
-    printf(" tsync_black_white_list_on = %c\n",tsync_black_white_list_on );
+        if(ret == 0){
+            printf(" tsync_black_white_list_on = %c\n",tsync_black_white_list_on );
+        }else {
+            errNum = P_getLastErr(sqlerr,128);
+            printf("errNum = %d\n",errNum );
+            if(errNum == 2013){
+                printf("database err :errNum=%d,detail:%s\n",errNum,sqlerr );
+                printf("changeDatabase sqlite3\n");
+                P_getData = P_sqlite3_getData;
+            }
+        }
+        sleep(1);
+        
+    }
+
     //ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.31","root","P@ssw0rd",3306);
     //int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.59","root","123456",3306);
     //ret = P_addData("counts_table","(TableName,Counts)values('client_record_counts111',0);");
+
 	return 0;
 }

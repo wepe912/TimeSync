@@ -2,8 +2,8 @@
 #define MYSQLOPER_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/mysql_include/mysql.h"
-#include "../include/writeLogFile.h"
+#include "./mysql_include/mysql.h"
+#include "./writeLogFile.h"
 
 
 #define CONNECTERR  -0x0001

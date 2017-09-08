@@ -6,8 +6,13 @@ int initDatabase(const char* host,const char* usr,const char* pwd,unsigned int p
 
 	mysql_library_init(0, NULL, NULL);
     mysql_init(&mysql);
-    int ml_outtime = 20;
-	//mysql_options(&mysql, MYSQL_OPT_CONNECT_TIMEOUT, &ml_outtime);
+    int ml_outtime = 10;
+    char disconnect = 1;
+    int time_out = 3;
+
+	mysql_options(&mysql, MYSQL_OPT_CONNECT_TIMEOUT, &ml_outtime);
+	mysql_options(&mysql,MYSQL_OPT_READ_TIMEOUT,(const char*)&time_out);
+	//mysql_options(&mysql, MYSQL_OPT_RECONNECT,(char *)&disconnect);
     //int ret = mysql_real_connect(&mysql,host,usr,pwd,"mysql",port,unix_socket,clientflag);
     if(!mysql_real_connect(&mysql,host,usr,pwd,"mysql",port,unix_socket,clientflag) ){
     	//printf("无法连接到数据库，错误原因：%s\n", mysql_error(&mysql));
@@ -232,6 +237,7 @@ int getData(const char* tableName,const char* selectArges,const char* condition,
 				}
 			}
 			free(sqlStrSelect);
+			mysql_free_result(resPtr);
 			return 0;
 		}else{
 			free(sqlStrSelect);
