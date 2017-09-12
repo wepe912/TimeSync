@@ -11,7 +11,7 @@
 #include "../include/sqlite3Oper.h"
 
 #include "../include/timeInit.h"
-
+#include "../include/nowTime.h"
 #include <time.h>
 int main(){
 	/*********************************
@@ -265,6 +265,9 @@ int main(){
     int i = 0;
     int errNum = 0;
     unsigned char sqlerr[128] = { 0 };
+    unsigned char time1[32] = { 0 };
+    getNowTime(time1,32);
+    printf("time = %s\n", time1);
     while(1){
         //ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,interval,data,12);
         ret = P_addData("client_record","(IP,Type,Time)values('192.168.0.1','NTP','2017-09-12 11:43:12')");
