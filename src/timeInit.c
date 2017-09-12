@@ -54,7 +54,7 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 					if(getAllTableName(allTable,&tableNum) != 0){
 						writeLog("get all table  in existed database err!",WRITELOG_ERROR);
 						closeConnect();
-						return GETALLTABLENAMEERR;
+						return INIGETALLTABLENAMEERR;
 					}else{
 						//开始匹配同名数据库中的表与配置文件中的表名相同不
 						int i = 0;

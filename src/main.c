@@ -219,12 +219,7 @@ int main(){
     ret = createDatabase("test2111",NULL);
     ************createDatabase 2 test*************************/
     /*********************test timeSync***************************/
-    int (*P_sqlite3_addData)(const char* tableName,const char*  rowAndValues);
-    int (*P_sqlite3_deleteData)(const char* tableName,const char*  condition);
-    int (*P_sqlite3_changeData)(const char* tableName,const char* rowAndValuesAndCon);
-    int (*P_sqlite3_getData)(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen);
-    void (*P_sqlite3_close)(void);
-    int (*P_sqlite3_getLastErr)(unsigned char* err,int errLen);
+
 
     int  ret = initTimeSync(DBTYP_SQLIGHT3,"testdb.sqlite3",NULL,NULL,NULL,0);
 

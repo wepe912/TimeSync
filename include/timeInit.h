@@ -7,16 +7,18 @@
 #define		UNKNOWNDATABASETYPE	-0x0001
 #define		INITDATABASEERR		-0x0002
 #define		CHANGEDATABASEERR	-0x0003
-#define		GETALLTABLENAMEERR	-0x0004
+#define		INIGETALLTABLENAMEERR	-0x0004
 #define		SAMENAMEDATABASEERR	-0x0005
 #define		READCONFIGFILERR	-0x0006
 #define		CREATETABLEERR		-0x0007
 #define		CREATETRIGGERLEERR	-0x0008
 #define		ADDDATAERR			-0x0009
 
-#define		DBTYP_MYSQL			0x0000
-#define		DBTYP_SQLIGHT3		0x0001
+#define		DBTYP_MYSQL			0x0001
+#define		DBTYP_SQLIGHT3		0x0000
 #define 	TABLENUM			0x0008
+
+#define		DBTYPNUM			0x0002
 
 //******************配置项************************//
 //黑白名单结构体
@@ -58,6 +60,15 @@ int (*P_changeData)(const char* tableName,const char* rowAndValuesAndCon);
 int (*P_getData)(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen);
 void (*P_close)(void);
 int (*P_getLastErr)(unsigned char* err,int errLen);
+
+//防灾数据库函数指针
+int (*P_sqlite3_addData)(const char* tableName,const char*  rowAndValues);
+int (*P_sqlite3_deleteData)(const char* tableName,const char*  condition);
+int (*P_sqlite3_changeData)(const char* tableName,const char* rowAndValuesAndCon);
+int (*P_sqlite3_getData)(const char* tableName,const char* selectArges,const char* condition,int* rowNum,int* fieldNum, int* interval , unsigned char* data,int dataLen);
+void (*P_sqlite3_close)(void);
+int (*P_sqlite3_getLastErr)(unsigned char* err,int errLen);
+
 
 //DBType数据库类型0为Mysql,1为'sqlite3'
 int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,const char* pwd,unsigned int port);
