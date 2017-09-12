@@ -6,7 +6,7 @@ int initDatabase(const char* host,const char* usr,const char* pwd,unsigned int p
 
 	mysql_library_init(0, NULL, NULL);
     mysql_init(&mysql);
-    int ml_outtime = 10;
+    int ml_outtime = 3;
     char disconnect = 1;
     int time_out = 3;
 

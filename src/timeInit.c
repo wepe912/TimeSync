@@ -858,3 +858,20 @@ int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,
 
 	return 0;
 }
+
+void accidentDeal(void ){
+	while(1){
+		if(accident_database == 0){
+			//printf("database  ok !\n");
+			sleep(1);
+		}else{
+			//printf("database err hapen ..........\n");
+			int ret = initTimeSync(third_db.db_type,third_db.db_name,third_db.db_host,third_db.db_usr,third_db.db_passwd,third_db.db_port);
+			if(ret ==0){
+			//printf("database recover!\n");
+				accident_database = 0;
+			}
+		}
+	}
+
+}

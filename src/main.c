@@ -2,6 +2,7 @@
 //#include "../include/readConfig.h"
 //#include "../include/checkPort.h"
 #include <stdlib.h>
+#include <pthread.h>
 //#include "../include/mysql_include/mysql.h"
 #include "../include/mysqlOper.h"
 
@@ -235,6 +236,21 @@ int main(){
     P_sqlite3_getLastErr = P_getLastErr;
     ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.59","root","123456",3306);
         printf("ret === %d\n", ret);
+    if(ret == 0){
+        accident_database = 0;
+        pthread_t accidentDealThread;
+        third_db.db_type = DBTYP_MYSQL;
+        third_db.db_port = 3306;
+        memcpy(third_db.db_name,"testdb_mysql12",16);
+        memcpy(third_db.db_host,"192.168.0.59",16);
+        memcpy(third_db.db_usr,"root",5);
+        memcpy(third_db.db_passwd,"123456",7);
+        ret = pthread_create(&accidentDealThread,NULL,(void *)accidentDeal,NULL);
+        ret = pthread_detach(accidentDealThread);
+        //start accidentDeal
+    }else{
+        return -1;
+    }
     //ret = createTrigger("testTrigger4","table111",1,2,"update Counts set Counts=Counts where id =1;");
     /*********************test timeSync***************************/
    
@@ -255,10 +271,11 @@ int main(){
     int errNum = 0;
     unsigned char sqlerr[128] = { 0 };
     while(1){
-        ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,interval,data,12);
-
+        //ret = P_getData("config","Value","where Name='tsync_black_white_list_on'",&rowNum,&fieldNum,interval,data,12);
+        ret = P_addData("client_record","(IP,Type,Time)values('192.168.0.1','NTP','2017-09-12 11:43:12')");
         if(ret == 0){
-            printf(" tsync_black_white_list_on = %c\n",tsync_black_white_list_on );
+           // printf(" tsync_black_white_list_on = %c\n",data[0] );
+            printf("add data ok ！\n");
         }else {
             errNum = P_getLastErr(sqlerr,128);
             printf("errNum = %d\n",errNum );
@@ -266,6 +283,8 @@ int main(){
                 printf("database err :errNum=%d,detail:%s\n",errNum,sqlerr );
                 printf("changeDatabase sqlite3\n");
                 P_getData = P_sqlite3_getData;
+                P_addData = P_sqlite3_addData;
+                accident_database = 1;
             }
         }
         sleep(1);

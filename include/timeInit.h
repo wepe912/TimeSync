@@ -18,7 +18,7 @@
 #define		DBTYP_SQLIGHT3		0x0001
 #define 	TABLENUM			0x0008
 
-//****************配置项*********************
+//******************配置项************************//
 //黑白名单结构体
 typedef struct tsync_black_white_list
 {
@@ -32,9 +32,23 @@ unsigned char tsync_black_white_list_on;
 //黑白名单内存地址
 BW_list* P_BW_list;
 
-//****************配置项*********************
+//******************配置项************************//
 
+//***********数据库意外标识***********************//
+int accident_database;
 
+//*********数据库连接参数************************//
+typedef struct  database_args
+{
+	/* data */
+	int db_type;
+	int db_port;
+	unsigned char db_name[32];
+	unsigned char db_host[32];
+	unsigned char db_usr[16];
+	unsigned char db_passwd[32]; 
+}DB_args;
+DB_args third_db;
 
 
 //数据库操作增删改查函数指针，目前程序一旦初始成功，后续的程序只会使用到下面几个数据库接口。根据不同类型的数据库，初始化的时候会指向不同的函数
@@ -48,5 +62,6 @@ int (*P_getLastErr)(unsigned char* err,int errLen);
 //DBType数据库类型0为Mysql,1为'sqlite3'
 int initTimeSync(int DBType,const char* DBName,const char* host,const char* usr,const char* pwd,unsigned int port);
 
+void accidentDeal(void);
 
 #endif

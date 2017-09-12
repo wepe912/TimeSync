@@ -1,10 +1,114 @@
-[2017年09月08日 14:41:25]:[SUCCESS] connect database success
-[2017年09月08日 14:41:25]:[OTHERS ] exist samename database,now we check it !
-[2017年09月08日 14:41:25]:[SUCCESS] the existed database is used before by the system,we can use it !
-[2017年09月08日 14:41:25]:[SUCCESS] read config from existed database success 
-[2017年09月08日 14:41:25]:[SUCCESS] connect Mysql Database success.
-[2017年09月08日 14:41:25]:[WARNING] Can't create database 'testdb_mysql12'; database exists
-[2017年09月08日 14:41:25]:[OTHERS ] now we change into the existed database to check! 
-[2017年09月08日 14:41:25]:[SUCCESS] change existed database success.
-[2017年09月08日 14:41:25]:[SUCCESS] existed database is the database we might used before ,now we can use it!
-[2017年09月08日 14:41:25]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:13:29]:[SUCCESS] connect database success
+[2017年09月12日 10:13:29]:[OTHERS ] exist samename database,now we check it !
+[2017年09月12日 10:13:29]:[SUCCESS] the existed database is used before by the system,we can use it !
+[2017年09月12日 10:13:29]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:13:29]:[SUCCESS] connect Mysql Database success.
+[2017年09月12日 10:13:29]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月12日 10:13:29]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月12日 10:13:29]:[SUCCESS] change existed database success.
+[2017年09月12日 10:13:29]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月12日 10:13:29]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:13:45]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:13:48]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:13:51]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:13:54]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:13:57]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:14:00]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:14:03]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:14:04]:[SUCCESS] connect Mysql Database success.
+[2017年09月12日 10:14:04]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月12日 10:14:04]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月12日 10:14:04]:[SUCCESS] change existed database success.
+[2017年09月12日 10:14:04]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月12日 10:14:04]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:16:31]:[SUCCESS] connect database success
+[2017年09月12日 10:16:31]:[OTHERS ] exist samename database,now we check it !
+[2017年09月12日 10:16:31]:[SUCCESS] the existed database is used before by the system,we can use it !
+[2017年09月12日 10:16:31]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:16:31]:[SUCCESS] connect Mysql Database success.
+[2017年09月12日 10:16:31]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月12日 10:16:31]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月12日 10:16:31]:[SUCCESS] change existed database success.
+[2017年09月12日 10:16:31]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月12日 10:16:31]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:17:09]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:17:12]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:17:15]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:17:18]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:17:21]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:17:21]:[SUCCESS] connect Mysql Database success.
+[2017年09月12日 10:17:21]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月12日 10:17:21]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月12日 10:17:21]:[SUCCESS] change existed database success.
+[2017年09月12日 10:17:21]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月12日 10:17:21]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:19:59]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:02]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:05]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:08]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:11]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:14]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:17]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:20]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:23]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:26]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:29]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:32]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:35]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:38]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:41]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:44]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:47]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:20:47]:[SUCCESS] connect Mysql Database success.
+[2017年09月12日 10:20:47]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月12日 10:20:47]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月12日 10:20:47]:[SUCCESS] change existed database success.
+[2017年09月12日 10:20:47]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月12日 10:20:47]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:26:44]:[SUCCESS] connect database success
+[2017年09月12日 10:26:44]:[OTHERS ] exist samename database,now we check it !
+[2017年09月12日 10:26:44]:[SUCCESS] the existed database is used before by the system,we can use it !
+[2017年09月12日 10:26:44]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:26:44]:[SUCCESS] connect Mysql Database success.
+[2017年09月12日 10:26:44]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月12日 10:26:44]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月12日 10:26:44]:[SUCCESS] change existed database success.
+[2017年09月12日 10:26:44]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月12日 10:26:44]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:27:16]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:27:19]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:27:22]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:27:25]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:27:28]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:27:28]:[SUCCESS] connect Mysql Database success.
+[2017年09月12日 10:27:28]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月12日 10:27:28]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月12日 10:27:28]:[SUCCESS] change existed database success.
+[2017年09月12日 10:27:28]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月12日 10:27:28]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:39:08]:[SUCCESS] connect database success
+[2017年09月12日 10:39:08]:[OTHERS ] exist samename database,now we check it !
+[2017年09月12日 10:39:08]:[SUCCESS] the existed database is used before by the system,we can use it !
+[2017年09月12日 10:39:08]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:39:08]:[SUCCESS] connect Mysql Database success.
+[2017年09月12日 10:39:08]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月12日 10:39:08]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月12日 10:39:08]:[SUCCESS] change existed database success.
+[2017年09月12日 10:39:08]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月12日 10:39:08]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:41:20]:[SUCCESS] connect database success
+[2017年09月12日 10:41:20]:[OTHERS ] exist samename database,now we check it !
+[2017年09月12日 10:41:20]:[SUCCESS] the existed database is used before by the system,we can use it !
+[2017年09月12日 10:41:20]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:41:20]:[SUCCESS] connect Mysql Database success.
+[2017年09月12日 10:41:20]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月12日 10:41:20]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月12日 10:41:20]:[SUCCESS] change existed database success.
+[2017年09月12日 10:41:20]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月12日 10:41:20]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:41:34]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
+[2017年09月12日 10:41:45]:[SUCCESS] connect database success
+[2017年09月12日 10:41:45]:[OTHERS ] exist samename database,now we check it !
+[2017年09月12日 10:41:45]:[SUCCESS] the existed database is used before by the system,we can use it !
+[2017年09月12日 10:41:45]:[SUCCESS] read config from existed database success 
+[2017年09月12日 10:41:48]:[ERROR  ] Can't connect to MySQL server on '192.168.0.59' (4)
