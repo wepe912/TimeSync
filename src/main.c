@@ -218,7 +218,7 @@ int main(){
     int ret = initDatabase("192.168.0.31","root","P@ssw0rd",3306,NULL,0);
     ret = createDatabase("test2111",NULL);
     ************createDatabase 2 test*************************/
-    /*********************test timeSync***************************/
+    /*********************test timeSync***************************
 
 
     int  ret = initTimeSync(DBTYP_SQLIGHT3,"testdb.sqlite3",NULL,NULL,NULL,0);
@@ -247,7 +247,7 @@ int main(){
         return -1;
     }
     //ret = createTrigger("testTrigger4","table111",1,2,"update Counts set Counts=Counts where id =1;");
-    /*********************test timeSync***************************/
+
    
     P_BW_list = (BW_list*)calloc(3,sizeof(BW_list));
     memcpy(P_BW_list[0].IP,"192.168.111.111",16);
@@ -292,6 +292,28 @@ int main(){
     //ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.31","root","P@ssw0rd",3306);
     //int ret = initTimeSync(DBTYP_MYSQL,"testdb_mysql12","192.168.0.59","root","123456",3306);
     //ret = P_addData("counts_table","(TableName,Counts)values('client_record_counts111',0);");
+    *********************test timeSync***************************/
+    #define JAN_1970 2208988800UL       /* Unix base epoch */
+    typedef struct {
+        unsigned int Ul_i;
+        unsigned int l_uf;
+    } l_fp;
 
+    struct timespec ts;
+    int i = 0;
+    do{
+        int ret = clock_gettime(CLOCK_REALTIME, &ts);
+        if(ts.tv_nsec > 1000000000){
+             printf("ts.tv_sec = %ld,*** ts.tv_nsec= %ld\n", ts.tv_sec,ts.tv_nsec);
+        }
+        i ++ ;
+    }while(i < 1000);
+    printf("ts.tv_sec = %ld,*** ts.tv_nsec= %ld\n", ts.tv_sec,ts.tv_nsec);
+    unsigned int sec = (unsigned int)ts.tv_sec;
+    unsigned int n_sec = (unsigned int)ts.tv_nsec;
+    long double  test = n_sec / 1000000000;
+    printf("test = %lf\n",test );
+    printf("%d -- %d\n",sec,n_sec );
+    
 	return 0;
 }
