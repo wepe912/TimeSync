@@ -314,6 +314,6 @@ int main(){
     long double  test = n_sec / 1000000000;
     printf("test = %lf\n",test );
     printf("%d -- %d\n",sec,n_sec );
-    
+    printf("sizeof(double) = %d\n", sizeof(double));
 	return 0;
 }
