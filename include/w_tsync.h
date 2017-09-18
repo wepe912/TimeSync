@@ -1,6 +1,7 @@
 #ifndef W_TSYNC_H
 #define	W_TSYNC_H
 #include "./timeInit.h"
+#include <time.h>
 /*
  * deal the first byte in ntp packet
  */
@@ -48,6 +49,9 @@
 		(v_f) = ~(v_f) + 1u; \
 		(v_i) = ~(v_i) + ((v_f) == 0); \
 	} while (FALSE)
+
+#define	M_ISNEG(v_i)			/* v < 0 */ \
+	(((v_i) & 0x80000000) != 0)
 
 #define M_DTONTP_S(d, r_ui, r_uf) 		/* double to ntp_ts */ \
 	do { \
@@ -101,6 +105,14 @@ do { \
 #define	min3(a,b,c)	min(min((a),(b)), (c))
 
 
+#define FRAC		4294967296.0 		/* 2^32 as a double */
+ /* nanoseconds per second */
+#define NANOSECONDS 1000000000
+# define NSECFRAC	(FRAC / NANOSECONDS)
+# define TVNTOF(tvu)						\
+	((u_int32)((tvu) * NSECFRAC + 0.5))
+
+
 
 
 
@@ -150,5 +162,7 @@ int tsync_client(int tsync_type,const char* server_addr); /* get time from peer 
 
 void deal_network_packet(int type,int port); /* deal network packet without thread */ 
 
-void get_systime(ntp_ts* now);/* use clock_gettime get systime and convert into ntp_ts formate */
+//int get_systime(ntp_ts* now);/* use clock_gettime get systime and convert into ntp_ts formate */
+int messure_sys_precision(void);
+ntp_ts get_systime(void);
 #endif

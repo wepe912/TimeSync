@@ -64,3 +64,65 @@
 [2017年09月12日 16:03:10]:[SUCCESS] Add data into config success 
 [2017年09月12日 16:03:10]:[SUCCESS] Add data into counts_table success 
 [2017年09月12日 16:03:34]:[SUCCESS] init mysql database 'mysqltest111' success !
+[2017年09月12日 16:20:25]:[SUCCESS] connect database success
+[2017年09月12日 16:20:25]:[SUCCESS] it is a new database,we can use it to init system ...
+[2017年09月12日 16:20:25]:[SUCCESS] create table config success
+[2017年09月12日 16:20:25]:[SUCCESS] create table work_log success
+[2017年09月12日 16:20:25]:[SUCCESS] create table ntp_client success
+[2017年09月12日 16:20:25]:[SUCCESS] create table client_record success
+[2017年09月12日 16:20:25]:[SUCCESS] create table timestamp_record success
+[2017年09月12日 16:20:25]:[SUCCESS] create table timestamp_client success
+[2017年09月12日 16:20:25]:[SUCCESS] create table tsync_black_white_list success
+[2017年09月12日 16:20:25]:[SUCCESS] create table counts_table success
+[2017年09月12日 16:20:25]:[SUCCESS] create all tables success,begin create triggers
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger client_record_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger client_record_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger timestamp_record_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger timestamp_record_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger work_log_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger work_log_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger tsync_black_white_list_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger tsync_black_white_list_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger ntp_client_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger ntp_client_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger timestamp_client_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger timestamp_client_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create all triggers success
+[2017年09月12日 16:20:25]:[SUCCESS] Add data into counts_table success 
+[2017年09月12日 16:20:25]:[SUCCESS] Add data into config success 
+[2017年09月12日 16:20:25]:[SUCCESS] connect Mysql Database success.
+[2017年09月12日 16:20:25]:[SUCCESS] createDatabase success.
+[2017年09月12日 16:20:25]:[SUCCESS] create table Config success
+[2017年09月12日 16:20:25]:[SUCCESS] create table work_log success
+[2017年09月12日 16:20:25]:[SUCCESS] create table ntp_client success
+[2017年09月12日 16:20:25]:[SUCCESS] create table client_record success
+[2017年09月12日 16:20:25]:[SUCCESS] create table timestamp_record success
+[2017年09月12日 16:20:25]:[SUCCESS] create table timestamp_client success
+[2017年09月12日 16:20:25]:[SUCCESS] create table tsync_black_white_list success
+[2017年09月12日 16:20:25]:[SUCCESS] create table counts_table success
+[2017年09月12日 16:20:25]:[SUCCESS] create all tables success,begin create triggers
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger client_record_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger client_record_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger timestamp_record_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger timestamp_record_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger work_log_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger work_log_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger tsync_black_white_list_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger tsync_black_white_list_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger ntp_client_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger ntp_client_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger timestamp_client_trigger_delete success
+[2017年09月12日 16:20:25]:[SUCCESS] create trigger timestamp_client_trigger_insert success
+[2017年09月12日 16:20:25]:[SUCCESS] create all triggers success
+[2017年09月12日 16:20:25]:[SUCCESS] Add data into config success 
+[2017年09月12日 16:20:25]:[SUCCESS] Add data into counts_table success 
+[2017年09月13日 08:03:49]:[SUCCESS] connect database success
+[2017年09月13日 08:03:49]:[OTHERS ] exist samename database,now we check it !
+[2017年09月13日 08:03:49]:[SUCCESS] the existed database is used before by the system,we can use it !
+[2017年09月13日 08:03:49]:[SUCCESS] read config from existed database success 
+[2017年09月13日 08:03:49]:[SUCCESS] connect Mysql Database success.
+[2017年09月13日 08:03:49]:[WARNING] Can't create database 'testdb_mysql12'; database exists
+[2017年09月13日 08:03:49]:[OTHERS ] now we change into the existed database to check! 
+[2017年09月13日 08:03:49]:[SUCCESS] change existed database success.
+[2017年09月13日 08:03:49]:[SUCCESS] existed database is the database we might used before ,now we can use it!
+[2017年09月13日 08:03:49]:[SUCCESS] read config from existed database success 

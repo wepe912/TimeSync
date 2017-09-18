@@ -12,6 +12,7 @@
 
 #include "../include/timeInit.h"
 #include "../include/nowTime.h"
+#include "../include/w_tsync.h"
 #include <time.h>
 int main(){
 	/*********************************
@@ -315,5 +316,10 @@ int main(){
     printf("test = %lf\n",test );
     printf("%d -- %d\n",sec,n_sec );
     printf("sizeof(double) = %d\n", sizeof(double));
+
+
+
+    int ret = messure_sys_precision();
+    printf("sys_precision = %d\n",(int)sys_precision );
 	return 0;
 }
