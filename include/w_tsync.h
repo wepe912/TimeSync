@@ -104,7 +104,8 @@ do { \
 #define	max(a,b)	(((a) > (b)) ? (a) : (b))
 #define	min3(a,b,c)	min(min((a),(b)), (c))
 
-
+/* nanoseconds per second */
+#define NANOSECONDS 1000000000
 #define FRAC		4294967296.0 		/* 2^32 as a double */
  /* nanoseconds per second */
 #define NANOSECONDS 1000000000
@@ -163,6 +164,8 @@ int tsync_client(int tsync_type,const char* server_addr); /* get time from peer 
 void deal_network_packet(int type,int port); /* deal network packet without thread */ 
 
 //int get_systime(ntp_ts* now);/* use clock_gettime get systime and convert into ntp_ts formate */
+//主时钟的精度=？1/cpu主频
 int messure_sys_precision(void);
 ntp_ts get_systime(void);
+struct timespec normalize_tspec(struct timespec x);
 #endif

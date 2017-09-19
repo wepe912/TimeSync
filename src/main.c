@@ -300,7 +300,7 @@ int main(){
         unsigned int l_uf;
     } l_fp;
 
-    struct timespec ts;
+    struct timespec ts,ts1;
     int i = 0;
     do{
         int ret = clock_gettime(CLOCK_REALTIME, &ts);
@@ -309,7 +309,7 @@ int main(){
         }
         i ++ ;
     }while(i < 1000);
-    printf("ts.tv_sec = %ld,*** ts.tv_nsec= %ld\n", ts.tv_sec,ts.tv_nsec);
+    printf("ts.tv_sec = %lu,*** ts.tv_nsec= %lu\n", ts.tv_sec,ts.tv_nsec);
     unsigned int sec = (unsigned int)ts.tv_sec;
     unsigned int n_sec = (unsigned int)ts.tv_nsec;
     long double  test = n_sec / 1000000000;
@@ -321,5 +321,9 @@ int main(){
 
     int ret = messure_sys_precision();
     printf("sys_precision = %d\n",(int)sys_precision );
+    printf("sizeof long = %d\n",sizeof(long) );
+    printf("sizeof time_t = %d \n",sizeof(time_t));
+    ts1 = normalize_tspec(ts);
+    printf("ts1.tv_sec = %lu,*** ts1.tv_nsec= %lu\n", ts1.tv_sec,ts1.tv_nsec);
 	return 0;
 }

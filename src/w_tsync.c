@@ -56,6 +56,7 @@ int messure_sys_precision(void){
 	if (tick - 1 > 1 - tick / 2)
 		i++;
 	sys_precision = (char)i;
+	return 0;
 }
 
 
@@ -69,10 +70,48 @@ ntp_ts get_systime(void){
 	if(ret != 0){
 		return result;
 	}else{
-		result.l_i = (int)ts.tv_sec;
-		result.l_uf = TVNTOF(ts.tv_nsec);
-		//result.l_uf = ts.tv_nsec;
+		ts = normalize_tspec(ts);
+		result.l_i = ts.tv_sec;
+		//result.l_uf = TVNTOF(ts.tv_nsec);
+		result.l_uf = ts.tv_nsec;
 		return result;
 		
 	}
+}
+
+/* make sure nanoseconds are in nominal range */
+struct timespec normalize_tspec(struct timespec x){
+	long z;
+	/* 
+	 * tv_nsec is of type 'long', and on a 64-bit machine using only
+	 * loops becomes prohibitive once the upper 32 bits get
+	 * involved. On the other hand, division by constant should be
+	 * fast enough; so we do a division of the nanoseconds in that
+	 * case. The floor adjustment step follows with the standard
+	 * normalisation loops. And labs() is intentionally not used
+	 * here: it has implementation-defined behaviour when applied
+	 * to LONG_MIN.
+	 */
+	if (x.tv_nsec < -3l * NANOSECONDS ||
+	    x.tv_nsec > 3l * NANOSECONDS) {
+		z = x.tv_nsec / NANOSECONDS;
+		x.tv_nsec -= z * NANOSECONDS;
+		x.tv_sec += z;
+	}
+	/* since 10**9 is close to 2**32, we don't divide but do a
+	 * normalisation in a loop; this takes 3 steps max, and should
+	 * outperform a division even if the mul-by-inverse trick is
+	 * employed. */
+	if (x.tv_nsec < 0)
+		do {
+			x.tv_nsec += NANOSECONDS;
+			x.tv_sec--;
+		} while (x.tv_nsec < 0);
+	else if (x.tv_nsec >= NANOSECONDS)
+		do {
+			x.tv_nsec -= NANOSECONDS;
+			x.tv_sec++;
+		} while (x.tv_nsec >= NANOSECONDS);
+
+	return x;
 }
