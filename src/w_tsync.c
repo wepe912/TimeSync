@@ -48,7 +48,7 @@ int messure_sys_precision(void){
 		return -1;
 	}
 	/*
-	 * Find the nearest power of two.
+	 * Find the nearest power of t
 	 */
 	 printf("tick = %0.8f\n",tick);
 	for (i = 0; tick <= 1; i--)
